@@ -46,7 +46,7 @@ Then clone this repo and you are good to go.
 
 Use PIP to fetch the latest official version from PyPI:
 
-    pip install MechEyeAPI==1.5.0.1.6.3
+    pip install MechEyeAPI
 
 On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`. When using PIP version 19 or higher build dependencies are handled automatically.
 
