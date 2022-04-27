@@ -6,7 +6,7 @@ This repository contains Python samples for Mech-Eye SDK.
 
 ### Dependencies
 
-1. Download and install [Mech-Eye SDK_1.5.2](https://www.mech-mind.com/download/CameraSDK.html)
+1. Download and install [Mech-Eye SDK_1.5.2](https://www.mech-mind.com/download/CameraSDK.html).
 2. Clone this repository to a specific folder.
 3. Add MechEyeApi to the path of environment variables of the system.
 
