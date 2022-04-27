@@ -4,46 +4,28 @@ This repository contains Python samples for Mech-Eye SDK.
 
 ## Installation
 
-### Dependencies
-
-1. Download and install [Mech-Eye SDK_1.5.2](https://www.mech-mind.com/download/CameraSDK.html).
-2. Clone this repository to a specific folder.
-3. Add MechEyeApi to the path of environment variables of the system.
-
-We ran and tested interfaces on Python3.6. Make sure to install Python 3.6 or higher.
-
-These python libraries are needed:
-
-* opencv-python
-* opencv-contrib-python
-* open3d
-* numpy
-
-opencv-python, opencv-contrib-python, open3d and numpy can be installed with pip by the following command:
-
-```Python
-pip install opencv-python opencv-contrib-python open3d numpy
-```
-
-### Installing official version of Mech-Eye Python API from PyPI using pip
-
-Use pip to install the latest official version of Mech-Eye Python API from PyPI:
+1. Download and install [Mech-Eye SDK](https://www.mech-mind.com/download/camera-sdk.html).
+2. Install Mech-Eye python API by pip. 
 
 ```Python
 pip install MechEyeAPI
 ```
 
-On some systems Python 3 `pip` is called `pip3`. In this guide we just call it `pip`.  
-When using pip version 19 or higher, build dependencies are handled automatically.
+3. Clone this repository to a specific folder.
+4. Open and run one of the samples.
+
+
+
+
 
 ## Sample list
 
 There are four categoires of samples: **Basic**, **Advanced**, **Util**, and **Laser**.  
 
-The category **Basic** contains samples that are related to basic connecting and capturing.  
-The category **Advanced** contains samples that use advanced capturing tricks.  
-The category **Util** contains samples that get and print information and set parameters.  
-The category **Laser** contains samples that can only be used on laser cameras.  
+- The category **Basic** contains samples that are related to basic connecting and capturing.  
+- The category **Advanced** contains samples that use advanced capturing tricks.  
+- The category **Util** contains samples that get and print information and set parameters.  
+- The category **Laser** contains samples that can only be used on laser cameras.  
 
 The samples marked with `(Open3D)` require [open3d](https://pypi.org/project/open3d/) to be installed via pip.
 The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/project/opencv-python/) and [opencv-contrib-python](https://pypi.org/project/opencv-contrib-python/) to be installed via pip.
@@ -71,7 +53,7 @@ The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/proj
   * [CaptureSimultaneouslyMultiCamera](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Advanced/CaptureSimultaneouslyMultiCamera.py)
     Capture simultaneously from multiple cameras.
   * [CaptureTimedAndPeriodically](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Advanced/CaptureTimedAndPeriodically.py)
-    Capture periodically for a specific time form a camera.
+    Capture periodically for a specific time from a camera.
 * **Util**
   * [GetCameraIntri](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Util/GetCameraIntri.py)  
     Get and print a camera's intrinsic parameters.
