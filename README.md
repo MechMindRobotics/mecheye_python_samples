@@ -1,118 +1,94 @@
-# Mech-Eye_python_interface
-  This is official Python interfaces for Mech-Eye cameras. 
+# Python Samples
 
-  Please select the proper branch corresponding to the camera firmware version.
-## Introduction
-
-  This project is developped by python. We use ZeroMQ library to connect camera devices in the LANs. And json is used to pack and unpack data from network. Supported     on both Windows and Ubuntu OS.
-
-## Features
-
-  By using these interfaces, you can easily control your mech_eye cameras in python programs. The features are as follows:
-
-    * Connect to your camera in your LANS.
-    * Set and get camera parameters like exposure time, period and so on.
-    * Get color images and depth images as numpy arrays.
-    * Get point cloud data as the format defined in open3d, a python lib which can deal with point clouds.
+This repository contains Python samples for Mech-Eye SDK.
 
 ## Installation
 
 ### Dependencies
 
-1. Download and install [Mech-Eye SDK_1.5.1](https://www.mech-mind.com.cn/support/xjSDK.html)
+1. Download and install [Mech-Eye SDK_1.5.2](https://www.mech-mind.com/download/CameraSDK.html)
 2. Clone this repository to a specific folder.
 3. Add MechEyeApi to the path of environment variables of the system.
-4. We ran and tested interfaces on Python3.6. Make sure to install Python 3.6 or higher.
-5. These python libraries are needed:
 
-    * opencv_python
-    * json
-    * open3d
-    * numpy
-    * pcl_python
+We ran and tested interfaces on Python3.6. Make sure to install Python 3.6 or higher.
 
-  opencv_python,json,open3d and numpy you can install with pip, by the following command:
+These python libraries are needed:
 
-  ```
-  pip3 install opencv-python json open3d numpy
-  ```
-  install pcl_python you need source code of python-pcl,the All-In-One Installer of PCL1.9.1(Version must be between 1.6 and 1.9.)and windows Gtk.
+* opencv-python
+* opencv-contrib-python
+* open3d
+* numpy
 
-### Installing official version from PyPI using PIP
+opencv-python, opencv-contrib-python, open3d and numpy can be installed with pip by the following command:
 
-  Use PIP to fetch the latest official version from PyPI:
-
-    pip install MechEyeAPI
-
-
-## Quick Start
-
-  In terminal, change your working directory to the repo, then in  **captureResultToCV.py**, then run:
-
-  ```powershell
-  python.exe captureResultToCV.py
-  ```
-
-  Some pictures will also be captured and stored in the same directory of the repo.
-
-## Project hierarchy
-
-  The following shows the hierarchy of project files:
-
-  ```
-  Mech-Eye_python_interface
-
-  ├─ captureResultToCV.py
-  ├─ captureResultToPLY.py
-  ├─ connectAndCaptureImage.py
-  └─ getAndSetParameter.py
-  ```
- 
-
-## Intro to samples
-
-  The original project provides a **getAndSetParameter.py** to show how to use interfaces. 
-
-  This sample mainly shows how to set camera's paramters like exposure time.
-
-  First, we need to Get camera list and  get some brief info about camera, and then connect by index:
-
-  ```python
-  device = Device()
-  device_list = device.get_device_list()
-
-  def print_device_info(info):
-      print("Camera Model Name: " + info.model())
-      print("Camera ID: " + info.id())
-      print("Camera IP: " + info.ip())
-      print("Hardware Version: " + info.hardware_version())
-      print("Firmware Version: " + info.firmware_version())
-      print(" ")
-
-  for i, info in enumerate(device_list):
-      print("Mech-Eye device index : " + str(i))
-      print_device_info(info)
-
-  user_input = input("Please enter the device index you want to connect: ")
-
-  device.connect(device_list[int(user_input)])
-  ```
-
-  We can set and get the value of a specific parameter, in this case, we choose exposure time for color image:
-
-  ```python
-  device.set2D_exposure_mode("Timed") # set exposure mode to Timed
-  print(str(device.get2D_exposure_mode()))
-  device.set2D_exposure_time(812) # set exposure time to 812ms
-  print(device.get2D_exposure_time())
-  ```
-
-We can set and get the value of a specific parameter, in this case, we choose exposure time for color image:
-
-```python
-device.set2D_exposure_mode("Timed") # set exposure mode to Timed
-print(str(device.get2D_exposure_mode()))
-device.set2D_exposure_time(812) # set exposure time to 812ms
-print(device.get2D_exposure_time())
+```Python
+pip install opencv-python opencv-contrib-python open3d numpy
 ```
 
+### Installing official version of Mech-Eye Python API from PyPI using pip
+
+Use pip to install the latest official version of Mech-Eye Python API from PyPI:
+
+```Python
+pip install MechEyeAPI
+```
+
+On some systems Python 3 `pip` is called `pip3`. In this guide we just call it `pip`.  
+When using pip version 19 or higher, build dependencies are handled automatically.
+
+## Sample list
+
+There are four categoires of samples: **Basic**, **Advanced**, **Util**, and **Laser**.  
+
+The category **Basic** contains samples that are related to basic connecting and capturing.  
+The category **Advanced** contains samples that use advanced capturing tricks.  
+The category **Util** contains samples that get and print information and set parameters.  
+The category **Laser** contains samples that can only be used on laser cameras.  
+
+The samples marked with `(Open3D)` require [open3d](https://pypi.org/project/open3d/) to be installed via pip.
+The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/project/opencv-python/) and [opencv-contrib-python](https://pypi.org/project/opencv-contrib-python/) to be installed via pip.
+
+* **Basic**
+  * [ConnectToCamera](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/ConnectToCamera.py)  
+    Connects to a Mech-Eye Industrial 3D Camera.
+  * [ConnectAndCaptureImage](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/ConnectAndCaptureImage.py)  
+    Connects to a Mech-Eye Industrial 3D Camera and capture 2D and 3D data.
+  * [CaptureColorMap](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/CaptureColorMap.py) `(OpenCV)`  
+    Capture color map data with OpenCV data structure from a camera.
+  * [CaptureDepthMap](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/CaptureDepthMap.py) `(OpenCV)`  
+    Capture depth map data with OpenCV data structure from a camera.
+  * [CapturePointCloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/CapturePointCloud.py) `(Open3D)`  
+    Capture point clouds with PCL data structure from a camera.
+  * [CaptureHDRPointCloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/CaptureHDRPointCloud.py) `(Open3D)`  
+    Capture point clouds in HDR mode with PCL data structure from a camera.
+  * [CapturePointCloudROI](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Basic/CapturePointCloudROI.py) `(Open3D)`  
+    Capture point clouds with ROI enabled with PCL data structure from a camera.
+* **Advanced**
+  * [CaptureCloudFromDepth](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Advanced/CaptureCloudFromDepth.py) `(Open3D)`  
+    Construct point clouds from depth map and color map captured from a camera.
+  * [CaptureSequentiallyMultiCamera](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Advanced/CaptureSequentiallyMultiCamera.py)
+    Capture sequentially from multiple cameras.
+  * [CaptureSimultaneouslyMultiCamera](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Advanced/CaptureSimultaneouslyMultiCamera.py)
+    Capture simultaneously from multiple cameras.
+  * [CaptureTimedAndPeriodically](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Advanced/CaptureTimedAndPeriodically.py)
+    Capture periodically for a specific time form a camera.
+* **Util**
+  * [GetCameraIntri](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Util/GetCameraIntri.py)  
+    Get and print a camera's intrinsic parameters.
+  * [PrintDeviceInfo](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Util/PrintDeviceInfo.py)  
+    Get and print a camera's information.
+  * [SetDepthRange](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Util/SetDepthRange.py)  
+    Set the depth range of a camera.
+  * [SetParameters](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Util/SetParameters.py)  
+    Set and get the parameters from a camera.
+  * [SetUserSets](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Util/SetUserSets.py)  
+    Get current user set name and available user sets, save settings to a specific user set. The User Set feature allows the user to customize and store the individual settings.
+* **Laser**
+  * [SetLaserFramePartitionCount](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Laser/SetLaserFramePartitionCount.py)  
+    Set the laser scan partition number for a laser camera.
+  * [SetLaserFrameRange](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Laser/SetLaserFrameRange.py)  
+    Set the laser scan field of view for a laser camera.
+  * [SetLaserFringeCodingMode](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Laser/SetLaserFringeCodingMode.py)  
+    Set the fringe coding mode for a laser camera.
+  * [SetLaserPowerLevel](https://github.com/MechMindRobotics/mecheye_python_samples/tree/main/source/Laser/SetLaserPowerLevel.py)  
+    Set the power level for a laser camera.
