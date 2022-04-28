@@ -3,69 +3,101 @@ import open3d as o3d
 import numpy as np
 from struct import unpack
 
-device = Device()
-device_list = device.get_device_list()
+
+def show_error(status):
+    if status.ok():
+        return
+    print("Error Code : {}".format(status.code()),
+          ",Error Description: {}".format(status.description()))
 
 
-def print_device_info(info):
-    print("Camera Model Name: " + info.model())
-    print("Camera ID: " + info.id())
-    print("Camera IP: " + info.ip())
-    print("Hardware Version: " + info.hardware_version())
-    print("Firmware Version: " + info.firmware_version())
-    print(" ")
+def print_device_info(num, info):
+    print(" Mech-Eye device index: {}\n".format(str(num)),
+          "Camera Model Name: {}\n".format(info.model()),
+          "Camera ID: {}\n".format(info.id()),
+          "Camera IP: {}\n".format(info.ip()),
+          "Hardware Version: {}\n".format(info.hardware_version()),
+          "Firmware Version: {}\n".format(info.firmware_version()),
+          "...............................................")
 
 
-for i, info in enumerate(device_list):
-    print("Mech-Eye device index : " + str(i))
-    print_device_info(info)
+class CaptureCloudFromDepth(object):
+    def __init__(self):
+        self.device = Device()
 
-user_input = input("Please enter the device index you want to connect: ")
+    def find_camera_list(self):
+        self.device_list = self.device.get_device_list()
+        if len(self.device_list) == 0:
+            print("No Mech-Eye device found.")
+            quit()
+        for i, info in enumerate(self.device_list):
+            print_device_info(i, info)
 
-error = device.connect(device_list[int(user_input)])
-if error.ok():
-    print("connect success")
-else:
-    print(error.description())
+    def choose_camera(self):
+        while True:
+            user_input = input(
+                "Please enter the device index you want to connect: ")
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+                self.index = int(user_input)
+                break
+            print("Input invalid! Please enter the device index you want to connect: ")
 
+    def connect_device_info(self):
+        status = self.device.connect(self.device_list[self.index])
+        if not status.ok():
+            show_error(status)
+            quit()
+        print("Connect Mech-Eye Success.")
 
-color = device.capture_color()
-color_data = color.data()
-depth = device.capture_depth()
-depth_data = depth.data()
-device_intrinsic = device.get_device_intrinsic()
+        color = self.device.capture_color()
+        color_data = color.data()
+        depth = self.device.capture_depth()
+        depth_data = depth.data()
+        device_intrinsic = self.device.get_device_intrinsic()
 
-point_cloud_xyz = o3d.geometry.PointCloud()
-points_xyz = np.zeros((depth.width() * depth.height(), 3), dtype=np.float64)
+        point_cloud_xyz = o3d.geometry.PointCloud()
+        points_xyz = np.zeros(
+            (depth.width() * depth.height(), 3), dtype=np.float64)
 
-width = depth.width()
-for i, d in enumerate(depth_data):
-    for j, dd in enumerate(d):
-        points_xyz[width * i + j][0] = (j - device_intrinsic.camera_matrix_cx()
+        width = depth.width()
+        for i, d in enumerate(depth_data):
+            for j, dd in enumerate(d):
+                points_xyz[width * i + j][0] = (j - device_intrinsic.camera_matrix_cx()
                                                 ) * dd / device_intrinsic.camera_matrix_fx()
-        points_xyz[width * i + j][1] = (i - device_intrinsic.camera_matrix_cy()
+                points_xyz[width * i + j][1] = (i - device_intrinsic.camera_matrix_cy()
                                                 ) * dd / device_intrinsic.camera_matrix_fy()
-        points_xyz[width * i + j][2] = dd
+                points_xyz[width * i + j][2] = dd
 
-point_cloud_xyz.points = o3d.utility.Vector3dVector(points_xyz)
-o3d.visualization.draw_geometries([point_cloud_xyz])
-o3d.io.write_point_cloud("PointCloudXYZ.ply", point_cloud_xyz)
-print("Point cloud saved to path PointCloudXYZ.ply")
+        point_cloud_xyz.points = o3d.utility.Vector3dVector(points_xyz)
+        o3d.visualization.draw_geometries([point_cloud_xyz])
+        o3d.io.write_point_cloud("PointCloudXYZ.ply", point_cloud_xyz)
+        print("Point cloud saved to path PointCloudXYZ.ply")
 
-point_cloud_xyz_rgb = o3d.geometry.PointCloud()
-point_cloud_xyz_rgb.points = o3d.utility.Vector3dVector(points_xyz)
-points_rgb = np.zeros((depth.width() * depth.height(), 3), dtype = np.float64)
+        point_cloud_xyz_rgb = o3d.geometry.PointCloud()
+        point_cloud_xyz_rgb.points = o3d.utility.Vector3dVector(points_xyz)
+        points_rgb = np.zeros(
+            (depth.width() * depth.height(), 3), dtype=np.float64)
 
-for i, d in enumerate(color_data):
-    for j, dd in enumerate(d):
-        points_rgb[width * i + j][0] = dd[2] / 255
-        points_rgb[width * i + j][1] = dd[1] / 255
-        points_rgb[width * i + j][2] = dd[0] / 255
+        for i, d in enumerate(color_data):
+            for j, dd in enumerate(d):
+                points_rgb[width * i + j][0] = dd[2] / 255
+                points_rgb[width * i + j][1] = dd[1] / 255
+                points_rgb[width * i + j][2] = dd[0] / 255
 
-point_cloud_xyz_rgb.colors = o3d.utility.Vector3dVector(points_rgb)
-o3d.visualization.draw_geometries([point_cloud_xyz_rgb])
-o3d.io.write_point_cloud("PointCloudXYZRGB.ply", point_cloud_xyz_rgb)
-print("Color point cloud saved to path PointCloudXYZRGB.ply")
+        point_cloud_xyz_rgb.colors = o3d.utility.Vector3dVector(points_rgb)
+        o3d.visualization.draw_geometries([point_cloud_xyz_rgb])
+        o3d.io.write_point_cloud("PointCloudXYZRGB.ply", point_cloud_xyz_rgb)
+        print("Color point cloud saved to path PointCloudXYZRGB.ply")
 
-device.disconnect()
+        self.device.disconnect()
 
+    def main(self):
+        print("Find Mech-Eye device...")
+        self.find_camera_list()
+        self.choose_camera()
+        self.connect_device_info()
+
+
+if __name__ == '__main__':
+    a = CaptureCloudFromDepth()
+    a.main()

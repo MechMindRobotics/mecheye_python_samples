@@ -10,52 +10,88 @@ def to_seconds(minutes):
     return minutes * 60
 
 
-device = Device()
-device_list = device.get_device_list()
+def show_error(status):
+    if status.ok():
+        return
+    print("Error Code : {}".format(status.code()),
+          ",Error Description: {}".format(status.description()))
 
 
-def print_device_info(info):
-    print("Camera Model Name: " + info.model())
-    print("Camera ID: " + info.id())
-    print("Camera IP: " + info.ip())
-    print("Hardware Version: " + info.hardware_version())
-    print("Firmware Version: " + info.firmware_version())
-    print(" ")
+def print_device_info(num, info):
+    print(" Mech-Eye device index: {}\n".format(str(num)),
+          "Camera Model Name: {}\n".format(info.model()),
+          "Camera ID: {}\n".format(info.id()),
+          "Camera IP: {}\n".format(info.ip()),
+          "Hardware Version: {}\n".format(info.hardware_version()),
+          "Firmware Version: {}\n".format(info.firmware_version()),
+          "...............................................")
 
 
-for i, info in enumerate(device_list):
-    print("Mech-Eye device index : " + str(i))
-    print_device_info(info)
+class CaptureTimedAndPeriodically(object):
+    def __init__(self):
+        self.device = Device()
 
-user_input = input("Please enter the device index you want to connect: ")
+    def find_camera_list(self):
+        self.device_list = self.device.get_device_list()
+        if len(self.device_list) == 0:
+            print("No Mech-Eye device found.")
+            quit()
+        for i, info in enumerate(self.device_list):
+            print_device_info(i, info)
 
-error = device.connect(device_list[int(user_input)])
-if error.ok():
-    print("connect success")
-else:
-    print(error.description())
+    def choose_camera(self):
+        while True:
+            user_input = input(
+                "Please enter the device index you want to connect: ")
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+                self.index = int(user_input)
+                break
+            print("Input invalid! Please enter the device index you want to connect: ")
 
-start = time.time()
+    def connect_device_info(self):
+        status = self.device.connect(self.device_list[self.index])
+        if not status.ok():
+            show_error(status)
+            quit()
+        print("Connect Mech-Eye Success.")
 
-while (time.time() - start < to_seconds(capture_time)):
-    before = time.time()
+        start = time.time()
 
-    color = device.capture_color()
-    depth = device.capture_depth()
-    point_xyz = device.capture_point_xyz()
-    point_xyz_rgb = device.capture_point_xyz_bgr()
+        while (time.time() - start < to_seconds(capture_time)):
+            before = time.time()
+            print("Start capturing.")
 
-    after = time.time()
-    time_used = after - before
-    if (time_used < capture_period):
-        time.sleep(capture_period - time_used)
-    else:
-        print("Your capture time is longer than your capture period. Please increase your capture period.")
+            color = self.device.capture_color()
+            depth = self.device.capture_depth()
+            point_xyz = self.device.capture_point_xyz()
+            point_xyz_rgb = self.device.capture_point_xyz_bgr()
 
-    time_remaining = int(to_seconds(capture_time) - (time.time() - start))
-    print("Remaining time: {0} minutes {1} seconds".format(
-        int(time_remaining / 60), time_remaining % 60))
+            print("Capture completed.")
 
-print("Capturing completed for {} minutes".format(capture_time))
+            after = time.time()
+            time_used = after - before
+            if (time_used < capture_period):
+                time.sleep(capture_period - time_used)
+            else:
+                print(
+                    "Your capture time is longer than your capture period. Please increase your capture period.")
 
-device.disconnect()
+            time_remaining = int(to_seconds(
+                capture_time) - (time.time() - start))
+            print("Remaining time: {0} minutes {1} seconds".format(
+                int(time_remaining / 60), time_remaining % 60))
+
+        print("Capturing completed for {} minutes".format(capture_time))
+
+        self.device.disconnect()
+
+    def main(self):
+        print("Find Mech-Eye device...")
+        self.find_camera_list()
+        self.choose_camera()
+        self.connect_device_info()
+
+
+if __name__ == '__main__':
+    a = CaptureTimedAndPeriodically()
+    a.main()

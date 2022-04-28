@@ -23,25 +23,28 @@ class GetAndSetParameter(object):
         self.device = Device()
 
     def find_camera_list(self):
+        print("Find Mech-Eye device...")
         self.device_list = self.device.get_device_list()
         if len(self.device_list) == 0:
             print("No Mech-Eye device found.")
-            return
+            quit()
         for i, info in enumerate(self.device_list):
             print_device_info(i, info)
 
     def choose_camera(self):
         while True:
-            self.user_input = input("Please enter the device index you want to connect: ")
-            if self.user_input.isdigit() and len(self.device_list) > int(self.user_input):
+            user_input = input(
+                "Please enter the device index you want to connect: ")
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+                self.index = int(user_input)
                 break
             print("Input invalid! Please enter the device index you want to connect: ")
 
     def connect_device_info(self):
-        status = self.device.connect(self.device_list[int(self.user_input)])
+        status = self.device.connect(self.device_list[self.index])
         if not status.ok():
             show_error(status)
-            return -1
+            quit()
         print("Connect Mech-Eye Success.")
 
         print("All user sets : ", end='')
@@ -54,7 +57,8 @@ class GetAndSetParameter(object):
 
         show_error(self.device.set3D_exposure([1.0, 32.1, 99.0]))
         exposure_sequence = self.device.get3D_exposure()
-        print("\nThe 3D scanning exposure multiplier:{}".format(len(exposure_sequence)))
+        print("\nThe 3D scanning exposure multiplier:{}".format(
+            len(exposure_sequence)))
         for i in exposure_sequence:
             print("3D scanning exposure time : {}".format(i))
 
@@ -95,6 +99,8 @@ class GetAndSetParameter(object):
                      laser_settings.get_count(), laser_settings.get_level()))
 
         self.device.save_all_settings_to_user_set()
+
+        self.device.disconnect()
 
     def main(self):
         self.find_camera_list()

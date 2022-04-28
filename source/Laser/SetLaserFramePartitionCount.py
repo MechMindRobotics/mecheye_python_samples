@@ -8,7 +8,17 @@ def show_error(status):
           ",Error Description: {}".format(status.description()))
 
 
-class SetFramePartitionCount(object):
+def print_device_info(num, info):
+    print(" Mech-Eye device index: {}\n".format(str(num)),
+          "Camera Model Name: {}\n".format(info.model()),
+          "Camera ID: {}\n".format(info.id()),
+          "Camera IP: {}\n".format(info.ip()),
+          "Hardware Version: {}\n".format(info.hardware_version()),
+          "Firmware Version: {}\n".format(info.firmware_version()),
+          "...............................................")
+
+
+class SetLaserFramePartitionCount(object):
     def __init__(self):
         self.device = Device()
 
@@ -16,41 +26,44 @@ class SetFramePartitionCount(object):
         self.device_list = self.device.get_device_list()
         if len(self.device_list) == 0:
             print("No Mech-Eye device found.")
-            return
+            quit()
         for i, info in enumerate(self.device_list):
             print_device_info(i, info)
 
     def choose_camera(self):
         while True:
-            self.user_input = input(
+            user_input = input(
                 "Please enter the device index you want to connect: ")
-            if self.user_input.isdigit() and len(self.device_list) > int(self.user_input):
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+                self.index = int(user_input)
                 break
             print("Input invalid! Please enter the device index you want to connect: ")
 
     def connect_device_info(self):
-        status = self.device.connect(self.device_list[int(self.user_input)])
+        status = self.device.connect(self.device_list[self.index])
         if not status.ok():
             show_error(status)
-            return -1
+            quit()
         print("Connect Mech-Eye Success.")
 
-        # Parameter of laser camera, please comment out when connecting non-laser camera.
         laser_settings = self.device.get_laser_settings()
-        print("\n partition_count:{}".format(laser_settings.get_count()))
+        print("Old frame partition count: {}".format(laser_settings.get_count()))
 
         show_error(self.device.set_laser_settings(laser_settings.get_mode(
         ), laser_settings.get_start(), laser_settings.get_end(), 4, laser_settings.get_level()))
 
         laser_settings = self.device.get_laser_settings()
-        print("\n partition_count:{}".format(laser_settings.get_count()))
+        print("New frame partition count: {}".format(laser_settings.get_count()))
+
+        self.device.disconnect()
 
     def main(self):
+        print("Find Mech-Eye device...")
         self.find_camera_list()
         self.choose_camera()
         self.connect_device_info()
 
 
 if __name__ == '__main__':
-    a = SetFramePartitionCount()
+    a = SetLaserFramePartitionCount()
     a.main()

@@ -37,23 +37,24 @@ class ConnectAndCaptureImage(object):
         self.device_list = self.device.get_device_list()
         if len(self.device_list) == 0:
             print("No Mech-Eye device found.")
-            return
+            quit()
         for i, info in enumerate(self.device_list):
             print_device_info(i, info)
 
     def choose_camera(self):
         while True:
-            self.user_input = input(
+            user_input = input(
                 "Please enter the device index you want to connect: ")
-            if self.user_input.isdigit() and len(self.device_list) > int(self.user_input):
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+                self.index = int(user_input)
                 break
             print("Input invalid! Please enter the device index you want to connect: ")
 
     def connect_device_info(self):
-        status = self.device.connect(self.device_list[int(self.user_input)])
+        status = self.device.connect(self.device_list[self.index])
         if not status.ok():
             show_error(status)
-            return -1
+            quit()
         print("Connect Mech-Eye Success.")
 
         device_intrinsic = self.device.get_device_intrinsic()
@@ -84,7 +85,10 @@ class ConnectAndCaptureImage(object):
                      point_xyz_data[int(row)][int(col)][1],
                      point_xyz_data[int(row)][int(col)][2]))
 
+        self.device.disconnect()
+
     def main(self):
+        print("Find Mech-Eye device...")
         self.find_camera_list()
         self.choose_camera()
         self.connect_device_info()
