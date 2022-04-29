@@ -1,7 +1,6 @@
 from MechEye import Device
 import open3d as o3d
 import numpy as np
-from struct import unpack
 
 
 def show_error(status):

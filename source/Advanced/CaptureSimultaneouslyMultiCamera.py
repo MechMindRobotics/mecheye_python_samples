@@ -1,5 +1,4 @@
 from MechEye import Device
-from struct import unpack
 import threading
 
 

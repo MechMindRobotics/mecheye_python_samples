@@ -1,6 +1,5 @@
 from MechEye import Device
 import time
-from struct import unpack
 
 capture_time = 5  # minutes
 capture_period = 10  # seconds
