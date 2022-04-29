@@ -1,18 +1,39 @@
 # Python Samples
 
-This repository contains Python samples for Mech-Eye SDK.
+This repository contains Python samples for Mech-Eye Industrial 3D Camera.
 
 ## Installation
 
-1. Download and install [Mech-Eye SDK](https://www.mech-mind.com/download/camera-sdk.html).
-2. Install Mech-Eye python API by pip.
+### Ubuntu 
+1. Clone this repository to a specific folder.
+2. Install [Mech-Eye API_1.5.2 for Ubuntu](https://github.com/MechMindRobotics/mecheye_python_samples/blob/master/Mech-Eye%20API_1.5.2_Ubuntu_Amd64/MechEyeApi_1.5.2_amd64.deb).
+3. Install Mech-Eye API python wrapper by pip3.
+
+```Python
+pip3 install MechEyeAPI
+```
+
+4. Open and run one of the samples.
+
+```Python
+python3 ConnectAndCaptureImage.py
+```
+
+
+### Windows
+1. Clone this repository to a specific folder.
+2. Install [Mech-Eye SDK_1.5.2 for Windows](https://www.mech-mind.com/download/camera-sdk.html).
+3. Install Mech-Eye API python wrapper by pip.
 
 ```Python
 pip install MechEyeAPI
 ```
-
-3. Clone this repository to a specific folder.
 4. Open and run one of the samples.
+
+```Python
+python ConnectAndCaptureImage.py
+```
+
 
 ## Sample list
 
@@ -21,7 +42,7 @@ There are four categories of samples: **Basic**, **Advanced**, **Util**, and **L
 - The category **Basic** contains samples that are related to basic connecting and capturing.  
 - The category **Advanced** contains samples that use advanced capturing tricks.  
 - The category **Util** contains samples that get and print information and set parameters.  
-- The category **Laser** contains samples that can only be used on laser cameras.  
+- The category **Laser** contains samples that can only be used on Mech-Eye Laser cameras.  
 
 The samples marked with `(Open3D)` require [open3d](https://pypi.org/project/open3d/) to be installed via pip.
 The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/project/opencv-python/) and [opencv-contrib-python](https://pypi.org/project/opencv-contrib-python/) to be installed via pip.
@@ -63,10 +84,10 @@ The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/proj
     Get the current userset name and available usersets of parameter settings, and save the settings to a specific userset. The User Set feature allows the user to customize and store the individual settings.
 - **Laser**
   - [SetLaserFramePartitionCount](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/Laser/SetLaserFramePartitionCount.py)  
-    Set the laser scan partition number for a laser camera.
+    Set the laser scan partition count for a Mech-Eye Laser camera.
   - [SetLaserFrameRange](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/Laser/SetLaserFrameRange.py)  
-    Set the laser scan field of view for a laser camera.
+    Set the laser scan range for a Mech-Eye Laser camera.
   - [SetLaserFringeCodingMode](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/Laser/SetLaserFringeCodingMode.py)  
-    Set the fringe coding mode for a laser camera.
+    Set the fringe coding mode for a Mech-Eye Laser camera.
   - [SetLaserPowerLevel](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/Laser/SetLaserPowerLevel.py)  
-    Set the power level for a laser camera.
+    Set the laser power level for a Mech-Eye Laser camera.
