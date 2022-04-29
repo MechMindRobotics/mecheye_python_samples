@@ -46,7 +46,7 @@ class GetCameraIntri(object):
         while True:
             user_input = input(
                 "Please enter the device index you want to connect: ")
-            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
                 self.index = int(user_input)
                 break
             print("Input invalid! Please enter the device index you want to connect: ")
@@ -63,6 +63,7 @@ class GetCameraIntri(object):
         print_matrix("CameraMatrix", device_intrinsic)
 
         self.device.disconnect()
+        print("Disconnect Mech-Eye Success.")
 
     def main(self):
         self.find_camera_list()

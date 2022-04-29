@@ -24,6 +24,7 @@ class CaptureSequentiallyMultiCamera(object):
         self.device = Device()
 
     def find_camera_list(self):
+        print("Find Mech-Eye devices...")
         self.device_list = self.device.get_device_list()
         if len(self.device_list) == 0:
             print("No Mech-Eye device found.")
@@ -38,7 +39,7 @@ class CaptureSequentiallyMultiCamera(object):
                 "Please enter the device index you want to connect. Enter a c to terminate adding devices: ")
             if user_input == "c":
                 break
-            elif user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+            elif user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
                 self.indices.add(int(user_input))
             else:
                 print("Input invalid!")
@@ -60,9 +61,9 @@ class CaptureSequentiallyMultiCamera(object):
             point_xyz_rgb = device.capture_point_xyz_bgr()
 
             device.disconnect()
+            print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
-        print("Find Mech-Eye device...")
         self.find_camera_list()
         self.choose_camera()
         self.connect_device_info()

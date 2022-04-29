@@ -23,6 +23,7 @@ class SetLaserFrameRange(object):
         self.device = Device()
 
     def find_camera_list(self):
+        print("Find Mech-Eye devices...")
         self.device_list = self.device.get_device_list()
         if len(self.device_list) == 0:
             print("No Mech-Eye device found.")
@@ -34,17 +35,17 @@ class SetLaserFrameRange(object):
         while True:
             user_input = input(
                 "Please enter the device index you want to connect: ")
-            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) > 0:
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
                 self.index = int(user_input)
                 break
-            print("Input invalid! Please enter the device index you want to connect: ")
+            print("Input invalid!")
 
     def connect_device_info(self):
         status = self.device.connect(self.device_list[self.index])
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Success.")
+        print("Connected to the Mech-Eye device successfully.")
 
         laser_settings = self.device.get_laser_settings()
         print("Old frame range: {0} to {1}.".format(
@@ -58,9 +59,9 @@ class SetLaserFrameRange(object):
             laser_settings.get_start(), laser_settings.get_end()))
 
         self.device.disconnect()
+        print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
-        print("Find Mech-Eye device...")
         self.find_camera_list()
         self.choose_camera()
         self.connect_device_info()
