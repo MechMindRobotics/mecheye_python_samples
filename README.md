@@ -6,7 +6,7 @@ This repository contains Python samples for Mech-Eye Industrial 3D Camera.
 
 ### Ubuntu 
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye API_1.5.2 for Ubuntu](https://github.com/MechMindRobotics/mecheye_python_samples/blob/master/Mech-Eye%20API_1.5.2_Ubuntu_Amd64/MechEyeApi_1.5.2_amd64.deb).
+2. Install [Mech-Eye API_1.5.2 for Ubuntu](https://www.mech-mind.com/download/camera-sdk.html).
 3. Install Mech-Eye API python wrapper by pip3.
 
 ```Python
