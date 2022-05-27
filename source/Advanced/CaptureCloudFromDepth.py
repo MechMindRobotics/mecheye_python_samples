@@ -63,10 +63,10 @@ class CaptureCloudFromDepth(object):
         for i, d in enumerate(depth_data):
             for j, dd in enumerate(d):
                 points_xyz[width * i + j][0] = (j - device_intrinsic.camera_matrix_cx()
-                                                ) * dd / device_intrinsic.camera_matrix_fx()
+                                                ) * 0.001 * dd / device_intrinsic.camera_matrix_fx() # mm to m
                 points_xyz[width * i + j][1] = (i - device_intrinsic.camera_matrix_cy()
-                                                ) * dd / device_intrinsic.camera_matrix_fy()
-                points_xyz[width * i + j][2] = dd
+                                                ) * 0.001 * dd / device_intrinsic.camera_matrix_fy() # mm to m
+                points_xyz[width * i + j][2] = 0.001 * dd # mm to m
 
         point_cloud_xyz.points = o3d.utility.Vector3dVector(points_xyz)
         o3d.visualization.draw_geometries([point_cloud_xyz])
