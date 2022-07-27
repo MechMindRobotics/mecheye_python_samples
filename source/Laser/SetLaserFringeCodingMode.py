@@ -47,14 +47,17 @@ class SetLaserFringeCodingMode(object):
             quit()
         print("Connected to the Mech-Eye device successfully.")
 
+        mode_dec = {0: "Fast", 1: "Accurate"}
         laser_settings = self.device.get_laser_settings()
-        print("Old fringe coding mode: {}.".format(laser_settings.get_mode()))
-
-        show_error(self.device.set_laser_settings("Fast", laser_settings.get_start(
-        ), laser_settings.get_end(), laser_settings.get_count(), laser_settings.get_level()))
+        print("Old fringe coding mode: {}.".format(mode_dec[laser_settings.fringe_coding_mode()]))
+        show_error(self.device.set_laser_settings("Accurate",
+                                                  laser_settings.frame_range_start(),
+                                                  laser_settings.frame_range_end(),
+                                                  laser_settings.frame_partition_count(),
+                                                  laser_settings.power_level()))
 
         laser_settings = self.device.get_laser_settings()
-        print("New fringe coding mode: {}.".format(laser_settings.get_mode()))
+        print("New fringe coding mode: {}.".format(mode_dec[laser_settings.fringe_coding_mode()]))
 
         self.device.disconnect()
         print("Disconnected from the Mech-Eye device successfully.")

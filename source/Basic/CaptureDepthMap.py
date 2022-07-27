@@ -49,7 +49,7 @@ class CaptureDepthMap(object):
         print("Connect to the Mech-Eye device successfully.")
 
         depth_map = self.device.capture_depth()
-        depth_file = "DepthMap.png"
+        depth_file = "DepthMap.tiff"
         cv2.imwrite(depth_file, depth_map.data())
         print("Capture and save depth image : {}".format(depth_file))
 

@@ -45,15 +45,15 @@ class SetDepthRange(object):
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Success.")
+        print("Connect Mech-Eye Successfully.")
 
-        show_error(self.device.set_depth_range(10, 1000))
+        show_error(self.device.set_depth_range(4, 888))
         depth_range = self.device.get_depth_range()
-        print("\n3D scanning depth Lower Limit : {} mm,".format(depth_range.get_lower()),
-              "depth upper limit : {} mm\n".format(depth_range.get_upper()))
+        print("\n3D scanning depth Lower Limit : {} mm,".format(depth_range.lower()),
+              "depth upper limit : {} mm\n".format(depth_range.upper()))
 
         self.device.disconnect()
-        print("Disconnect Mech-Eye Success.")
+        print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
         self.find_camera_list()

@@ -47,16 +47,19 @@ class SetLaserFrameRange(object):
             quit()
         print("Connected to the Mech-Eye device successfully.")
 
+        mode_dec = {0: "Fast", 1: "Accurate"}
         laser_settings = self.device.get_laser_settings()
         print("Old frame range: {0} to {1}.".format(
-            laser_settings.get_start(), laser_settings.get_end()))
-
-        show_error(self.device.set_laser_settings(laser_settings.get_mode(
-        ), 51, 90, laser_settings.get_count(), laser_settings.get_level()))
+            laser_settings.frame_range_start(), laser_settings.frame_range_end()))
+        show_error(self.device.set_laser_settings(mode_dec[laser_settings.fringe_coding_mode()],
+                                                  33,
+                                                  90,
+                                                  laser_settings.frame_partition_count(),
+                                                  laser_settings.power_level()))
 
         laser_settings = self.device.get_laser_settings()
-        print("New frame range: {0} to {1}.".format(
-            laser_settings.get_start(), laser_settings.get_end()))
+        print("New frame range: {0} to {1}.".format(laser_settings.frame_range_start(),
+                                                    laser_settings.frame_range_end()))
 
         self.device.disconnect()
         print("Disconnected from the Mech-Eye device successfully.")

@@ -46,13 +46,13 @@ class ConnectAndCaptureImage(object):
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Success.")
+        print("Connect Mech-Eye Successfully.")
 
         device_info = self.device.get_device_info()
         print_device_info(device_info)
 
         self.device.disconnect()
-        print("Disconnect Mech-Eye Success.")
+        print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
         self.find_camera_list()

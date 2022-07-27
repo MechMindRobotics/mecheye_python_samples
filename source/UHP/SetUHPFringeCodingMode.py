@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from MechEye import Device
 
 
@@ -18,12 +20,12 @@ def print_device_info(num, info):
           "...............................................")
 
 
-class SetUserSets(object):
+class SetLaserFrameRange(object):
     def __init__(self):
         self.device = Device()
 
     def find_camera_list(self):
-        print("Find Mech-Eye device...")
+        print("Find Mech-Eye devices...")
         self.device_list = self.device.get_device_list()
         if len(self.device_list) == 0:
             print("No Mech-Eye device found.")
@@ -38,28 +40,24 @@ class SetUserSets(object):
             if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
                 self.index = int(user_input)
                 break
-            print("Input invalid! Please enter the device index you want to connect: ")
+            print("Input invalid!")
 
     def connect_device_info(self):
         status = self.device.connect(self.device_list[self.index])
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Successfully.")
+        print("Connected to the Mech-Eye device successfully.")
 
-        print("All user sets : ", end='')
-        user_sets = self.device.get_all_user_sets()
-        for user_set in user_sets:
-            print(user_set, end=' ')
+        fringe_coding_mode = {0: "Fast", 1: "Accurate"}
 
-        current_user_set = self.device.get_current_user_set()
-        print("\nCurrent user set : " + str(current_user_set))
+        uhp_settings = self.device.get_uhp_fringe_coding_mode()
+        print("Old fringe coding mode: {}.".format(fringe_coding_mode[uhp_settings]))
 
-        show_error(self.device.set_current_user_set(user_sets[0]))
-        print("Set {} as the current user set.".format(user_sets[0]))
+        show_error(self.device.set_uhp_fringe_coding_mode("Fast"))
 
-        self.device.save_all_settings_to_user_set()
-        print("Save all parameters to current user set.")
+        uhp_settings = self.device.get_uhp_fringe_coding_mode()
+        print("New fringe coding mode: {}.".format(fringe_coding_mode[uhp_settings]))
 
         self.device.disconnect()
         print("Disconnected from the Mech-Eye device successfully.")
@@ -71,5 +69,5 @@ class SetUserSets(object):
 
 
 if __name__ == '__main__':
-    a = SetUserSets()
+    a = SetLaserFrameRange()
     a.main()

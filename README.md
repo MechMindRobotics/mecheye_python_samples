@@ -6,7 +6,7 @@ This repository contains Python samples for Mech-Eye Industrial 3D Camera.
 
 ### Ubuntu 
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye API_1.5.2 for Ubuntu](https://www.mech-mind.com/download/camera-sdk.html).
+2. Install [Mech-Eye API_1.6.0 for Ubuntu](https://www.mech-mind.com/download/camera-sdk.html).
 3. Install Mech-Eye API python wrapper by pip3.
 
 ```Python
@@ -22,7 +22,7 @@ python3 ConnectAndCaptureImage.py
 
 ### Windows
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye SDK_1.5.2 for Windows](https://www.mech-mind.com/download/camera-sdk.html).
+2. Install [Mech-Eye SDK_1.6.0 for Windows](https://www.mech-mind.com/download/camera-sdk.html).
 3. Install Mech-Eye API python wrapper by pip.
 
 ```Python
@@ -37,12 +37,13 @@ python ConnectAndCaptureImage.py
 
 ## Sample list
 
-There are four categories of samples: **Basic**, **Advanced**, **Util**, and **Laser**.  
+There are four categories of samples: **Basic**, **Advanced**, **Util**, **Laser** and **UHP**.  
 
 - The category **Basic** contains samples that are related to basic connecting and capturing.  
 - The category **Advanced** contains samples that use advanced capturing tricks.  
 - The category **Util** contains samples that get and print information and set parameters.  
 - The category **Laser** contains samples that can only be used on Mech-Eye Laser cameras.  
+- The category **UHP** contains samples that can only be used on Mech-Eye UHP cameras.  
 
 The samples marked with `(Open3D)` require [open3d](https://pypi.org/project/open3d/) to be installed via pip.
 The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/project/opencv-python/) and [opencv-contrib-python](https://pypi.org/project/opencv-contrib-python/) to be installed via pip.
@@ -91,3 +92,8 @@ The samples marked with `(OpenCV)` require [opencv-python](https://pypi.org/proj
     Set the fringe coding mode for a Mech-Eye Laser camera.
   - [SetLaserPowerLevel](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/Laser/SetLaserPowerLevel.py)  
     Set the laser power level for a Mech-Eye Laser camera.
+- **UHP**
+  - [SetUHPCaptureMode](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/UHP/SetUHPCaptureMode.py)  
+    set capture mode for the Mech-Eye Device(UHP camera).
+  - [SetUHPFringeCodingMode](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/source/UHP/SetUHPFringeCodingMode.py)  
+    set fringe coding mode for the Mech-Eye Device(UHP camera).

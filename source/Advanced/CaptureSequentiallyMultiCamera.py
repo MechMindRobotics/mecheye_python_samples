@@ -47,17 +47,17 @@ class CaptureSequentiallyMultiCamera(object):
         for index in self.indices:
             device = Device()
             error_status = device.connect(self.device_list[index])
-            if (not error_status.ok()):
+            if not error_status.ok():
                 print(error_status.description())
                 quit()
 
             device_info = device.get_device_info()
             print("Camera {} start capturing.".format(device_info.id()))
 
-            color = device.capture_color()
-            depth = device.capture_depth()
-            point_xyz = device.capture_point_xyz()
-            point_xyz_rgb = device.capture_point_xyz_bgr()
+            device.capture_color()
+            device.capture_depth()
+            device.capture_point_xyz()
+            device.capture_point_xyz_bgr()
 
             device.disconnect()
             print("Disconnected from the Mech-Eye device successfully.")

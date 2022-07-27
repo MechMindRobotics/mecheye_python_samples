@@ -49,7 +49,7 @@ class CaptureHDRPointCloud(object):
             quit()
         print("Connected to the Mech-Eye device successfully.")
 
-        show_error(self.device.set3D_exposure([5.0, 10.0]))
+        show_error(self.device.set_scan_3d_exposure([5.0, 10.0]))
 
         color = self.device.capture_color()
         color_data = color.data()
@@ -64,6 +64,7 @@ class CaptureHDRPointCloud(object):
         for dd in np.nditer(point_xyz_data):
             points_xyz[int(pos / 3)][int(pos % 3)] = 0.001 * dd
             pos = pos + 1
+
 
         point_cloud_xyz.points = o3d.utility.Vector3dVector(points_xyz)
         o3d.visualization.draw_geometries([point_cloud_xyz])

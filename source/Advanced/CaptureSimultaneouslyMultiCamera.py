@@ -27,10 +27,11 @@ class CaptureThread (threading.Thread):
     def run(self):
         device_info = self.device.get_device_info()
         print("Camera {} start capturing.".format(device_info.id()))
-        color = self.device.capture_color()
-        depth = self.device.capture_depth()
-        point_xyz = self.device.capture_point_xyz()
-        point_xyz_rgb = self.device.capture_point_xyz_bgr()
+        self.device.capture_color()
+        self.device.capture_depth()
+        self.device.capture_point_xyz()
+        self.device.capture_point_xyz_bgr()
+
         self.device.disconnect()
         print("Disconnected from the Mech-Eye device successfully.")
 
@@ -65,7 +66,7 @@ class CaptureSimultaneouslyMultiCamera(object):
         for index in self.indices:
             device = Device()
             error_status = device.connect(self.device_list[index])
-            if (not error_status.ok()):
+            if not error_status.ok():
                 print(error_status.description())
                 quit()
             devices.append(device)
@@ -73,6 +74,7 @@ class CaptureSimultaneouslyMultiCamera(object):
         for device in devices:
             capture_thread = CaptureThread(device)
             capture_thread.start()
+            capture_thread.join()
 
     def main(self):
         self.find_camera_list()

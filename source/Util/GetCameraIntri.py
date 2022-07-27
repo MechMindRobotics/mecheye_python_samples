@@ -19,13 +19,13 @@ def print_device_info(num, info):
 
 
 def print_dist_coeffs(name, coeffs):
-    print("{}: k1: {},k2: {},p1: {},p2: {},k3: {}".
+    print("{}: k1: {}, k2: {}, p1: {}, p2: {}, k3: {}".
           format(name, coeffs.dist_coeffs_k1(), coeffs.dist_coeffs_k2(),
                  coeffs.dist_coeffs_p1(), coeffs.dist_coeffs_p2(), coeffs.dist_coeffs_k3()))
 
 
 def print_matrix(name, matrix):
-    print("name: {}\n[{},{}\n{},{}]".format(name, matrix.camera_matrix_fx(), matrix.camera_matrix_fy(),
+    print("name: {}\n[{}, {}\n{}, {}]".format(name, matrix.camera_matrix_fx(), matrix.camera_matrix_fy(),
                                             matrix.camera_matrix_cx(), matrix.camera_matrix_cy()))
 
 
@@ -56,14 +56,16 @@ class GetCameraIntri(object):
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Success.")
+        print("Connect Mech-Eye Successfully.")
 
         device_intrinsic = self.device.get_device_intrinsic()
-        print_dist_coeffs("CameraDistCoeffs", device_intrinsic)
-        print_matrix("CameraMatrix", device_intrinsic)
+        print_dist_coeffs("CameraDistCoeffs", device_intrinsic.texture_camera_intrinsic())
+        print_dist_coeffs("DepthDistCoeffs", device_intrinsic.depth_camera_intrinsic())
+        print_matrix("CameraMatrix", device_intrinsic.texture_camera_intrinsic())
+        print_matrix("DepthMatrix", device_intrinsic.depth_camera_intrinsic())
 
         self.device.disconnect()
-        print("Disconnect Mech-Eye Success.")
+        print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
         self.find_camera_list()
