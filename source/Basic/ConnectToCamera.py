@@ -51,7 +51,7 @@ class ConnectToCamera(object):
         print("Disconnected from the Mech-Eye device successfully.")
 
     def connect_by_ip(self):
-        status = self.device.connect_by_ip("192.168.23.99")
+        status = self.device.connect_by_ip("127.0.0.1")
         if not status.ok():
             show_error(status)
             quit()
