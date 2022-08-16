@@ -42,7 +42,7 @@ Samples are divided into five categories, **Basic**, **Advanced**, **Util**, **L
 - **Basic**: camera connection and basic capturing functions.
 - **Advanced**: advanced capturing functions.
 - **Util**: obtain information from a camera and set camera parameters.
-- **Laser**: for Laser/LSR Series cameras only. 
+- **Laser**: for Laser/LSR series cameras only. 
 - **UHP**: for UHP series cameras only. 
 
 The samples marked with `(Open3D)` require [open3d](https://pypi.org/project/open3d/) to be installed via pip.
