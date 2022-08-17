@@ -53,7 +53,7 @@ class CaptureCloudFromDepth(object):
         color_data = color.data()
         depth = self.device.capture_depth()
         depth_data = depth.data()
-        device_intrinsic = self.device.get_device_intrinsic()
+        device_intrinsic = self.device.get_device_intrinsic().depth_camera_intrinsic()
 
         point_cloud_xyz = o3d.geometry.PointCloud()
         points_xyz = np.zeros(
@@ -63,10 +63,10 @@ class CaptureCloudFromDepth(object):
         for i, d in enumerate(depth_data):
             for j, dd in enumerate(d):
                 points_xyz[width * i + j][0] = (j - device_intrinsic.camera_matrix_cx()
-                                                ) * 0.001 * dd / device_intrinsic.camera_matrix_fx() # mm to m
+                                                ) * dd / device_intrinsic.camera_matrix_fx()
                 points_xyz[width * i + j][1] = (i - device_intrinsic.camera_matrix_cy()
-                                                ) * 0.001 * dd / device_intrinsic.camera_matrix_fy() # mm to m
-                points_xyz[width * i + j][2] = 0.001 * dd # mm to m
+                                                ) * dd / device_intrinsic.camera_matrix_fy()
+                points_xyz[width * i + j][2] = dd
 
         point_cloud_xyz.points = o3d.utility.Vector3dVector(points_xyz)
         o3d.visualization.draw_geometries([point_cloud_xyz])

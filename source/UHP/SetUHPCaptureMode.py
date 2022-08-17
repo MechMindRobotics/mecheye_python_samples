@@ -18,7 +18,7 @@ def print_device_info(num, info):
           "...............................................")
 
 
-class CaptureSequentiallyMultiCamera(object):
+class SetLaserFrameRange(object):
     def __init__(self):
         self.device = Device()
 
@@ -32,35 +32,33 @@ class CaptureSequentiallyMultiCamera(object):
             print_device_info(i, info)
 
     def choose_camera(self):
-        self.indices = set()
         while True:
             user_input = input(
-                "Please enter the device index you want to connect. Enter a c to terminate adding devices: ")
-            if user_input == "c":
+                "Please enter the device index you want to connect: ")
+            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
+                self.index = int(user_input)
                 break
-            elif user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
-                self.indices.add(int(user_input))
-            else:
-                print("Input invalid!")
+            print("Input invalid!")
 
     def connect_device_info(self):
-        for index in self.indices:
-            device = Device()
-            error_status = device.connect(self.device_list[index])
-            if not error_status.ok():
-                print(error_status.description())
-                quit()
+        status = self.device.connect(self.device_list[self.index])
+        if not status.ok():
+            show_error(status)
+            quit()
+        print("Connected to the Mech-Eye device successfully.")
 
-            device_info = device.get_device_info()
-            print("Camera {} start capturing.".format(device_info.id()))
+        capture_mode_dic = {0: "Camera1", 1: "Camera2", 2: "Merge"}
 
-            device.capture_color()
-            device.capture_depth()
-            device.capture_point_xyz()
-            device.capture_point_xyz_bgr()
+        uhp_settings = self.device.get_uhp_capture_mode()
+        print("Old capture mode: {}.".format(capture_mode_dic[uhp_settings]))
 
-            device.disconnect()
-            print("Disconnected from the Mech-Eye device successfully.")
+        show_error(self.device.set_uhp_capture_mode("Camera1"))
+
+        uhp_settings = self.device.get_uhp_capture_mode()
+        print("New capture mode: {}.".format(capture_mode_dic[uhp_settings]))
+
+        self.device.disconnect()
+        print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
         self.find_camera_list()
@@ -69,5 +67,5 @@ class CaptureSequentiallyMultiCamera(object):
 
 
 if __name__ == '__main__':
-    a = CaptureSequentiallyMultiCamera()
+    a = SetLaserFrameRange()
     a.main()

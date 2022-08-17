@@ -59,8 +59,11 @@ class ConnectAndCaptureImage(object):
         print("Connected to the Mech-Eye device successfully.")
 
         device_intrinsic = self.device.get_device_intrinsic()
-        print_dist_coeffs("CameraDistCoeffs", device_intrinsic)
-        print_matrix("CameraMatrix", device_intrinsic)
+        print_dist_coeffs("CameraDistCoeffs", device_intrinsic.texture_camera_intrinsic())
+        print_matrix("CameraMatrix", device_intrinsic.texture_camera_intrinsic())
+
+        print_dist_coeffs("DepthDistCoeffs", device_intrinsic.depth_camera_intrinsic())
+        print_matrix("DepthMatrix", device_intrinsic.depth_camera_intrinsic())
 
         row, col = 222, 222
         color_map = self.device.capture_color()

@@ -47,14 +47,18 @@ class SetLaserFramePartitionCount(object):
             quit()
         print("Connected to the Mech-Eye device successfully.")
 
+        mode_dec = {0: "Fast", 1: "Accurate"}
         laser_settings = self.device.get_laser_settings()
-        print("Old frame partition count: {}".format(laser_settings.get_count()))
+        print("Old frame partition count: {}".format(laser_settings.frame_partition_count()))
 
-        show_error(self.device.set_laser_settings(laser_settings.get_mode(
-        ), laser_settings.get_start(), laser_settings.get_end(), 4, laser_settings.get_level()))
+        show_error(self.device.set_laser_settings(mode_dec[laser_settings.fringe_coding_mode()],
+                                                  laser_settings.frame_range_start(),
+                                                  laser_settings.frame_range_end(),
+                                                  4,
+                                                  laser_settings.power_level()))
 
         laser_settings = self.device.get_laser_settings()
-        print("New frame partition count: {}".format(laser_settings.get_count()))
+        print("New frame partition count: {}".format(laser_settings.frame_partition_count()))
 
         self.device.disconnect()
         print("Disconnected from the Mech-Eye device successfully.")

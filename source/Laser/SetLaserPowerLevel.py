@@ -47,14 +47,17 @@ class SetLaserPowerLevel(object):
             quit()
         print("Connected to the Mech-Eye device successfully.")
 
+        mode_dec = {0: "Fast", 1: "Accurate"}
         laser_settings = self.device.get_laser_settings()
-        print("Old power level: {}".format(laser_settings.get_level()))
-
-        show_error(self.device.set_laser_settings(laser_settings.get_mode(
-        ), laser_settings.get_start(), laser_settings.get_end(), laser_settings.get_count, 40))
+        print("Old power level: {}".format(laser_settings.power_level()))
+        show_error(self.device.set_laser_settings(mode_dec[laser_settings.fringe_coding_mode()],
+                                                  laser_settings.frame_range_start(),
+                                                  laser_settings.frame_range_end(),
+                                                  laser_settings.frame_partition_count(),
+                                                  40))
 
         laser_settings = self.device.get_laser_settings()
-        print("New power level: {}".format(laser_settings.get_level()))
+        print("New power level: {}".format(laser_settings.power_level()))
 
         self.device.disconnect()
         print("Disconnected from the Mech-Eye device successfully.")

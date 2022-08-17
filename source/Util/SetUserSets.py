@@ -45,7 +45,7 @@ class SetUserSets(object):
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Success.")
+        print("Connect Mech-Eye Successfully.")
 
         print("All user sets : ", end='')
         user_sets = self.device.get_all_user_sets()
@@ -53,15 +53,16 @@ class SetUserSets(object):
             print(user_set, end=' ')
 
         current_user_set = self.device.get_current_user_set()
-        print("\ncurrent_user_set: " + str(current_user_set))
+        print("\nCurrent user set : " + str(current_user_set))
 
-        show_error(self.device.add_user_set("iii"))
-        show_error(self.device.delete_user_set('iii'))
+        show_error(self.device.set_current_user_set(user_sets[0]))
+        print("Set {} as the current user set.".format(user_sets[0]))
 
         self.device.save_all_settings_to_user_set()
+        print("Save all parameters to current user set.")
 
         self.device.disconnect()
-        print("Disconnect Mech-Eye Success.")
+        print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
         self.find_camera_list()

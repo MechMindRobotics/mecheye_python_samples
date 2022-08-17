@@ -49,7 +49,7 @@ class CapturePointCloudROI(object):
             quit()
         print("Connected to the Mech-Eye device successfully.")
 
-        show_error(self.device.set_3D_roi(0, 0, 500, 500))
+        show_error(self.device.set_scan_3d_roi(0, 0, 500, 500))
 
         color = self.device.capture_color()
         color_data = color.data()
