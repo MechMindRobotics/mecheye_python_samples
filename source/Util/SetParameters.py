@@ -45,7 +45,7 @@ class GetAndSetParameter(object):
         if not status.ok():
             show_error(status)
             quit()
-        print("Connect Mech-Eye Success.")
+        print("Connect Mech-Eye Successfully.")
 
         print("All user sets : ", end='')
         user_sets = self.device.get_all_user_sets()
@@ -55,8 +55,8 @@ class GetAndSetParameter(object):
         current_user_set = self.device.get_current_user_set()
         print("\ncurrent_user_set: " + str(current_user_set))
 
-        show_error(self.device.set3D_exposure([1.0, 32.1, 99.0]))
-        exposure_sequence = self.device.get3D_exposure()
+        show_error(self.device.set_scan_3d_exposure([1.0, 32.1,99.0]))
+        exposure_sequence = self.device.get_scan_3d_exposure()
         print("\nThe 3D scanning exposure multiplier:{}".format(
             len(exposure_sequence)))
         for i in exposure_sequence:
@@ -64,20 +64,20 @@ class GetAndSetParameter(object):
 
         show_error(self.device.set_depth_range(1, 2))
         depth_range = self.device.get_depth_range()
-        print("\n3D scanning depth Lower Limit : {} mm,".format(depth_range.get_lower()),
-              "depth upper limit : {} mm\n".format(depth_range.get_upper()))
+        print("\n3D scanning depth Lower Limit : {} mm,".format(depth_range.lower()),
+              "depth upper limit : {} mm\n".format(depth_range.upper()))
 
-        self.device.set_3D_roi(20, 20, 1000, 1000)
-        scan_3d_roi = self.device.get3D_roi()
-        print("3D scanning ROI topLeftX: {},".format(scan_3d_roi.get_x()),
-              "topLeftY: {},".format(scan_3d_roi.get_y()),
-              "width: {},".format(scan_3d_roi.get_width()),
-              "height: {}\n".format(scan_3d_roi.get_height()))
+        self.device.set_scan_3d_roi(20, 20, 1000, 1000)
+        scan_3d_roi = self.device.get_scan_3d_roi()
+        print("3D scanning ROI topLeftX: {},".format(scan_3d_roi.x()),
+              "topLeftY: {},".format(scan_3d_roi.y()),
+              "width: {},".format(scan_3d_roi.width()),
+              "height: {}\n".format(scan_3d_roi.height()))
 
-        show_error(self.device.set2D_exposure_mode("Auto"))
-        show_error(self.device.set2D_exposure_time(999.0))
-        exposure_mode_2d = self.device.get2D_exposure_mode()
-        scan_2d_exposure_time = self.device.get2D_exposure_time()
+        show_error(self.device.set_scan_2d_exposure_mode("Auto"))
+        show_error(self.device.set_scan_2d_exposure_time(999.0))
+        exposure_mode_2d = self.device.get_scan_2d_exposure_mode()
+        scan_2d_exposure_time = self.device.get_scan_2d_exposure_time()
         print("2D scanning exposure mode enum :{}, ".format(exposure_mode_2d),
               "exposure time: {}\n".format(scan_2d_exposure_time))
 
@@ -92,11 +92,12 @@ class GetAndSetParameter(object):
         show_error(self.device.delete_user_set('iii'))
 
         # Parameter of laser camera, please comment out when connecting non-laser camera.
-        show_error(self.device.set_laser_settings("High", 2, 50, 4, 30))
+        show_error(self.device.set_laser_settings("Accurate", 2, 50, 4, 30))
         laser_settings = self.device.get_laser_settings()
         print("\nlaser_mode: {}, range_start:{}, range_end:{}, partition_count:{}, power_level:{}".
-              format(laser_settings.get_mode(), laser_settings.get_start(), laser_settings.get_end(),
-                     laser_settings.get_count(), laser_settings.get_level()))
+
+              format(laser_settings.fringe_coding_mode(), laser_settings.frame_range_start(), laser_settings.frame_range_end(),
+                     laser_settings.frame_partition_count(), laser_settings.power_level()))
 
         self.device.save_all_settings_to_user_set()
 

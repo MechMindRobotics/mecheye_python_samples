@@ -70,7 +70,7 @@ class CaptureTimedAndPeriodically(object):
 
             after = time.time()
             time_used = after - before
-            if (time_used < capture_period):
+            if time_used < capture_period:
                 time.sleep(capture_period - time_used)
             else:
                 print(
