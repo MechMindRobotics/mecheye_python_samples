@@ -1,3 +1,5 @@
+import time
+
 from MechEye import Device
 import open3d as o3d
 import numpy as np
@@ -50,36 +52,27 @@ class CaptureHDRPointCloud(object):
         print("Connected to the Mech-Eye device successfully.")
 
         show_error(self.device.set_scan_3d_exposure([5.0, 10.0]))
-
-        color = self.device.capture_color()
-        color_data = color.data()
-        point_xyz = self.device.capture_point_xyz()
-        point_xyz_data = point_xyz.data()
+        start = time.time()
+        xyz_bgr = self.device.capture_point_xyz_bgr()
+        date = np.array(xyz_bgr.data())
+        point_xyz_data = np.array(date.tolist())[:, :, 3:6]
 
         point_cloud_xyz = o3d.geometry.PointCloud()
-        points_xyz = np.zeros(
-            (point_xyz.width() * point_xyz.height(), 3), dtype=np.float64)
-
-        pos = 0
-        for dd in np.nditer(point_xyz_data):
-            points_xyz[int(pos / 3)][int(pos % 3)] = 0.001 * dd
-            pos = pos + 1
-
+        points_xyz = point_xyz_data.reshape(-1, 3) * 0.001
 
         point_cloud_xyz.points = o3d.utility.Vector3dVector(points_xyz)
+        end = time.time()
+        print(end - start)
+
         o3d.visualization.draw_geometries([point_cloud_xyz])
         o3d.io.write_point_cloud("PointCloudXYZ.ply", point_cloud_xyz)
         print("Point cloud saved to path PointCloudXYZ.ply")
 
+        color_data = np.array(date.tolist())[:, :, :3]
+
         point_cloud_xyz_rgb = o3d.geometry.PointCloud()
         point_cloud_xyz_rgb.points = o3d.utility.Vector3dVector(points_xyz)
-        points_rgb = np.zeros(
-            (point_xyz.width() * point_xyz.height(), 3), dtype=np.float64)
-
-        pos = 0
-        for dd in np.nditer(color_data):
-            points_rgb[int(pos / 3)][int(2 - (pos % 3))] = dd / 255
-            pos = pos + 1
+        points_rgb = color_data.reshape(-1, 3) / 255
 
         point_cloud_xyz_rgb.colors = o3d.utility.Vector3dVector(points_rgb)
         o3d.visualization.draw_geometries([point_cloud_xyz_rgb])
