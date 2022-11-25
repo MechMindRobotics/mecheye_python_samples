@@ -50,7 +50,6 @@ class CaptureHDRPointCloud(object):
             show_error(status)
             quit()
         print("Connected to the Mech-Eye device successfully.")
-
         show_error(self.device.set_scan_3d_exposure([5.0, 10.0]))
 
         xyz_bgr = self.device.capture_point_xyz_bgr()
