@@ -6,7 +6,7 @@ This repository contains Python samples for Mech-Eye SDK.
 
 ### Ubuntu 
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye API for Ubuntu](https://www.mech-mind.com/download/camera-sdk.html).
+2. Install [Mech-Eye API for Ubuntu](https://www.mech-mind.com/download/softwaredownloading.html).
 3. Install Mech-Eye API python wrapper by pip3.
 
 ```Python
@@ -22,7 +22,7 @@ python3 ConnectAndCaptureImage.py
 
 ### Windows
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye SDK for Windows](https://www.mech-mind.com/download/camera-sdk.html).
+2. Install [Mech-Eye SDK for Windows](https://www.mech-mind.com/download/softwaredownloading.html).
 3. Install Mech-Eye API python wrapper by pip.
 
 ```Python
