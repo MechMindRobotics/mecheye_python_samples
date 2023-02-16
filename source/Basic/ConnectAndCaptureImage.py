@@ -1,88 +1,39 @@
+import sys, os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
 from MechEye import Device
-
-
-def show_error(status):
-    if status.ok():
-        return
-    print("Error Code : {}".format(status.code()),
-          ",Error Description: {}".format(status.description()))
-
-
-def print_device_info(num, info):
-    print(" Mech-Eye device index: {}\n".format(str(num)),
-          "Camera Model Name: {}\n".format(info.model()),
-          "Camera ID: {}\n".format(info.id()),
-          "Camera IP: {}\n".format(info.ip()),
-          "Hardware Version: {}\n".format(info.hardware_version()),
-          "Firmware Version: {}\n".format(info.firmware_version()),
-          "...............................................")
-
-
-def print_dist_coeffs(name, coeffs):
-    print("{}: k1: {},k2: {},p1: {},p2: {},k3: {}".
-          format(name, coeffs.dist_coeffs_k1(), coeffs.dist_coeffs_k2(),
-                 coeffs.dist_coeffs_p1(), coeffs.dist_coeffs_p2(), coeffs.dist_coeffs_k3()))
-
-
-def print_matrix(name, matrix):
-    print("name: {}\n[{},{}\n{},{}]".format(name, matrix.camera_matrix_fx(), matrix.camera_matrix_fy(),
-                                            matrix.camera_matrix_cx(), matrix.camera_matrix_cy()))
+from source import Common
 
 
 class ConnectAndCaptureImage(object):
     def __init__(self):
         self.device = Device()
 
-    def find_camera_list(self):
-        print("Find Mech-Eye devices...")
-        self.device_list = self.device.get_device_list()
-        if len(self.device_list) == 0:
-            print("No Mech-Eye device found.")
-            quit()
-        for i, info in enumerate(self.device_list):
-            print_device_info(i, info)
-
-    def choose_camera(self):
-        while True:
-            user_input = input(
-                "Please enter the device index you want to connect: ")
-            if user_input.isdigit() and len(self.device_list) > int(user_input) and int(user_input) >= 0:
-                self.index = int(user_input)
-                break
-            print("Input invalid!")
-
-    def connect_device_info(self):
-        status = self.device.connect(self.device_list[self.index])
-        if not status.ok():
-            show_error(status)
-            quit()
-        print("Connected to the Mech-Eye device successfully.")
-
+    def connect_and_capture(self):
         device_intrinsic = self.device.get_device_intrinsic()
-        print_dist_coeffs("CameraDistCoeffs", device_intrinsic.texture_camera_intrinsic())
-        print_matrix("CameraMatrix", device_intrinsic.texture_camera_intrinsic())
+        Common.print_dist_coeffs("CameraDistCoeffs", device_intrinsic.texture_camera_intrinsic())
+        Common.print_matrix("CameraMatrix", device_intrinsic.texture_camera_intrinsic())
 
-        print_dist_coeffs("DepthDistCoeffs", device_intrinsic.depth_camera_intrinsic())
-        print_matrix("DepthMatrix", device_intrinsic.depth_camera_intrinsic())
+        Common.print_dist_coeffs("DepthDistCoeffs", device_intrinsic.depth_camera_intrinsic())
+        Common.print_matrix("DepthMatrix", device_intrinsic.depth_camera_intrinsic())
 
         row, col = 222, 222
         color_map = self.device.capture_color()
-        print("Color map size is width: {}, ".format(color_map.width()),
-              "height: {}".format(color_map.height()))
+        print("Color map size is width: {}, height: {}".format(color_map.width(), color_map.height()))
+
         color_data = color_map.data()
         RGB = [color_data[int(row)][int(col)][i] for i in range(3)]
         print("Color map element at ({},{}) is R:{},G:{},B{}\n".
               format(row, col, RGB[0], RGB[1], RGB[2]))
 
         depth_map = self.device.capture_depth()
-        print("Depth map size is width: {}, ".format(depth_map.width()),
-              "height: {}".format(depth_map.height()))
+        print("Depth map size is width: {}, height: {}".format(depth_map.width(), depth_map.height()))
         print("Depth map element at ({},{}) is depth :{}mm\n".
               format(row, col, depth_map.data()[int(row)][int(col)]))
 
         point_xyz_map = self.device.capture_point_xyz()
-        print("PointXYZ map size is width: {}, ".format(point_xyz_map.width()),
-              "height: {}".format(point_xyz_map.height()))
+        print("PointXYZ map size is width: {}, height: {}".format(point_xyz_map.width(), point_xyz_map.height()))
+
         point_xyz_data = point_xyz_map.data()
         print("PointXYZ map element at ({},{}) is X: {}mm , Y: {}mm, Z: {}mm\n".
               format(row, col, point_xyz_data[int(row)][int(col)][0],
@@ -93,9 +44,9 @@ class ConnectAndCaptureImage(object):
         print("Disconnected from the Mech-Eye device successfully.")
 
     def main(self):
-        self.find_camera_list()
-        self.choose_camera()
-        self.connect_device_info()
+        Common.find_camera_list(self)
+        if Common.choose_camera_and_connect(self):
+            self.connect_and_capture()
 
 
 if __name__ == '__main__':
