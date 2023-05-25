@@ -1,3 +1,7 @@
+# With this sample program, you can divide the projector FOV into partitions and project structured
+# light in one partition at a time. The output of the entire FOV is composed from images of all
+# partitions.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)

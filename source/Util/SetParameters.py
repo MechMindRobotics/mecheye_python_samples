@@ -1,3 +1,5 @@
+# With this sample program, you can set specified parameters to a camera.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
@@ -42,18 +44,26 @@ class GetAndSetParameter(object):
         print("2D scanning exposure mode enum: {}, exposure time: {}\n".
               format(exposure_mode_2d, scan_2d_exposure_time))
 
-        Common.show_error(self.device.set_cloud_smooth_mode("Off"))
-        self.device.set_cloud_outlier_filter_mode("Off")
-        cloud_smooth_mode = self.device.get_cloud_smooth_mode()
-        cloud_outlier_filter_mode = self.device.get_cloud_outlier_filter_mode()
-        print("Cloud smooth mode enum :{}, cloud outlier filter mode enum :{}".
-              format(cloud_smooth_mode, cloud_outlier_filter_mode))
+        Common.show_error(self.device.set_cloud_surface_smoothing_mode("Normal"))
+        Common.show_error(self.device.set_cloud_noise_removal_mode("Normal"))
+        Common.show_error(self.device.set_cloud_outlier_removal_mode("Normal"))
+        Common.show_error(self.device.set_cloud_edge_preservation_mode("Normal"))
+
+        cloud_surface_smoothing_mode = self.device.get_cloud_surface_smoothing_mode()
+        cloud_noise_removal_mode = self.device.get_cloud_noise_removal_mode()
+        cloud_outlier_removal_mode = self.device.get_cloud_outlier_removal_mode()
+        cloud_edge_preservation_mode = self.device.get_cloud_edge_preservation_mode()
+
+        print("Cloud surface smoothing mode enum : {}, cloud edge preservation mode enum : {}.".
+              format(cloud_surface_smoothing_mode, cloud_edge_preservation_mode))
+        print("Cloud noise removal mode enum : {}, cloud outlier removal mode enum :{}.".
+                    format(cloud_noise_removal_mode, cloud_outlier_removal_mode))
 
         Common.show_error(self.device.add_user_set("iii"))
         Common.show_error(self.device.delete_user_set('iii'))
 
         # Parameter of laser camera, please comment out when connecting non-laser camera.
-        Common.show_error(self.device.set_laser_settings("Accurate", 2, 50, 4, 30))
+        Common.show_error(self.device.set_laser_settings("Accurate", 2, 50, 4, 80))
         laser_settings = self.device.get_laser_settings()
         print("\nlaser_mode: {}, range_start:{}, range_end:{}, partition_count:{}, power_level:{}".
               format(laser_settings.fringe_coding_mode(), laser_settings.frame_range_start(), laser_settings.frame_range_end(),

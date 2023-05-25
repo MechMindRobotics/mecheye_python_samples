@@ -1,3 +1,6 @@
+# With this sample program, you can connect to a camera and obtain the 2D image, depth map and point
+# cloud data.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)

@@ -2,12 +2,14 @@
 
 This repository contains Python samples for Mech-Eye SDK.
 
+If you have any questions or have anything to share, feel free to post on the [Mech-Mind Online Community](https://community.mech-mind.com/). The community also contains a [specific category for development with Mech-Eye SDK](https://community.mech-mind.com/c/mech-eye-sdk-development/19).
+
 ## Installation
 
 ### Ubuntu 
 
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye API for Ubuntu](https://www.mech-mind.com/download/softwaredownloading.html).
+2. Install [Mech-Eye API for Ubuntu](https://community.mech-mind.com/c/latest-product-downloads/10).
 3. Install Mech-Eye API python wrapper by pip3.
 
     ```Python
@@ -48,7 +50,7 @@ This repository contains Python samples for Mech-Eye SDK.
 > - xxx\\AppData\\Local\Programs\Python\\Python36\\Scripts\\
 
 1. Clone this repository to a specific folder.
-2. Install [Mech-Eye SDK for Windows](https://www.mech-mind.com/download/softwaredownloading.html).
+2. Install [Mech-Eye SDK for Windows](https://community.mech-mind.com/c/latest-product-downloads/10).
 3. Install Mech-Eye API python wrapper by pip.
 
     ```Python
@@ -59,7 +61,6 @@ This repository contains Python samples for Mech-Eye SDK.
 
     ```Python
     pip install opencv-python
-    pip install opencv-contrib-python
     ```
 
 5. Open and run one of the samples.
