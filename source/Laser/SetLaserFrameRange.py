@@ -1,3 +1,6 @@
+# With this sample program, you can set the projection range of the structured light. The entire
+# projector FOV is from 0 to 100.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)

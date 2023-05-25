@@ -1,3 +1,5 @@
+# With this sample program, you can set the range of depth values to be retained by a camera.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)

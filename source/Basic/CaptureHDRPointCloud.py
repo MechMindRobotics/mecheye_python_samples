@@ -1,3 +1,6 @@
+# With this sample program, you can obtain and save untextured and textured point clouds (PCL format)
+# generated from images captured with multiple exposure times.
+
 import time
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -25,12 +28,12 @@ class CaptureHDRPointCloud(object):
     def capture_color_point_cloud(self):
         points_xyz_bgr = self.device.capture_point_xyz_bgr()
         points_xyz_bgr_data = points_xyz_bgr.data()
-        points_xyz_bgr_data_array = np.array(points_xyz_bgr_data.reshape(-1,1)[:, 0].tolist())
-        points_xyz_rgb_points = points_xyz_bgr_data_array.reshape(-1, 6)[:, :3] * 0.001
-        point_xyz_rgb_colors = points_xyz_bgr_data_array.reshape(-1, 6)[:, 3:6] [:, ::-1] / 255
+        
+        points_xyz_rgb_points = points_xyz_bgr_data.reshape(-1, 6)[:, :3] * 0.001
+        point_xyz_rgb_colors = points_xyz_bgr_data.reshape(-1, 6)[:, 3:6] [:, ::-1] / 255
         points_xyz_rgb_o3d = o3d.geometry.PointCloud()
-        points_xyz_rgb_o3d.points = o3d.utility.Vector3dVector(points_xyz_rgb_points)
-        points_xyz_rgb_o3d.colors = o3d.utility.Vector3dVector(point_xyz_rgb_colors)
+        points_xyz_rgb_o3d.points = o3d.utility.Vector3dVector(points_xyz_rgb_points.astype(np.float64))
+        points_xyz_rgb_o3d.colors = o3d.utility.Vector3dVector(point_xyz_rgb_colors.astype(np.float64))
 
         o3d.visualization.draw_geometries([points_xyz_rgb_o3d])
         o3d.io.write_point_cloud("PointCloudXYZRGB.ply", points_xyz_rgb_o3d)

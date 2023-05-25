@@ -20,6 +20,12 @@ def print_device_info(info):
                                          )
           )
 
+def print_device_temperature(temperature):
+              print("CPU Temperature:                {}°C\n"
+                    "Projector Module Temperature:   {}°C\n".format(temperature.cpu_temperature(),
+                                                                                 temperature.projector_module_temperature()
+                                                                                 )
+                    )
 
 def print_dist_coeffs(name, coeffs):
     print("{}: k1: {}, k2: {}, p1: {}, p2: {}, k3: {}".

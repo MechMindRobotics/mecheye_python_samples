@@ -1,3 +1,6 @@
+# With this sample program, you can set the output power of the laser projector in percentage of max
+# power. This affects the intensity of the laser light.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
@@ -17,7 +20,7 @@ class SetLaserPowerLevel(object):
                                                   laser_settings.frame_range_start(),
                                                   laser_settings.frame_range_end(),
                                                   laser_settings.frame_partition_count(),
-                                                  40))
+                                                  80))
 
         laser_settings = self.device.get_laser_settings()
         print("New power level: {}".format(laser_settings.power_level()))

@@ -1,3 +1,6 @@
+# With this sample program, you can obtain and save untextured and textured point clouds (PCL format)
+# of the objects in the ROI from a camera.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)

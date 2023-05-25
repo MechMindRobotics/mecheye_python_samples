@@ -1,3 +1,6 @@
+# With this sample program, you can construct and save untextured and textured point clouds (PCL
+# format) generated from a depth map and masked 2D image.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
@@ -57,12 +60,12 @@ class CapturePointCloudFromTextureMask(object):
         #generate colored point cloud
         points_xyz_bgr = self.device.get_bgr_cloud_from_texture_mask(depth.impl(), color_mask.impl(), color.impl(), device_intrinsic.impl())
         points_xyz_bgr_data = points_xyz_bgr.data()
-        points_xyz_bgr_data_array = np.array(points_xyz_bgr_data.reshape(-1,1)[:, 0].tolist())
-        points_xyz_rgb_points = points_xyz_bgr_data_array.reshape(-1, 6)[:, :3] * 0.001
-        point_xyz_rgb_colors = points_xyz_bgr_data_array.reshape(-1, 6)[:, 3:6] [:, ::-1] / 255
+    
+        points_xyz_rgb_points = points_xyz_bgr_data.reshape(-1, 6)[:, :3] * 0.001
+        point_xyz_rgb_colors = points_xyz_bgr_data.reshape(-1, 6)[:, 3:6] [:, ::-1] / 255
         points_xyz_rgb_o3d = o3d.geometry.PointCloud()
-        points_xyz_rgb_o3d.points = o3d.utility.Vector3dVector(points_xyz_rgb_points)
-        points_xyz_rgb_o3d.colors = o3d.utility.Vector3dVector(point_xyz_rgb_colors)
+        points_xyz_rgb_o3d.points = o3d.utility.Vector3dVector(points_xyz_rgb_points.astype(np.float64))
+        points_xyz_rgb_o3d.colors = o3d.utility.Vector3dVector(point_xyz_rgb_colors.astype(np.float64))
         o3d.visualization.draw_geometries([points_xyz_rgb_o3d])
         o3d.io.write_point_cloud("PointCloudXYZRGB.ply", points_xyz_rgb_o3d)
         print("Color point cloud saved to path PointCloudXYZRGB.ply")

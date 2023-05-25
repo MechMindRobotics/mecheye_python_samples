@@ -1,3 +1,5 @@
+# With this sample program, you can connect to a Mech-Eye Industrial 3D Camera.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)

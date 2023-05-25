@@ -1,3 +1,6 @@
+# With this sample program, you can construct and save point clouds (PCL format) from the depth map
+# and 2D image obtained from a camera.
+
 import sys, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
