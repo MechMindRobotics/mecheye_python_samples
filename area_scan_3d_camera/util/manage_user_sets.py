@@ -5,7 +5,7 @@ from mecheye.area_scan_3d_camera import *
 from mecheye.area_scan_3d_camera_utils import find_and_connect
 
 
-class ManageUserSet(object):
+class ManageUserSets(object):
     def __init__(self):
         self.camera = Camera()
 
@@ -46,5 +46,5 @@ class ManageUserSet(object):
 
 
 if __name__ == '__main__':
-    a = ManageUserSet()
+    a = ManageUserSets()
     a.main()

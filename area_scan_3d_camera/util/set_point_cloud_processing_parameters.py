@@ -31,6 +31,11 @@ class SetPointCloudProcessingParameters(object):
         error = current_user_set.set_enum_value(PointCloudEdgePreservation.name,
                                                 PointCloudEdgePreservation.Value_Normal)
         show_error(error)
+        error = current_user_set.set_bool_value(
+            EnableDistortionCorrection.name, True)
+        show_error(error)
+        error = current_user_set.set_int_value(DistortionCorrection.name, 3)
+        show_error(error)
 
         error, surface_smoothing = current_user_set.get_enum_value_string(
             PointCloudSurfaceSmoothing.name)
@@ -44,6 +49,12 @@ class SetPointCloudProcessingParameters(object):
         error, edge_preservation = current_user_set.get_enum_value_string(
             PointCloudEdgePreservation.name)
         show_error(error)
+        error, distortion_correction_enabled = current_user_set.get_bool_value(
+            EnableDistortionCorrection.name)
+        show_error(error)
+        error, distortion_correction = current_user_set.get_int_value(
+            DistortionCorrection.name)
+        show_error(error)
 
         print("Point Cloud Surface Smoothing:", surface_smoothing,
               "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
@@ -53,6 +64,8 @@ class SetPointCloudProcessingParameters(object):
               "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
         print("Point Cloud Edge Preservation:", edge_preservation,
               "(0: Sharp, 1: Normal, 2: Smooth)")
+        print("Distortion Correction Enabled?", distortion_correction_enabled)
+        print("Distortion Correction:", distortion_correction)
 
         # Save all the parameter settings to the currently selected user set.
         show_error(current_user_set.save_all_parameters_to_device())
