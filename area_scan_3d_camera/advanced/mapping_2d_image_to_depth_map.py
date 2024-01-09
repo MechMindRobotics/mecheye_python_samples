@@ -54,7 +54,7 @@ class Mapping2DImageToDepthMap(object):
         mask = self.generate_texture_mask(color, roi1, roi2)
 
         points_xyz = UntexturedPointCloud()
-        show_error(get_point_cloud_after_mapping(
+        show_error(get_untextured_point_cloud_after_mapping(
             depth, mask, intrinsics, points_xyz))
         point_cloud_file = "UntexturedPointCloud.ply"
         show_error(
@@ -64,7 +64,7 @@ class Mapping2DImageToDepthMap(object):
         # generate colored point cloud
         points_xyz_bgr = TexturedPointCloud()
         show_error(
-            get_point_cloud_after_mapping(depth, mask, color, intrinsics, points_xyz_bgr))
+            get_textured_point_cloud_after_mapping(depth, mask, color, intrinsics, points_xyz_bgr))
         point_cloud_file = "TexturedPointCloud.ply"
         show_error(
             Frame2DAnd3D.save_point_cloud(points_xyz_bgr, FileFormat_PLY,
