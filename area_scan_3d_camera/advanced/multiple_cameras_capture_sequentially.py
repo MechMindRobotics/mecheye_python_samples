@@ -15,6 +15,13 @@ class MultipleCamerasCaptureSequentially(object):
 
     def connect_device_and_capture(self):
         # Start capturing images.
+        if (len(self.cameras) == 0):
+            print("No cameras connected.")
+            return
+
+        if not confirm_capture_3d():
+            return
+
         for camera in self.cameras:
             camera_info = CameraInfo()
             show_error(camera.get_camera_info(camera_info))
@@ -45,8 +52,6 @@ class MultipleCamerasCaptureSequentially(object):
             print("Disconnected from the camera successfully.")
 
     def main(self):
-        if not confirm_capture_3d():
-            return
         self.connect_device_and_capture()
 
 

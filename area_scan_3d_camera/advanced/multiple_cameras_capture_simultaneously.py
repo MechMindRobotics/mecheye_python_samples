@@ -47,6 +47,13 @@ class MultipleCamerasCaptureSimultaneously(object):
         self.cameras = find_and_connect_multi_camera()
 
     def connect_device_and_capture(self):
+        if (len(self.cameras) == 0):
+            print("No cameras connected.")
+            return
+
+        if not confirm_capture_3d():
+            return
+
         threads = []
         for camera in self.cameras:
             capture_thread = CaptureThread(camera)
@@ -56,8 +63,6 @@ class MultipleCamerasCaptureSimultaneously(object):
             thread.join()
 
     def main(self):
-        if not confirm_capture_3d():
-            return
         self.connect_device_and_capture()
 
 
