@@ -1,6 +1,6 @@
 # Python Samples
 
-This repository contains Python samples for Mech-Eye SDK.
+This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye Industrial 3D Camera and instructions for running the samples on Windows and Ubuntu.
 
 If you have any questions or have anything to share, feel free to post on the [Mech-Mind Online Community](https://community.mech-mind.com/). The community also contains a [specific category for development with Mech-Eye SDK](https://community.mech-mind.com/c/mech-eye-sdk-development/19).
 
@@ -46,6 +46,9 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
     Set the parameters specific to the UHP series.
   * [register_camera_event](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/register_camera_event.py)  
     Define and register the callback function for monitoring the camera connection status.
+  * [capture_stereo_2d_images](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/Advanced/capture_stereo_2d_images.py) `(OpenCV)`  
+    Obtain and save the 2D images from both 2D cameras.
+    > Note: This sample is only applicable to the following models: Deep, Laser L Enhanced, PRO XS, LSR L, LSR S, and DEEP.
 * **util**
   * [get_camera_intrinsics](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/get_camera_intrinsics.py)  
     Obtain and print the camera intrinsic parameters.
@@ -57,134 +60,136 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
     Set the **Depth Range** parameter.
   * [set_point_cloud_processing_parameters](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/set_point_cloud_processing_parameters.py)  
     Set the **Point Cloud Processing** parameters.
-  * [manage_user_set](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/manage_user_set.py)  
-    Manage user sets, such as obtaining the names of all user sets, adding a user set, switching the user set, and saving parameter settings to the user set.
+  * [manage_user_sets](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/manage_user_sets.py)  
+    Manage parameter groups, such as obtaining the names of all parameter groups, adding a parameter group, switching the parameter group, and saving parameter settings to the parameter group.
   * [save_and_load_user_set](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/save_and_load_user_set.py)  
-    Import and replace all user sets from a JSON file, and save all user sets to a JSON file.
+    Import and replace all parameter groups from a JSON file, and save all parameter groups to a JSON file.
 
 ## Run the Samples
 
-This section introduces how to clone and then run the samples.
-
-Make sure that the version of Python installed is between 3.6.5 and 3.10.
-
 ### Windows
 
-1. Clone this repository to local.
-2. Install the latest version of [Mech-Eye SDK](https://downloads.mech-mind.com/?tab=tab-sdk).
-3. Install Python Mech-Eye API:
+#### Prerequisites
 
-   ```python
-   pip install MechEyeAPI
-   ```
+Please download and install the required software listed below.
 
-4. (Optional) Install OpenCV if you need to build the samples dependent on OpenCV (refer to the Sample List above):
+* [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk)
+* Python Mech-Eye API (latest version):
 
-   ```python
-   pip install opencv-python
-   ```
+  ```python
+  pip install MechEyeAPI
+  ```
 
-5. Navigate to the folder where a sample is located. Replace `category` with the category name of the sample.
+Optional software: If you need to build the samples dependent on third-party software (refer to the Sample List above), please install the corresponding software.
+
+* OpenCV (latest version):
+
+  ```python
+  pip install opencv-python
+  ```
+
+#### Instructions
+
+1. Navigate to the folder where a sample is located.
 
    ```sh
-   cd xxx/mecheye_python_samples/area_scan_3d_camera/category
+   cd xxx/area_scan_3d_camera
    ```
 
-6. Run the sample: replace `sample_name`` with the name of the sample.
+2. Run the sample: replace ``sample_name`` with the name of the sample.
 
    ```python
    python sample_name.py
    ```
 
-7. Enter the index of the camera to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
+3. Enter the index of the camera to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
 
 ### Ubuntu
 
-1. Clone this repository to local:
+Ubuntu 18 or above is required.
 
-   ```bash
-   cd ~
-   git clone https://github.com/MechMindRobotics/mecheye_python_samples.git
-   ```
+#### Prerequisites
 
-2. Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
+* Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
 
-   >Note: If you have installed Mech-Eye SDK before, please   uninstall it first with the following command:
-   >
-   >```bash
-   >sudo dpkg -P MechEyeApi
-   >```
+  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
+  >
+  >```bash
+  >sudo dpkg -P MechEyeApi
+  >```
 
-   * If the system architecture is AMD64, execute the following   command:
+  * If the system architecture is AMD64, execute the following command:
+
+    ```bash
+    sudo dpkg -i 'Mech-Eye_API_x.x.x_amd64.deb'
+    ```
+
+  * If the system architecture is ARM64, execute the following command:
+
+    ```bash
+    sudo dpkg -i 'Mech-Eye_API_x.x.x_arm64.deb'
+    ```
+
+* Upgrade g++ to ensure that its version is 12 or above.
+
+  a. Install a later version g++ (using g++ 13 as an example):
 
      ```bash
-     sudo dpkg -i 'MechEyeApi_x.x.x_amd64.deb'
+     sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+     sudo apt-get update
+     sudo apt install g++-13
      ```
 
-   * If the system architecture is ARM64, execute the following   command:
+  b. Use the `ls` command to check the installed versions of g++:
 
      ```bash
-     sudo dpkg -i 'MechEyeApi_x.x.x_arm64.deb'
+     ls usr/bin/g++*
      ```
 
-3. Upgrade g++ to ensure that its version is 12 or above.
+  c. Add all installed versions of g++ as alternatives (using g++ 9 and g++ 13 asexamples):
 
-   a. Install a later version g++ (using g++ 13 as an example):
+     ```bash
+     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 10
+     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 20
+     ```
 
-      ```bash
-      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-      sudo apt-get update
-      sudo apt install g++-13
-      ```
+  d. Select the g++ version. Enter the number corresponding to the later version ++ to select this version.
 
-   b. Use the `ls` command to check the installed versions of g++:
+     ```bash
+     sudo update-alternatives --config g++
+     ```
 
-      ```bash
-      ls usr/bin/g++*
-      ```
+  e. Check if the later version g++ is successfully selected:
 
-   c. Add all installed versions of g++ as alternatives (using g++ 9 and g++ 13 as examples):
+     ```bash
+     g++ --version
+     ```
 
-      ```bash
-      sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 10
-      sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 20
-      ```
+* Install Python Mech-Eye API:
 
-   d. Select the g++ version. Enter the number corresponding to the later version g++ to select this version.
+  ```bash
+  sudo pip3 install MechEyeApi
+  ```
 
-      ```bash
-      sudo update-alternatives --config g++
-      ```
+* (Optional) Install OpenCV if you need to build the samples dependent on OpenCV (refer to the Sample List above):
 
-   e. Check if the later version g++ is successfully selected:
+  ```bash
+  sudo apt-get install libopencv-dev
+  sudo apt-get install python3-opencv
+  ```
 
-      ```bash
-      g++ --version
-      ```
+#### Instructions
 
-4. Install Python Mech-Eye API:
-
-   ```bash
-   sudo pip3 install MechEyeApi
-   ```
-
-5. (Optional) Install OpenCV if you need to build the samples dependent on OpenCV (refer to the Sample List above):
+1. Navigate to the folder where a sample is located.
 
    ```bash
-   sudo apt-get install libopencv-dev
-   sudo apt-get install python3-opencv
+   cd xxx/area_scan_3d_camera
    ```
 
-6. Navigate to the folder where a sample is located. Replace `category` with the category name of the sample.
-
-   ```bash
-   cd ~/mecheye_python_samples/area_scan_3d_camera/category
-   ```
-
-7. Run the sample: replace `sample_name`` with the name of the sample.
+2. Run the sample: replace ``sample_name`` with the name of the sample.
 
    ```python
    sudo python3 sample_name.py
    ```
 
-8. Enter the index of the camera to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
+3. Enter the index of the camera to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
