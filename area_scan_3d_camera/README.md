@@ -71,7 +71,8 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
 
 #### Prerequisites
 
-Please download and install the required software listed below.
+1. Make sure that the variant of Python installed is 64-bit, and the version is between 3.7 and 3.11.
+2. Please download and install the required software listed below.
 
 * [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk)
 * Python Mech-Eye API (latest version):
