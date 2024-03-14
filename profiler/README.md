@@ -10,12 +10,16 @@ Currently, the following samples are provided.
 
 The samples marked with `(OpenCV)` require [OpenCV](https://opencv.org/releases/) to be installed.  
 
-* [acquire_profile_data](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/acquire_profile_data.py) `(OpenCV)`  
-  Acquire the profile data, generate the intensity image and depth map, and save the images.
-* [acquire_profile_data_using_callback](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/acquire_profile_data_using_callback.py)  `(OpenCV)`  
-  Acquire the profile data using a callback function, generate the intensity image and depth map, and save the images.
-* [acquire_point_cloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/acquire_point_cloud.py)  
-  Acquire the profile data, generate the point cloud, and save the point cloud in the CSV and PLY formats.
+* [trigger_with_software_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_software_and_fixed_rate) `(OpenCV)`  
+  Trigger data acquisition with signals input from software, trigger line scans at a fixed rate, and then retrieve and save the acquired data.
+* [trigger_with_external_device_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_external_device_and_fixed_rate) `(OpenCV)`  
+  Trigger data acquisition with signals input from the external device, trigger line scans at a fixed rate, and then retrieve and save the acquired data.
+* [trigger_with_software_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_software_and_encoder) `(OpenCV)`  
+  Trigger data acquisition with signals input from software, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
+* [trigger_with_external_device_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_external_device_and_encoder) `(OpenCV)`  
+  Trigger data acquisition with signals input from the external device, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
+* [trigger_multiple_profilers_simultaneously](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_multiple_profilers_simultaneously) `(OpenCV)`  
+  Trigger multiple laser profilers to acquire data asynchronously and retrieve the acquired data.
 * [manage_user_sets](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/manage_user_sets.py)  
   Manage parameter groups, such as obtaining the names of all parameter groups, adding a parameter group, switching the parameter group, and saving parameter settings to the parameter group.
 * [register_profiler_event](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/register_profiler_event.py)  
@@ -32,7 +36,6 @@ Acquire the profile data stored in a virtual device, generate the intensity imag
 1. Make sure that the variant of Python installed is 64-bit, and the version is between 3.7 and 3.11.
 2. Please download and install the required software listed below.
 
-* [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk)
 * Python Mech-Eye API (latest version):
 
   ```python
@@ -68,26 +71,6 @@ Optional software: If you need to build the samples dependent on third-party sof
 Ubuntu 18 or above is required.
 
 #### Prerequisites
-
-* Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
-
-  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
-  >
-  >```bash
-  >sudo dpkg -P MechEyeApi
-  >```
-
-  * If the system architecture is AMD64, execute the following command:
-
-    ```bash
-    sudo dpkg -i 'Mech-Eye_API_x.x.x_amd64.deb'
-    ```
-
-  * If the system architecture is ARM64, execute the following command:
-
-    ```bash
-    sudo dpkg -i 'Mech-Eye_API_x.x.x_arm64.deb'
-    ```
 
 * Upgrade g++ to ensure that its version is 12 or above.
 
