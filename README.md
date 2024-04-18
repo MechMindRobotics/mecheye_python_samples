@@ -1,6 +1,6 @@
-# Mech-Eye API C++ Samples
+# Mech-Eye API Python Samples
 
-Here you can find the Mech-Eye API C++ samples for different Mech-Eye products:
+Here you can find the Mech-Eye API Python samples for different Mech-Eye products:
 
 - **area_scan_3d_camera**: samples for Mech-Eye Industrial 3D Camera
 - **profiler**: samples for Mech-Eye 3D Laser Profiler
