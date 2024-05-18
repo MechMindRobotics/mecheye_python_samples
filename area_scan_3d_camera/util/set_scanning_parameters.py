@@ -24,7 +24,9 @@ class SetScanningParameters(object):
 
         # Set the exposure times for acquiring depth information.
         error = current_user_set.set_float_array_value(
-            Scanning3DExposureSequence.name, [5, 10])
+            Scanning3DExposureSequence.name, [5])
+        # error = current_user_set.set_float_array_value(
+        #     Scanning3DExposureSequence.name, [5, 10])
         show_error(error)
         error, exposure_sequence = current_user_set.get_float_array_value(
             Scanning3DExposureSequence.name)
@@ -45,7 +47,7 @@ class SetScanningParameters(object):
 
         # Set the exposure mode and exposure time for capturing the 2D image, and then obtain the
         # parameter values to check if the setting was successful.
-        exposure_mode_2d = Scanning2DExposureMode.Value_Auto
+        exposure_mode_2d = Scanning2DExposureMode.Value_Timed
         error = current_user_set.set_enum_value(
             Scanning2DExposureMode.name, exposure_mode_2d)
         show_error(error)
