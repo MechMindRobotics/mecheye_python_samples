@@ -74,7 +74,6 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
 1. Make sure that the variant of Python installed is 64-bit, and the version is between 3.7 and 3.11.
 2. Please download and install the required software listed below.
 
-* [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk)
 * Python Mech-Eye API (latest version):
 
   ```python
@@ -110,26 +109,6 @@ Optional software: If you need to build the samples dependent on third-party sof
 Ubuntu 18 or above is required.
 
 #### Prerequisites
-
-* Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
-
-  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
-  >
-  >```bash
-  >sudo dpkg -P MechEyeApi
-  >```
-
-  * If the system architecture is AMD64, execute the following command:
-
-    ```bash
-    sudo dpkg -i 'Mech-Eye_API_x.x.x_amd64.deb'
-    ```
-
-  * If the system architecture is ARM64, execute the following command:
-
-    ```bash
-    sudo dpkg -i 'Mech-Eye_API_x.x.x_arm64.deb'
-    ```
 
 * Upgrade g++ to ensure that its version is 12 or above.
 

@@ -23,7 +23,7 @@ class CaptureStereo2DImages(object):
             image_right = stereo_right.get_gray_scale_image()
         elif stereo_right.color_type() == ColorTypeOf2DCamera_Color:
             image_left = stereo_left.get_color_image()
-            image_right = stereo_right.get_gray_scale_image()
+            image_right = stereo_right.get_color_image()
 
         image_file_left = "stereo2D_left.png"
         image_file_right = "stereo2D_right.png"
