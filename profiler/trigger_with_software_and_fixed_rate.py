@@ -253,15 +253,15 @@ class TriggerWithSoftwareAndFixedRate(object):
     def save_data_to_ply(self, file_name, is_organized=True):
         with open(file_name, 'w') as file:
             depth = self.profile_batch.get_depth_map().data()
-            if not is_organized:
-                depth = depth[~np.isnan(depth)]
+            vertex_count = depth.size if is_organized else depth[~np.isnan(
+                depth)].size
             y, x = np.indices(depth.shape, dtype=np.uint16)
 
             file.write(f"""ply
 format ascii 1.0
 comment File generated
 comment x y z data unit in mm
-element vertex {depth.size}
+element vertex {vertex_count}
 property float x
 property float y
 property float z
@@ -273,10 +273,10 @@ end_header
                 if not np.isnan(depth):
                     file.write("{} {} {}\n".format(x * self.x_unit *
                                pitch, y * self.y_unit * pitch, depth))
-                else:
+                elif is_organized:
                     file.write("nan nan nan\n")
 
-            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_points).reshape(
+            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_width).reshape(
                 depth.shape) if self.use_encoder_values else y, depth)
 
     def save_data_to_csv(self, file_name, is_organized=True):
@@ -292,7 +292,7 @@ end_header
                 elif is_organized:
                     file.write("nan,nan,nan\n")
 
-            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_points).reshape(
+            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_width).reshape(
                 depth.shape) if self.use_encoder_values else y, depth)
 
     def get_trigger_interval_distance(self):
@@ -311,19 +311,33 @@ end_header
 
         error, self.x_unit = self.user_set.get_float_value(
             XAxisResolution.name)
-        show_error(error)
+        if not error.is_ok():
+            show_error(error)
+            return
 
         error, self.y_unit = self.user_set.get_float_value(YResolution.name)
-        show_error(error)
+        if not error.is_ok():
+            show_error(error)
+            return
         # # Uncomment the following line for custom Y Unit
         # self.get_trigger_interval_distance()
 
         error, line_scan_trigger_source = self.user_set.get_enum_value(
             LineScanTriggerSource.name)
+        if not error.is_ok():
+            show_error(error)
+            return
         self.use_encoder_values = line_scan_trigger_source == LineScanTriggerSource.Value_Encoder
 
+        error, trigger_interval = self.user_set.get_int_value(
+            EncoderTriggerInterval.name)
+        if not error.is_ok():
+            show_error(error)
+            return
+
         encoder_vals = self.profile_batch.get_encoder_array().data().squeeze().astype(np.int64)
-        self.encoder_vals = (encoder_vals - encoder_vals[0]).astype(np.uint16)
+        self.encoder_vals = (
+            encoder_vals - encoder_vals[0]).astype(np.int16) / trigger_interval
 
         print("Save the point cloud.")
         if (save_csv):
