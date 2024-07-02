@@ -1,4 +1,4 @@
-# Python Samples
+# Python Samples for Mech-Eye Industrial 3D Cameras
 
 This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye Industrial 3D Camera and instructions for running the samples on Windows and Ubuntu.
 
