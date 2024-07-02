@@ -1,4 +1,4 @@
-# Python Samples
+# Python Samples for Mech-Eye 3D Laser Profiler
 
 This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye Industrial 3D Camera and instructions for running the samples on Windows and Ubuntu.
 
@@ -22,10 +22,12 @@ The samples marked with `(OpenCV)` require [OpenCV](https://opencv.org/releases/
   Trigger multiple laser profilers to acquire data asynchronously and retrieve the acquired data.
 * [manage_user_sets](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/manage_user_sets.py)  
   Manage parameter groups, such as obtaining the names of all parameter groups, adding a parameter group, switching the parameter group, and saving parameter settings to the parameter group.
+* [print_profiler_status](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/print_profiler_status.py)  
+  Obtain and print the laser profiler's information, such as model, serial number, firmware version, and temperatures.
 * [register_profiler_event](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/register_profiler_event.py)  
-Define and register the callback function for monitoring the laser profiler connection status.
+  Define and register the callback function for monitoring the laser profiler connection status.
 * [use_virtual_device](https://github.com/MechMindRobotics/mecheye_csharp_samples/tree/master/profiler/use_virtual_device.py) `(OpenCV)`  
-Acquire the profile data stored in a virtual device, generate the intensity image and depth map, and save the images.
+  Acquire the profile data stored in a virtual device, generate the intensity image and depth map, and save the images.
 
 ## Run the Samples
 
