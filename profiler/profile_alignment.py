@@ -1,4 +1,4 @@
-﻿from mecheye.shared import *
+from mecheye.shared import *
 from mecheye.profiler import *
 from mecheye.profiler_utils import *
 import cv2
@@ -22,7 +22,7 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
         mutex.release()
 
 
-class TriggerWithSoftwareAndEncoder(object):
+class TriggerWithSoftwareAndFixedRate(object):
     def __init__(self):
         self.profiler = Profiler()
 
@@ -64,20 +64,6 @@ class TriggerWithSoftwareAndEncoder(object):
         show_error(self.user_set.set_float_value(
             HdrSecondThreshold.name, second_threshold))
 
-    def set_encoder_trigger(self, trigger_direction: int, trigger_signal_counting_mode: int, trigger_interval: int):
-        # Set the trigger source to Encoder
-        show_error(self.user_set.set_enum_value(
-            LineScanTriggerSource.name, LineScanTriggerSource.Value_Encoder))
-        # Set the encoder trigger direction to {trigger_direction}
-        show_error(self.user_set.set_enum_value(
-            EncoderTriggerDirection.name, trigger_direction))
-        # Set the encoder signal counting mode to be {trigger_signal_counting_mode}
-        show_error(self.user_set.set_enum_value(
-            EncoderTriggerSignalCountingMode.name, trigger_signal_counting_mode))
-        # Set the encoder trigger interval to {trigger_interval}
-        show_error(self.user_set.set_int_value(
-            EncoderTriggerInterval.name, trigger_interval))
-
     def set_parameters(self):
         self.user_set = self.profiler.current_user_set()
 
@@ -108,14 +94,14 @@ class TriggerWithSoftwareAndEncoder(object):
         show_error(self.user_set.set_enum_value(
             DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_Software))
 
-        # Set the "Line Scan Trigger Source" parameter to "Encoder"
-        # Set the (encoder) "Trigger Direction" parameter to "Both"
-        # Set the (encoder) "Trigger Signal Counting Mode" parameter to "1×"
-        # Set the (encoder) "Trigger Interval" parameter to 10
-        self.set_encoder_trigger(EncoderTriggerDirection.Value_Both,
-                                 EncoderTriggerSignalCountingMode.Value_Multiple_1, 10)
+        # Set the "Line Scan Trigger Source" parameter to "Fixed rate"
+        show_error(self.user_set.set_enum_value(
+            LineScanTriggerSource.name, LineScanTriggerSource.Value_FixedRate))
+        # Set the " Software Trigger Rate" to 1000 Hz
+        show_error(self.user_set.set_float_value(
+            SoftwareTriggerRate.name, 1000))
 
-        # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
+       # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
         show_error(self.user_set.set_int_value(ScanLineCount.name, 1600))
 
         # Set the "Laser Power" parameter to 100
@@ -267,15 +253,15 @@ class TriggerWithSoftwareAndEncoder(object):
     def save_data_to_ply(self, file_name, is_organized=True):
         with open(file_name, 'w') as file:
             depth = self.profile_batch.get_depth_map().data()
-            vertex_count = depth.size if is_organized else depth[~np.isnan(
-                depth)].size
+            if not is_organized:
+                depth = depth[~np.isnan(depth)]
             y, x = np.indices(depth.shape, dtype=np.uint16)
 
             file.write(f"""ply
 format ascii 1.0
 comment File generated
 comment x y z data unit in mm
-element vertex {vertex_count}
+element vertex {depth.size}
 property float x
 property float y
 property float z
@@ -287,10 +273,10 @@ end_header
                 if not np.isnan(depth):
                     file.write("{} {} {}\n".format(x * self.x_unit *
                                pitch, y * self.y_unit * pitch, depth))
-                elif is_organized:
+                else:
                     file.write("nan nan nan\n")
 
-            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_width).reshape(
+            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_points).reshape(
                 depth.shape) if self.use_encoder_values else y, depth)
 
     def save_data_to_csv(self, file_name, is_organized=True):
@@ -306,7 +292,7 @@ end_header
                 elif is_organized:
                     file.write("nan,nan,nan\n")
 
-            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_width).reshape(
+            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_points).reshape(
                 depth.shape) if self.use_encoder_values else y, depth)
 
     def get_trigger_interval_distance(self):
@@ -325,33 +311,19 @@ end_header
 
         error, self.x_unit = self.user_set.get_float_value(
             XAxisResolution.name)
-        if not error.is_ok():
-            show_error(error)
-            return
+        show_error(error)
 
         error, self.y_unit = self.user_set.get_float_value(YResolution.name)
-        if not error.is_ok():
-            show_error(error)
-            return
+        show_error(error)
         # # Uncomment the following line for custom Y Unit
         # self.get_trigger_interval_distance()
 
         error, line_scan_trigger_source = self.user_set.get_enum_value(
             LineScanTriggerSource.name)
-        if not error.is_ok():
-            show_error(error)
-            return
         self.use_encoder_values = line_scan_trigger_source == LineScanTriggerSource.Value_Encoder
 
-        error, trigger_interval = self.user_set.get_int_value(
-            EncoderTriggerInterval.name)
-        if not error.is_ok():
-            show_error(error)
-            return
-
         encoder_vals = self.profile_batch.get_encoder_array().data().squeeze().astype(np.int64)
-        self.encoder_vals = (
-            encoder_vals - encoder_vals[0]).astype(np.int16) / trigger_interval
+        self.encoder_vals = (encoder_vals - encoder_vals[0]).astype(np.uint16)
 
         print("Save the point cloud.")
         if (save_csv):
@@ -368,15 +340,22 @@ end_header
 
         self.set_parameters()
 
+        # Set the "EnableZAxisAlignment" parameter to "True"
+        show_error(self.user_set.set_bool_value(
+            EnableZAxisAlignment.name, True))
+        # Set the "EnableXAxisAlignment" parameter to "True"
+        show_error(self.user_set.set_bool_value(
+            EnableXAxisAlignment.name, True))
+
         self.profile_batch = ProfileBatch(self.data_width)
 
-        # Acquire profile data without using callback
-        if not self.acquire_profile_data():
+        # Acquire profile data using callback
+        if not self.acquire_profile_data_using_callback():
             return -1
 
-        # # Acquire profile data using callback
-        # if not self.acquire_profile_data_using_callback():
-            # return -1
+        if self.profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
+            print("Part of the batch's data is lost, the number of valid profiles is:",
+                  self.profile_batch.valid_height())
 
         print("Save the depth map and intensity image")
         self.save_depth_and_intensity("depth.tiff", "intensity.png")
@@ -391,5 +370,5 @@ end_header
 
 
 if __name__ == '__main__':
-    a = TriggerWithSoftwareAndEncoder()
+    a = TriggerWithSoftwareAndFixedRate()
     a.main()
