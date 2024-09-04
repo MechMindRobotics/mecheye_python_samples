@@ -6,8 +6,6 @@ import numpy as np
 from time import sleep
 from multiprocessing import Lock
 
-pitch = 1e-3
-
 mutex = Lock()
 
 
@@ -265,9 +263,13 @@ class TriggerWithExternalDeviceAndFixedRate(object):
         # if not self.acquire_profile_data():
         # return -1
 
-        # Acquire profile data using callback
+        # Acquire the profile data using the callback function
         if not self.acquire_profile_data_using_callback():
             return -1
+
+        if self.profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
+            print("Part of the batch's data is lost, the number of valid profiles is:",
+                  self.profile_batch.valid_height())
 
         print("Save the depth map and intensity image")
         self.save_depth_and_intensity("depth.tiff", "intensity.png")

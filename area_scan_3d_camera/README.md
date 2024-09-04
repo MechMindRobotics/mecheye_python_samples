@@ -1,4 +1,4 @@
-# Python Samples for Mech-Eye Industrial 3D Cameras
+# Python Samples
 
 This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye Industrial 3D Camera and instructions for running the samples on Windows and Ubuntu.
 
@@ -40,12 +40,16 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
     Obtain and save 2D images, depth maps, and point clouds periodically for the specified duration from a camera.
   * [mapping_2d_image_to_depth_map](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/mapping_2d_image_to_depth_map.py)  
     Generate untextured and textured point clouds from a masked 2D image and a depth map.
+  * [render_depth_map](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/render_depth_map.py) `(OpenCV)`  
+    Obtain and save the depth map rendered with the jet color scheme.
+  * [transform_point_cloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/Advanced/transform_point_cloud.py)  
+    Obtain and save the point clouds in the custom reference frame.
   * [set_parameters_of_laser_cameras](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/set_parameters_of_laser_cameras.py)  
     Set the parameters specific to laser cameras.
   * [set_parameters_of_uhp_cameras](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/set_parameters_of_uhp_cameras.py)  
     Set the parameters specific to the UHP series.
   * [register_camera_event](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/register_camera_event.py)  
-    Define and register the callback function for monitoring the camera connection status.
+    Define and register the callback function for monitoring camera events.
   * [capture_stereo_2d_images](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/capture_stereo_2d_images.py) `(OpenCV)`  
     Obtain and save the 2D images from both 2D cameras.
     > Note: This sample is only applicable to the following models: Deep, Laser L Enhanced, PRO XS, LSR L, LSR S, and DEEP.
@@ -74,6 +78,7 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
 1. Make sure that the variant of Python installed is 64-bit, and the version is between 3.7 and 3.11.
 2. Please download and install the required software listed below.
 
+* [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk)
 * Python Mech-Eye API (latest version):
 
   ```python
@@ -109,6 +114,26 @@ Optional software: If you need to build the samples dependent on third-party sof
 Ubuntu 18 or above is required.
 
 #### Prerequisites
+
+* Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
+
+  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
+  >
+  >```bash
+  >sudo dpkg -P MechEyeApi
+  >```
+
+  * If the system architecture is AMD64, execute the following command:
+
+    ```bash
+    sudo dpkg -i 'Mech-Eye_API_x.x.x_amd64.deb'
+    ```
+
+  * If the system architecture is ARM64, execute the following command:
+
+    ```bash
+    sudo dpkg -i 'Mech-Eye_API_x.x.x_arm64.deb'
+    ```
 
 * Upgrade g++ to ensure that its version is 12 or above.
 

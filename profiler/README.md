@@ -1,6 +1,6 @@
-# Python Samples for Mech-Eye 3D Laser Profiler
+# Python Samples
 
-This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye Industrial 3D Camera and instructions for running the samples on Windows and Ubuntu.
+This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye 3D Laser Profiler and instructions for running the samples on Windows and Ubuntu.
 
 If you have any questions or have anything to share, feel free to post on the [Mech-Mind Online Community](https://community.mech-mind.com/). The community also contains a [specific category for development with Mech-Eye SDK](https://community.mech-mind.com/c/mech-eye-sdk-development/19).
 
@@ -20,13 +20,23 @@ The samples marked with `(OpenCV)` require [OpenCV](https://opencv.org/releases/
   Trigger data acquisition with signals input from the external device, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
 * [trigger_multiple_profilers_simultaneously](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_multiple_profilers_simultaneously) `(OpenCV)`  
   Trigger multiple laser profilers to acquire data asynchronously and retrieve the acquired data.
+* [blind_spot_filtering](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/blind_spot_filtering.py) `(OpenCV)`  
+  Detect and remove the false data caused by blind spots and obtain the filtered profile data.
+* [noise_removal](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/noise_removal.py) `(OpenCV)`  
+  Remove the noise in the depth data and obtain the filtered profile data.
+* [profile_alignment](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/profile_alignment.py) `(OpenCV)`  
+  Correct the X-axis and Z-axis vibrations in the profiles (aligning the profiles) and obtain the corrected profile data.
+* [render_depth_map](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/render_depth_map.py) `(OpenCV)`  
+    Obtain and save the depth map rendered with the jet color scheme.
+* [transform_point_cloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/transform_point_cloud.py)  
+  Obtain and save the point clouds in the custom reference frame.
 * [manage_user_sets](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/manage_user_sets.py)  
   Manage parameter groups, such as obtaining the names of all parameter groups, adding a parameter group, switching the parameter group, and saving parameter settings to the parameter group.
 * [print_profiler_status](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/print_profiler_status.py)  
   Obtain and print the laser profiler's information, such as model, serial number, firmware version, and temperatures.
 * [register_profiler_event](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/register_profiler_event.py)  
-  Define and register the callback function for monitoring the laser profiler connection status.
-* [use_virtual_device](https://github.com/MechMindRobotics/mecheye_csharp_samples/tree/master/profiler/use_virtual_device.py) `(OpenCV)`  
+  Define and register the callback function for monitoring laser profiler events.
+* [use_virtual_device](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/use_virtual_device.py) `(OpenCV)`  
   Acquire the profile data stored in a virtual device, generate the intensity image and depth map, and save the images.
 
 ## Run the Samples
@@ -38,6 +48,7 @@ The samples marked with `(OpenCV)` require [OpenCV](https://opencv.org/releases/
 1. Make sure that the variant of Python installed is 64-bit, and the version is between 3.7 and 3.11.
 2. Please download and install the required software listed below.
 
+* [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk)
 * Python Mech-Eye API (latest version):
 
   ```python
@@ -66,13 +77,33 @@ Optional software: If you need to build the samples dependent on third-party sof
    python sample_name.py
    ```
 
-3. Enter the index of the camera to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
+3. Enter the index of the laser profiler to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
 
 ### Ubuntu
 
 Ubuntu 18 or above is required.
 
 #### Prerequisites
+
+* Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
+
+  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
+  >
+  >```bash
+  >sudo dpkg -P MechEyeApi
+  >```
+
+  * If the system architecture is AMD64, execute the following command:
+
+    ```bash
+    sudo dpkg -i 'Mech-Eye_API_x.x.x_amd64.deb'
+    ```
+
+  * If the system architecture is ARM64, execute the following command:
+
+    ```bash
+    sudo dpkg -i 'Mech-Eye_API_x.x.x_arm64.deb'
+    ```
 
 * Upgrade g++ to ensure that its version is 12 or above.
 
@@ -136,4 +167,4 @@ Ubuntu 18 or above is required.
    sudo python3 sample_name.py
    ```
 
-3. Enter the index of the camera to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.
+3. Enter the index of the laser profiler to which you want to connect, and press the Enter key. The obtained files are saved to the folder where the sample is located.

@@ -55,6 +55,56 @@ class SetScanningParameters(object):
         error = current_user_set.set_float_value(
             Scanning2DExposureTime.name, exposure_time_2d)
         show_error(error)
+
+        # The DEEP and LSR series also provide a "Scan2DPatternRoleExposureMode" parameter for
+        # adjusting the exposure mode for acquring the 2D images (depth source). Uncomment the
+        # following lines to set this parameter to "Timed".
+        depth_source_exposure_mode_2d = Scanning2DDepthSourceExposureMode.Value_Timed
+        error = current_user_set.set_enum_value(
+            Scanning2DDepthSourceExposureMode.name, depth_source_exposure_mode_2d)
+        show_error(error)
+
+        # You can also use the projector for supplemental light when acquiring the 2D image / 2D images
+        # (depth source).
+        # Models other than the DEEP and LSR series: Uncomment the following lines to set the exposure
+        # mode to "Flash" for supplemental light.
+        # exposure_mode_2d = Scanning2DExposureMode.Value_Flash
+        # error = current_user_set.set_enum_value(
+        #     Scanning2DExposureMode.name, exposure_mode_2d)
+        # show_error(error)
+
+        # DEEP and LSR series: Uncomment the following lines to set the exposure mode to "Flash" for
+        # supplemental light.
+        # depth_source_exposure_mode_2d = Scanning2DDepthSourceExposureMode.Value_Flash
+        # error = current_user_set.set_enum_value(
+        #     Scanning2DDepthSourceExposureMode.name, depth_source_exposure_mode_2d)
+        # show_error(error)
+
+        # The following models also provide a "FlashAcquisitionMode" when using the flash exposure
+        # mode: DEEP, LSR S/L/XL, PRO XS/S/M, NANO, NANO ULTRA. Uncomment the following lines to set
+        # the "FlashAcquisitionMode" parameter to "Responsive".
+        # flash_acquisition_mode_2d=Scanning2DFlashAcquisitionMode.Value_Responsive
+        # error = current_user_set.set_enum_value(
+        #     Scanning2DFlashAcquisitionMode.name, flash_acquisition_mode_2d)
+        # show_error(error)
+
+        # When using the responsive acquisition mode, you can adjust the exposure time for the flash
+        # exposure mode. Uncomment the following lines to set the exposure time to 20 ms.
+        # flash_exposure_time_2d = 20
+        # error = current_user_set.set_float_value(
+        #     Scanning2DFlashExposureTime.name, flash_exposure_time_2d)
+        # show_error(error)
+
+        # Uncomment the following lines to check the values of the "FlashAcquisitionMode" and "FlashExposureTime" parameters.
+        # error, flash_acquisition_mode_2d = current_user_set.get_enum_value_string(
+        #     Scanning2DFlashAcquisitionMode.name)
+        # show_error(error)
+        # error, flash_exposure_time_2d = current_user_set.get_float_value(
+        #     Scanning2DFlashExposureTime.name)
+        # show_error(error)
+        # print("\n2D scanning flash acquisition mode: {}, flash exposure time: {}".
+        #       format(flash_acquisition_mode_2d, flash_exposure_time_2d))
+
         error, exposure_mode_2d = current_user_set.get_enum_value_string(
             Scanning2DExposureMode.name)
         show_error(error)
