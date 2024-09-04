@@ -6,8 +6,6 @@ import numpy as np
 from time import sleep
 from multiprocessing import Lock
 
-pitch = 1e-3
-
 mutex = Lock()
 
 
@@ -250,101 +248,6 @@ class TriggerWithSoftwareAndFixedRate(object):
         cv2.imwrite(intensity_file_name,
                     self.profile_batch.get_intensity_image().data())
 
-    def save_data_to_ply(self, file_name, is_organized=True):
-        with open(file_name, 'w') as file:
-            depth = self.profile_batch.get_depth_map().data()
-            vertex_count = depth.size if is_organized else depth[~np.isnan(
-                depth)].size
-            y, x = np.indices(depth.shape, dtype=np.uint16)
-
-            file.write(f"""ply
-format ascii 1.0
-comment File generated
-comment x y z data unit in mm
-element vertex {vertex_count}
-property float x
-property float y
-property float z
-end_header
-"""
-                       )
-
-            def depth_to_point(x, y, depth):
-                if not np.isnan(depth):
-                    file.write("{} {} {}\n".format(x * self.x_unit *
-                               pitch, y * self.y_unit * pitch, depth))
-                elif is_organized:
-                    file.write("nan nan nan\n")
-
-            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_width).reshape(
-                depth.shape) if self.use_encoder_values else y, depth)
-
-    def save_data_to_csv(self, file_name, is_organized=True):
-        with open(file_name, 'w') as file:
-            file.write("X,Y,Z\n")
-            depth = self.profile_batch.get_depth_map().data()
-            y, x = np.indices(depth.shape, np.uint16)
-
-            def depth_to_point(x, y, depth):
-                if not np.isnan(depth):
-                    file.write("{},{},{}\n".format(x * self.x_unit *
-                               pitch, y * self.y_unit * pitch, depth))
-                elif is_organized:
-                    file.write("nan,nan,nan\n")
-
-            np.vectorize(depth_to_point)(x, np.repeat(self.encoder_vals, self.data_width).reshape(
-                depth.shape) if self.use_encoder_values else y, depth)
-
-    def get_trigger_interval_distance(self):
-        while True:
-            print(
-                "Please enter encoder trigger interval distance (unit: um, min: 1, max: 65535): ")
-            trigger_interval_distance = input()
-            if trigger_interval_distance.isdigit() and 1 <= int(trigger_interval_distance) <= 65535:
-                self.y_unit = int(trigger_interval_distance)
-                break
-            print("Input invalid!")
-
-    def save_point_cloud(self, save_ply=True, save_csv=True, is_organized=True):
-        if self.profile_batch.is_empty():
-            return
-
-        error, self.x_unit = self.user_set.get_float_value(
-            XAxisResolution.name)
-        if not error.is_ok():
-            show_error(error)
-            return
-
-        error, self.y_unit = self.user_set.get_float_value(YResolution.name)
-        if not error.is_ok():
-            show_error(error)
-            return
-        # # Uncomment the following line for custom Y Unit
-        # self.get_trigger_interval_distance()
-
-        error, line_scan_trigger_source = self.user_set.get_enum_value(
-            LineScanTriggerSource.name)
-        if not error.is_ok():
-            show_error(error)
-            return
-        self.use_encoder_values = line_scan_trigger_source == LineScanTriggerSource.Value_Encoder
-
-        error, trigger_interval = self.user_set.get_int_value(
-            EncoderTriggerInterval.name)
-        if not error.is_ok():
-            show_error(error)
-            return
-
-        encoder_vals = self.profile_batch.get_encoder_array().data().squeeze().astype(np.int64)
-        self.encoder_vals = (
-            encoder_vals - encoder_vals[0]).astype(np.int16) / trigger_interval
-
-        print("Save the point cloud.")
-        if (save_csv):
-            self.save_data_to_csv("PointCloud.csv", is_organized)
-        if (save_ply):
-            self.save_data_to_ply("PointCloud.ply", is_organized)
-
     def main(self):
         if not find_and_connect(self.profiler):
             return -1
@@ -360,13 +263,18 @@ end_header
         if not self.acquire_profile_data():
             return -1
 
-        # # Acquire profile data using callback
+        # # Acquire the profile data using the callback function
         # if not self.acquire_profile_data_using_callback():
             # return -1
 
+        if self.profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
+            print("Part of the batch's data is lost, the number of valid profiles is:",
+                  self.profile_batch.valid_height())
+
         print("Save the depth map and intensity image")
         self.save_depth_and_intensity("depth.tiff", "intensity.png")
-        self.save_point_cloud(save_ply=True, save_csv=True, is_organized=True)
+        save_point_cloud(profile_batch=self.profile_batch, user_set=self.user_set,
+                         save_ply=True, save_csv=True, is_organized=True)
 
         # # Uncomment the following line to save a virtual device file using the ProfileBatch acquired.
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
