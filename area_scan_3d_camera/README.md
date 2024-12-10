@@ -52,7 +52,7 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
     Define and register the callback function for monitoring camera events.
   * [capture_stereo_2d_images](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/capture_stereo_2d_images.py) `(OpenCV)`  
     Obtain and save the 2D images from both 2D cameras.
-    > Note: This sample is only applicable to the following models: Deep, Laser L Enhanced, PRO XS, LSR L, LSR S, and DEEP.
+    > Note: This sample is only applicable to the following models: Deep, Laser L Enhanced, PRO XS, PRO XS-GL, LSR L, LSR L-GL, LSR S, LSR S-GL, DEEP, and DEEP-GL.
 * **util**
   * [get_camera_intrinsics](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/get_camera_intrinsics.py)  
     Obtain and print the camera intrinsic parameters.

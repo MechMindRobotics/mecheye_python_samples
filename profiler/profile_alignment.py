@@ -83,16 +83,20 @@ class ProfileAlignment(object):
             return -1
 
         self.user_set = self.profiler.current_user_set()
-        # Enbale the Z-axis profile alignment function
-        show_error(self.user_set.set_bool_value(EnableZAxisAlignment.name, True))
-        # Enbale the X-axis profile alignment function
-        show_error(self.user_set.set_bool_value(EnableXAxisAlignment.name, True))
+        # Enable the Z-axis profile alignment function
+        show_error(self.user_set.set_bool_value(
+            EnableZAxisAlignment.name, True))
+        # Enable the X-axis profile alignment function
+        show_error(self.user_set.set_bool_value(
+            EnableXAxisAlignment.name, True))
 
-        error, self.data_width = self.user_set.get_int_value(DataPointsPerProfile.name)
+        error, self.data_width = self.user_set.get_int_value(
+            DataPointsPerProfile.name)
         show_error(error)
         self.profile_batch = ProfileBatch(self.data_width)
 
-        error, data_acquisition_trigger_source = self.user_set.get_enum_value(DataAcquisitionTriggerSource.name)
+        error, data_acquisition_trigger_source = self.user_set.get_enum_value(
+            DataAcquisitionTriggerSource.name)
         show_error(error)
         self.is_software_trigger = data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
 
