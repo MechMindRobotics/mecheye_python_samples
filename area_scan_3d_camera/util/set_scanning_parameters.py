@@ -57,7 +57,7 @@ class SetScanningParameters(object):
         show_error(error)
 
         # The DEEP and LSR series also provide a "Scan2DPatternRoleExposureMode" parameter for
-        # adjusting the exposure mode for acquring the 2D images (depth source). Uncomment the
+        # adjusting the exposure mode for acquiring the 2D images (depth source). Uncomment the
         # following lines to set this parameter to "Timed".
         depth_source_exposure_mode_2d = Scanning2DDepthSourceExposureMode.Value_Timed
         error = current_user_set.set_enum_value(
@@ -81,7 +81,7 @@ class SetScanningParameters(object):
         # show_error(error)
 
         # The following models also provide a "FlashAcquisitionMode" when using the flash exposure
-        # mode: DEEP, LSR S/L/XL, PRO XS/S/M, NANO, NANO ULTRA. Uncomment the following lines to set
+        # mode: DEEP, DEEP-GL, LSR S/L/XL, LSR S-GL/L-GL/XL-GL, PRO XS/S/M, PRX XS-GL/S-GL/M-GL, NANO, NANO-GL, NANO ULTRA, NANO ULTRA-GL. Uncomment the following lines to set
         # the "FlashAcquisitionMode" parameter to "Responsive".
         # flash_acquisition_mode_2d=Scanning2DFlashAcquisitionMode.Value_Responsive
         # error = current_user_set.set_enum_value(
