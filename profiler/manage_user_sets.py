@@ -1,3 +1,5 @@
+# With this sample, you can manage user sets, such as obtaining the names of all user sets, adding a user set, switching the user set, and saving parameter settings to the user set.
+
 from mecheye.shared import *
 from mecheye.profiler import *
 from mecheye.profiler_utils import *
@@ -23,11 +25,11 @@ class ManageUserSets(object):
         error, name = current_user_set.get_name()
         print("Current user set: ", name)
 
-        show_error(user_set_manager.select_user_set(user_sets[0]))
-        print("Set \\", user_sets[0], "\\ as the current user set.")
+        success_message = "Set \\" + user_sets[0] +"\\ as the current user set."
+        show_error(user_set_manager.select_user_set(user_sets[0]), success_message)
 
-        show_error(current_user_set.save_all_parameters_to_device())
-        print("Save all parameters to current user set.")
+        success_message = "Save all parameters to current user set."
+        show_error(current_user_set.save_all_parameters_to_device(), success_message)
 
         self.profiler.disconnect()
         print("Disconnected form the Mech-Eye Profiler successfully")

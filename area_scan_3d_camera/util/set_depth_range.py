@@ -13,10 +13,9 @@ class SetDepthRange(object):
         user_set = self.camera.current_user_set()
         # Set the range of depth values to 100–1000 mm.
         depth_range = RangeInt(100, 1000)
+        success_message = "\n3D scanning depth lower limit : {} mm,".format(depth_range.min) + " depth upper limit : {} mm\n".format(depth_range.max)
         show_error(user_set.set_range_value(
-            Scanning3DDepthRange.name, depth_range))
-        print("\n3D scanning depth lower limit : {} mm,".format(depth_range.min),
-              "depth upper limit : {} mm\n".format(depth_range.max))
+            Scanning3DDepthRange.name, depth_range), success_message)
 
     def main(self):
         if find_and_connect(self.camera):

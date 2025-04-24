@@ -12,18 +12,16 @@ class CapturePointCloudHDR(object):
 
     def capture_point_cloud(self):
         point_cloud_file = "PointCloud.ply"
+        success_message = "Capture and save the untextured point cloud to {}.".format(point_cloud_file)
         show_error(
-            self.frame_2d_and_3d.frame_3d().save_untextured_point_cloud(FileFormat_PLY, point_cloud_file))
-        print("Capture and save the untextured point cloud to {}.".format(
-            point_cloud_file))
+            self.frame_2d_and_3d.frame_3d().save_untextured_point_cloud(FileFormat_PLY, point_cloud_file), success_message)
 
     def capture_textured_point_cloud(self):
         textured_point_cloud_file = "TexturedPointCloud.ply"
+        success_message = "Capture and save the textured point cloud to {}".format(textured_point_cloud_file)
         show_error(self.frame_2d_and_3d.save_textured_point_cloud(FileFormat_PLY,
-                                                                  textured_point_cloud_file))
-        print("Capture and save the textured point cloud to {}".format(
-            textured_point_cloud_file))
-
+                                                                  textured_point_cloud_file),success_message)
+        
     def capture_point_cloud_hdr(self):
         # Set 3D Exposure Sequence.
         current_user_set = self.camera.current_user_set()

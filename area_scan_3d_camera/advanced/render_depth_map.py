@@ -1,4 +1,4 @@
-# With this sample, you can obtain and save the depth map.
+# With this sample, you can obtain and save the depth map rendered with the jet color scheme.
 
 import cv2
 import numpy as np
@@ -22,7 +22,8 @@ class RenderedDepthMap(object):
         if np.isclose(max_depth_value - min_depth_value, 0):
             depth8U = depth.astype(np.uint8)
         else:
-            depth8U = cv2.convertScaleAbs(depth, alpha=(255.0 / (min_depth_value - max_depth_value)), beta=((max_depth_value * 255.0) / (max_depth_value - min_depth_value) + 1))
+            depth8U = cv2.convertScaleAbs(depth, alpha=(255.0 / (min_depth_value - max_depth_value)), beta=(
+                (max_depth_value * 255.0) / (max_depth_value - min_depth_value) + 1))
 
         if depth8U.size == 0:
             return np.array([])
@@ -31,16 +32,17 @@ class RenderedDepthMap(object):
         colored_depth[depth8U == 0] = [0, 0, 0]
 
         return colored_depth
-        
 
     def capture_rendered_depth_map(self):
         frame3d = Frame3D()
         show_error(self.camera.capture_3d(frame3d))
 
-        rendered_depth_map = self.render_depth_data(frame3d.get_depth_map().data())
+        rendered_depth_map = self.render_depth_data(
+            frame3d.get_depth_map().data())
         rendered_depth_file = "RenderedDepthMap.tiff"
         cv2.imwrite(rendered_depth_file, rendered_depth_map)
-        print("Capture and save the rendered depth map: {}".format(rendered_depth_file))
+        print("Capture and save the rendered depth map: {}".format(
+            rendered_depth_file))
 
     def main(self):
         if find_and_connect(self.camera):

@@ -15,12 +15,16 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
 
     def run(self, batch):
         mutex.acquire()
+        if (not batch.get_error_status().is_ok()):
+            print("Error occurred during data acquisition.")
+            show_error(batch.get_error_status())
         self.total_batch.append(batch)
         mutex.release()
 
 
 class UseVirtualDevice(object):
     def __init__(self):
+        #  Please ensure that the file name is encoded in UTF-8 format.
         self.profiler = VirtualProfiler("test.mraw")
 
     def get_parameters(self):
@@ -113,11 +117,11 @@ class UseVirtualDevice(object):
             return -1
         print("Save the depth map and the intensity image.")
         self.save_images("DepthMap.tiff", "IntensityImage.png")
-        if not self.capture_with_callback():
-            return -1
-        print("Save the depth map and the intensity image.")
-        self.save_callback_images("DepthMapUsingCallback.tiff",
-                                  "IntensityImageUsingCallback.png")
+        # if not self.capture_with_callback():
+        #     return -1
+        # print("Save the depth map and the intensity image.")
+        # self.save_callback_images("DepthMapUsingCallback.tiff",
+        #                           "IntensityImageUsingCallback.png")
 
 
 if __name__ == '__main__':
