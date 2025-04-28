@@ -16,6 +16,9 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
 
     def run(self, batch):
         mutex.acquire()
+        if (not batch.get_error_status().is_ok()):
+            print("Error occurred during data acquisition.")
+            show_error(batch.get_error_status())
         self.profile_batch.append(batch)
         mutex.release()
 

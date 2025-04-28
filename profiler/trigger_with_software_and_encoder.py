@@ -16,6 +16,9 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
 
     def run(self, batch):
         mutex.acquire()
+        if (not batch.get_error_status().is_ok()):
+            print("Error occurred during data acquisition.")
+            show_error(batch.get_error_status())
         self.profile_batch.append(batch)
         mutex.release()
 
@@ -101,6 +104,12 @@ class TriggerWithSoftwareAndEncoder(object):
         # # Set the second threshold to 60. This limits the maximum grayscale value to 60 after the
         # # second exposure phase is completed.
         # self.set_hdr_exposure(100, 40, 80, 10, 60)
+
+        # # Enable outlier removal and adjust the outlier removal intensity.
+        # # Set the "EnableOutlierRemoval" parameter to true
+        # show_error(self.user_set.set_bool_value(EnableOutlierRemoval.name,True))
+        # # Set the "OutlierRemovalIntensity" parameter to "VeryLow"
+        # show_error(self.user_set.set_enum_value(OutlierRemovalIntensity.name,OutlierRemovalIntensity.Value_VeryLow))
 
         # Set the "Data Acquisition Trigger Source" parameter to "Software"
         show_error(self.user_set.set_enum_value(

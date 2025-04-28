@@ -1,3 +1,5 @@
+# With this sample, you can obtain and save the depth map rendered with the jet color scheme.
+
 from mecheye.shared import *
 from mecheye.profiler import *
 from mecheye.profiler_utils import *
@@ -16,6 +18,9 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
 
     def run(self, batch):
         mutex.acquire()
+        if (not batch.get_error_status().is_ok()):
+            print("Error occurred during data acquisition.")
+            show_error(batch.get_error_status())
         self.profile_batch.append(batch)
         mutex.release()
 
@@ -105,13 +110,15 @@ class RenderedDepthMap(object):
 
         if not confirm_capture():
             return -1
-        
+
         self.user_set = self.profiler.current_user_set()
-        error, self.data_width = self.user_set.get_int_value(DataPointsPerProfile.name)
+        error, self.data_width = self.user_set.get_int_value(
+            DataPointsPerProfile.name)
         show_error(error)
         self.profile_batch = ProfileBatch(self.data_width)
 
-        error, data_acquisition_trigger_source = self.user_set.get_enum_value(DataAcquisitionTriggerSource.name)
+        error, data_acquisition_trigger_source = self.user_set.get_enum_value(
+            DataAcquisitionTriggerSource.name)
         show_error(error)
         self.is_software_trigger = data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
         # Acquire the profile data using the callback function
