@@ -44,9 +44,9 @@ class MultipleCamerasCaptureSequentially(object):
             cv2.imwrite(depth_file, depth_image.data())
             print("Capture and save the depth map:", depth_file)
 
+            success_message = "Capture and save the textured point cloud:" + point_cloud_file
             show_error(
-                frame_all_2d_3d.save_textured_point_cloud(FileFormat_PLY, point_cloud_file))
-            print("Capture and save the textured point cloud:", point_cloud_file)
+                frame_all_2d_3d.save_textured_point_cloud(FileFormat_PLY, point_cloud_file), success_message)
 
             camera.disconnect()
             print("Disconnected from the camera successfully.")

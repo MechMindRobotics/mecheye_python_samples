@@ -105,6 +105,18 @@ class SetScanningParameters(object):
         # print("\n2D scanning flash acquisition mode: {}, flash exposure time: {}".
         #       format(flash_acquisition_mode_2d, flash_exposure_time_2d))
 
+        # Uncomment the following line to set the camera gain when capturing 2D images.
+        # For DEEP and LSR series cameras, the camera gain for capturing 2D images (texture) can be
+        # adjusted by setting the "Scan2DGain" parameter.
+        # For other camera series, the camera gain for capturing 2D images can be adjusted by
+        # setting the "Scan2DGain" parameter when the exposure mode is set to fixed exposure, auto
+        # exposure, HDR, or flash mode, and the flash acquisition mode is set to
+        # responsive.
+        # print("\n2D image gain: ", scan2DGain)value(Scanning2DGain.name,2.0))
+        # show_error(error)et_float_value(Scanning2DGain.name)
+        # error, scan2DGain = current_user_set.get_float_value(Scanning2DGain.name)
+        # show_error(current_user_set.set_float_value(Scanning2DGain.name,2.6))
+
         error, exposure_mode_2d = current_user_set.get_enum_value_string(
             Scanning2DExposureMode.name)
         show_error(error)
@@ -115,8 +127,8 @@ class SetScanningParameters(object):
               format(exposure_mode_2d, exposure_time_2d))
 
         # Save all the parameter settings to the currently selected user set.
-        show_error(current_user_set.save_all_parameters_to_device())
-        print("\nSave the current parameter settings to the selected user set.")
+        success_message = "\nSave the current parameter settings to the selected user set."
+        show_error(current_user_set.save_all_parameters_to_device(), success_message)
 
     def main(self):
         if find_and_connect(self.camera):

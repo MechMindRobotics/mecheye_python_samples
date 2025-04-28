@@ -12,17 +12,14 @@ class CapturePointCloud(object):
 
     def capture_point_cloud(self):
         point_cloud_file = "PointCloud.ply"
+        success_message = "Capture and save the untextured point cloud: {}.".format(point_cloud_file)
         show_error(
-            self.frame_all_2d_3d.frame_3d().save_untextured_point_cloud(FileFormat_PLY, point_cloud_file))
-        print("Capture and save the untextured point cloud: {}.".format(
-            point_cloud_file))
+            self.frame_all_2d_3d.frame_3d().save_untextured_point_cloud(FileFormat_PLY, point_cloud_file), success_message)
 
     def capture_textured_point_cloud(self):
         textured_point_cloud_file = "TexturedPointCloud.ply"
-        show_error(self.frame_all_2d_3d.save_textured_point_cloud(FileFormat_PLY,
-                                                                  textured_point_cloud_file))
-        print("Capture and save the textured point cloud: {}".format(
-            textured_point_cloud_file))
+        success_message = "Capture and save the textured point cloud: {}".format(textured_point_cloud_file)
+        show_error(self.frame_all_2d_3d.save_textured_point_cloud(FileFormat_PLY, textured_point_cloud_file), success_message)
 
     def main(self):
         if find_and_connect(self.camera):

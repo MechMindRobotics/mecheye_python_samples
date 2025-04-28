@@ -55,8 +55,9 @@ class SetPointCloudProcessingParameters(object):
               "(0: Sharp, 1: Normal, 2: Smooth)")
 
         # Save all the parameter settings to the currently selected user set.
-        show_error(current_user_set.save_all_parameters_to_device())
-        print("\nSave the current parameter settings to the selected user set..")
+
+        success_message = "\nSave the current parameter settings to the selected user set."
+        show_error(current_user_set.save_all_parameters_to_device(), success_message)
 
     def main(self):
         if find_and_connect(self.camera):

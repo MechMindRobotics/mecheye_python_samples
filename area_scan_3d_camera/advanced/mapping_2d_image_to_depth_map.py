@@ -57,19 +57,19 @@ class Mapping2DImageToDepthMap(object):
         show_error(get_point_cloud_after_mapping(
             depth, mask, intrinsics, points_xyz))
         point_cloud_file = "UntexturedPointCloud.ply"
+        success_message = "Save the untextured point cloud to file:" + point_cloud_file
         show_error(
-            Frame3D.save_point_cloud(points_xyz, FileFormat_PLY, point_cloud_file))
-        print("Save the untextured point cloud to file:", point_cloud_file)
+            Frame3D.save_point_cloud(points_xyz, FileFormat_PLY, point_cloud_file), success_message)
 
         # generate colored point cloud
         points_xyz_bgr = TexturedPointCloud()
         show_error(
             get_point_cloud_after_mapping(depth, mask, color, intrinsics, points_xyz_bgr))
         point_cloud_file = "TexturedPointCloud.ply"
+        success_message = "Save the textured point cloud to file:" + point_cloud_file
         show_error(
             Frame2DAnd3D.save_point_cloud(points_xyz_bgr, FileFormat_PLY,
-                                          point_cloud_file))
-        print("Save the textured point cloud to file:", point_cloud_file)
+                                          point_cloud_file), success_message)
 
     def main(self):
         if find_and_connect(self.camera):

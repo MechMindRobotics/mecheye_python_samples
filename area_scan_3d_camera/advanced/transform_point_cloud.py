@@ -1,4 +1,4 @@
-# With this sample, you can obtain point cloud in a specified coordinate system.
+# With this sample, you can retrieve point clouds in the custom reference frame.
 
 from mecheye.shared import *
 from mecheye.area_scan_3d_camera import *
@@ -18,10 +18,10 @@ class TransformPointCloud(object):
         transformed_point_cloud = transform_point_cloud(
             transformation, frame_3d.get_untextured_point_cloud())
         point_cloud_file = "PointCloud.ply"
+        success_message = "Capture and save the point cloud: {}.".format(
+            point_cloud_file)
         show_error(Frame3D.save_point_cloud(
-            transformed_point_cloud, FileFormat_PLY, point_cloud_file))
-        print("Capture and save the point cloud: {}.".format(
-            point_cloud_file))
+            transformed_point_cloud, FileFormat_PLY, point_cloud_file), success_message)
 
     def get_transformed_textured_point_cloud(self):
         # Transform the reference frame of the textured point cloud and save the point cloud
@@ -29,11 +29,10 @@ class TransformPointCloud(object):
         transformed_textured_point_cloud = transform_textured_point_cloud(
             transformation, self.frame_all_2d_3d.get_textured_point_cloud())
         textured_point_cloud_file = "TexturedPointCloud.ply"
-        UntexturedPointCloud
+        success_message = "Capture and save the textured point cloud: {}".format(
+            textured_point_cloud_file)
         show_error(Frame2DAnd3D.save_point_cloud(transformed_textured_point_cloud, FileFormat_PLY,
-                                                 textured_point_cloud_file))
-        print("Capture and save the textured point cloud: {}".format(
-            textured_point_cloud_file))
+                                                 textured_point_cloud_file), success_message)
 
     def get_transformed_point_cloud_with_normals(self):
        # Transform the reference frame of the point cloud with normals and save the point cloud
@@ -42,10 +41,10 @@ class TransformPointCloud(object):
         transformed_point_cloud_with_normals = transform_point_cloud_with_normals(
             transformation, frame_3d.get_untextured_point_cloud())
         point_cloud_with_normals_file = "PointCloudWithNormals.ply"
+        success_message = "Capture and save the point cloud with normals: {}.".format(
+            point_cloud_with_normals_file)
         show_error(
-            Frame3D.save_point_cloud_with_normals(transformed_point_cloud_with_normals, FileFormat_PLY, point_cloud_with_normals_file, False))
-        print("Capture and save the point cloud with normals: {}.".format(
-            point_cloud_with_normals_file))
+            Frame3D.save_point_cloud_with_normals(transformed_point_cloud_with_normals, FileFormat_PLY, point_cloud_with_normals_file, False), success_message)
 
     def get_transformed_textured_point_cloud_with_normals(self):
         # Transform the reference frame of the textured point cloud with normals and save the point cloud
@@ -53,10 +52,10 @@ class TransformPointCloud(object):
         transformed_textured_point_cloud_with_normals = transform_textured_point_cloud_with_normals(
             transformation, self.frame_all_2d_3d.get_textured_point_cloud())
         textured_point_cloud_with_normals_file = "TexturedPointCloudWithNormals.ply"
+        success_message = "Capture and save the textured point cloud: {}".format(
+            textured_point_cloud_with_normals_file)
         show_error(Frame2DAnd3D.save_point_cloud_with_normals(transformed_textured_point_cloud_with_normals, FileFormat_PLY,
-                                                              textured_point_cloud_with_normals_file, False))
-        print("Capture and save the textured point cloud: {}".format(
-            textured_point_cloud_with_normals_file))
+                                                              textured_point_cloud_with_normals_file, False), success_message)
 
     def main(self):
         if find_and_connect(self.camera):

@@ -1,70 +1,32 @@
-﻿from mecheye.shared import *
+﻿# With this sample, you can retrieve point clouds in the custom reference frame.
+
+from mecheye.shared import *
 from mecheye.profiler import *
 from mecheye.profiler_utils import *
 from time import sleep
 import numpy as np
 from multiprocessing import Lock
 
-mutex = Lock()
-# Calculate the initial coordinates of each point, apply the rigid body transformations to the
-# initial coordinates, and then write the transformed coordinates to the PLY file.
-def transform_and_save_data_to_ply(file_name: str, profile_batch: ProfileBatch, x_unit: float, y_unit: float, use_encoder_values: bool, encoder_vals: np.array, is_organized: bool = True, coordinateTransformation: FrameTransformation = []):
-    data_width = profile_batch.width()
-    with open(file_name, 'w') as file:
-        depth = profile_batch.get_depth_map().data()
-        vertex_count = depth.size if is_organized else depth[~np.isnan(
-            depth)].size
-        y, x = np.indices(depth.shape, dtype=np.uint16)
-
-        file.write(f"""ply
-format ascii 1.0
-comment File generated
-comment x y z data unit in mm
-element vertex {vertex_count}
-property float x
-property float y
-property float z
-end_header
-"""
-                   )
-                   
-        rotation_matrix = np.array(coordinateTransformation.rotation)
-        translation_vector = np.array(coordinateTransformation.translation)
-        
-        def depth_to_point(x, y, depth):
-            if not np.isnan(depth):
-                # Calculate the initial coordinates of each point from the original profile data.
-                pos = np.array([x * x_unit * pitch, y * y_unit * pitch, depth])
-                # Apply the rigid body transformations to the initial coordinates to obtain the
-                # coordinates in the custom reference frame.
-                transformed_pos = np.dot(rotation_matrix, pos) + translation_vector
-                file.write("{} {} {}\n".format(
-                       transformed_pos[0],  transformed_pos[1], transformed_pos[2]))
-            elif is_organized:
-                file.write("nan nan nan\n")
-
-        np.vectorize(depth_to_point)(x, np.repeat(encoder_vals, data_width).reshape(
-            depth.shape) if use_encoder_values else y, depth)
-
-
 # Convert the profile data to an untextured point cloud in the custom reference frame and save it
 # to a PLY file.
-def convert_batch_to_point_cloud_with_transformation(profile_batch: ProfileBatch, user_set: UserSet, coordinateTransformation:FrameTransformation):
+
+
+def convert_batch_to_point_cloud_with_transformation(profile_batch: ProfileBatch, user_set: UserSet, coordinateTransformation: FrameTransformation):
     if profile_batch.is_empty():
         return
 
-    error, x_unit = user_set.get_float_value(
+    error, x_resolution = user_set.get_float_value(
         XAxisResolution.name)
     if not error.is_ok():
         show_error(error)
         return
 
-    error, y_unit = user_set.get_float_value(YResolution.name)
+    error, y_resolution = user_set.get_float_value(YResolution.name)
     if not error.is_ok():
         show_error(error)
         return
     # # Uncomment the following line for custom Y Unit
-    # y_unit = get_trigger_interval_distance()
+    # y_resolution = get_trigger_interval_distance()
 
     error, line_scan_trigger_source = user_set.get_enum_value(
         LineScanTriggerSource.name)
@@ -79,13 +41,10 @@ def convert_batch_to_point_cloud_with_transformation(profile_batch: ProfileBatch
         show_error(error)
         return
 
-    encoder_vals = profile_batch.get_encoder_array().data().squeeze().astype(np.int64)
-    encoder_vals = (
-        encoder_vals - encoder_vals[0]).astype(np.int16) / trigger_interval
-
     print("Save the transformed point cloud.")
-    transform_and_save_data_to_ply("PointCloud.ply", profile_batch, x_unit,
-                         y_unit, use_encoder_values, encoder_vals, True, coordinateTransformation)
+    ProfileBatch.save_untextured_point_cloud_static(transform_point_cloud(coordinateTransformation, profile_batch.get_untextured_point_cloud(
+        x_resolution, y_resolution, use_encoder_values, trigger_interval)), FileFormat_PLY, "TransformedPointCloud.ply", False, CoordinateUnit_Millimeter)
+
 
 class TransformPointCloud(object):
     def __init__(self):
@@ -182,10 +141,11 @@ class TransformPointCloud(object):
         # Mech-Eye Viewer. The rigid body transformations are automatically calculated after the
         # settings in this tool have been applied
         coordinateTransformation = get_transformation_params(self.profiler)
-        if(coordinateTransformation.__is__valid__() == False):
+        if (coordinateTransformation.__is__valid__() == False):
             print("Transformation parameters are not set. Please configure the transformation parameters using the custom coordinate system tool in the client.")
         # Transform the reference frame, generate the untextured point cloud, and save the point cloud
-        convert_batch_to_point_cloud_with_transformation(self.profile_batch,self.user_set,coordinateTransformation)
+        convert_batch_to_point_cloud_with_transformation(
+            self.profile_batch, self.user_set, coordinateTransformation)
 
         # # Uncomment the following line to save a virtual device file using the ProfileBatch acquired.
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
@@ -193,6 +153,7 @@ class TransformPointCloud(object):
         self.profiler.disconnect()
         print("Disconnected form the Mech-Eye Profiler successfully")
         return 0
+
 
 if __name__ == '__main__':
     a = TransformPointCloud()

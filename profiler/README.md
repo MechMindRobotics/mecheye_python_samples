@@ -1,4 +1,4 @@
-# Python Samples
+# Python Samples for Mech-Eye 3D Laser Profiler
 
 This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye 3D Laser Profiler and instructions for running the samples on Windows and Ubuntu.
 
@@ -8,18 +8,20 @@ If you have any questions or have anything to share, feel free to post on the [M
 
 Currently, the following samples are provided.
 
-The samples marked with `(OpenCV)` require [OpenCV](https://opencv.org/releases/) to be installed.  
+The samples marked with `(OpenCV)` require [OpenCV](https://pypi.org/project/opencv-python/) to be installed.  
 
-* [trigger_with_software_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_software_and_fixed_rate) `(OpenCV)`  
+* [trigger_with_software_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_software_and_fixed_rate.py) `(OpenCV)`  
   Trigger data acquisition with signals input from software, trigger line scans at a fixed rate, and then retrieve and save the acquired data.
-* [trigger_with_external_device_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_external_device_and_fixed_rate) `(OpenCV)`  
+* [trigger_with_external_device_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_external_device_and_fixed_rate.py) `(OpenCV)`  
   Trigger data acquisition with signals input from the external device, trigger line scans at a fixed rate, and then retrieve and save the acquired data.
-* [trigger_with_software_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_software_and_encoder) `(OpenCV)`  
+* [trigger_with_software_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_software_and_encoder.py) `(OpenCV)`  
   Trigger data acquisition with signals input from software, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
-* [trigger_with_external_device_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_external_device_and_encoder) `(OpenCV)`  
+* [trigger_with_external_device_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_with_external_device_and_encoder.py) `(OpenCV)`  
   Trigger data acquisition with signals input from the external device, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
-* [trigger_multiple_profilers_simultaneously](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_multiple_profilers_simultaneously) `(OpenCV)`  
+* [trigger_multiple_profilers_simultaneously](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/trigger_multiple_profilers_simultaneously.py) `(OpenCV)`  
   Trigger multiple laser profilers to acquire data asynchronously and retrieve the acquired data.
+* [trigger_non_stop_acquisition](https://github.com/MechMindRobotics/mecheye_csharp_samples/tree/master/profiler/trigger_non_stop_acquisition.py) `(OpenCV)`  
+  Trigger non-stop acquisition, and then retrieve and save the acquired data.
 * [blind_spot_filtering](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/blind_spot_filtering.py) `(OpenCV)`  
   Detect and remove the false data caused by blind spots and obtain the filtered profile data.
 * [noise_removal](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/noise_removal.py) `(OpenCV)`  
@@ -87,7 +89,7 @@ Ubuntu 18 or above is required.
 
 * Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
 
-  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
+  >Note: If you have installed Mech-Eye SDK before, please uninstall it first with the following command:
   >
   >```bash
   >sudo dpkg -P MechEyeApi
@@ -121,7 +123,7 @@ Ubuntu 18 or above is required.
      ls usr/bin/g++*
      ```
 
-  c. Add all installed versions of g++ as alternatives (using g++ 9 and g++ 13 asexamples):
+  c. Add all installed versions of g++ as alternatives (using g++ 9 and g++ 13 as examples):
 
      ```bash
      sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 10

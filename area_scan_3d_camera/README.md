@@ -1,4 +1,4 @@
-# Python Samples
+# Python Samples for Mech-Eye Industrial 3D Camera
 
 This documentation provides descriptions of Mech-Eye API Python samples for Mech-Eye Industrial 3D Camera and instructions for running the samples on Windows and Ubuntu.
 
@@ -12,7 +12,7 @@ Samples are divided into the following categories: **basic**, **advanced**, and 
 * **advanced** samples: Acquire data in more complicated manners and set model-specific parameters.
 * **util** samples: Obtain camera information and set common parameters.
 
-The samples marked with `(OpenCV)` require OpenCV to be installed.
+The samples marked with `(OpenCV)` require [OpenCV](https://pypi.org/project/opencv-python/) to be installed.
 
 * **basic**
   * [connect_to_camera](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/basic/connect_to_camera.py)  
@@ -68,6 +68,9 @@ The samples marked with `(OpenCV)` require OpenCV to be installed.
     Manage parameter groups, such as obtaining the names of all parameter groups, adding a parameter group, switching the parameter group, and saving parameter settings to the parameter group.
   * [save_and_load_user_set](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/util/save_and_load_user_set.py)  
     Import and replace all parameter groups from a JSON file, and save all parameter groups to a JSON file.
+* **calibration**
+  * [hand_eye_calibration](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/calibration/hand_eye_calibration.py)`(OpenCV)`  
+    Perform hand-eye calibration.
 
 ## Run the Samples
 
@@ -117,7 +120,7 @@ Ubuntu 18 or above is required.
 
 * Install [Mech-Eye SDK (latest version)](https://downloads.mech-mind.com/?tab=tab-sdk).
 
-  >Note: If you have installed Mech-Eye SDK before, please   uninstall it firstwith the following command:
+  >Note: If you have installed Mech-Eye SDK before, please uninstall it first with the following command:
   >
   >```bash
   >sudo dpkg -P MechEyeApi
@@ -151,7 +154,7 @@ Ubuntu 18 or above is required.
      ls usr/bin/g++*
      ```
 
-  c. Add all installed versions of g++ as alternatives (using g++ 9 and g++ 13 asexamples):
+  c. Add all installed versions of g++ as alternatives (using g++ 9 and g++ 13 as examples):
 
      ```bash
      sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 10
