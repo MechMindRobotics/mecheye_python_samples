@@ -247,7 +247,7 @@ def capture_task(ip_address: str, sensor_sn: str):
         profile_batch, f"depth_{sensor_sn}.png", f"intensity_{sensor_sn}.png")
 
     profiler.disconnect()
-    print("Disconnected form the Mech-Eye Profiler successfully")
+    print("Disconnected from the Mech-Eye Profiler successfully")
 
 
 class TriggerMultipleProfilersSimultaneously(object):
@@ -280,5 +280,6 @@ class TriggerMultipleProfilersSimultaneously(object):
 
 
 if __name__ == '__main__':
+    multiprocessing.set_start_method('spawn')
     a = TriggerMultipleProfilersSimultaneously()
     a.main()

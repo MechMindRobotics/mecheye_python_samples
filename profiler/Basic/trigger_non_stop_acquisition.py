@@ -70,7 +70,7 @@ class TriggerWithSoftwareAndFixedRate(object):
         self.is_software_trigger = data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
 
     def acquire_profile_data_using_callback(self) -> bool:
-        self.callback = CustomAcquisitionCallback(self.data_width).__disown__()
+        self.callback = CustomAcquisitionCallback(self.data_width)
 
         # Register the callback function
         status = self.profiler.register_acquisition_callback(
@@ -121,7 +121,7 @@ class TriggerWithSoftwareAndFixedRate(object):
             return -1
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
         return 0
 
 

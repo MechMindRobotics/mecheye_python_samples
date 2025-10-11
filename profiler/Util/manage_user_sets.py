@@ -25,14 +25,18 @@ class ManageUserSets(object):
         error, name = current_user_set.get_name()
         print("Current user set: ", name)
 
-        success_message = "Set \\" + user_sets[0] +"\\ as the current user set."
-        show_error(user_set_manager.select_user_set(user_sets[0]), success_message)
+        success_message = "Set \\" + \
+            user_sets[0] + "\\ as the current user set."
+        show_error(user_set_manager.select_user_set(
+            user_sets[0]), success_message)
 
         success_message = "Save all parameters to current user set."
-        show_error(current_user_set.save_all_parameters_to_device(), success_message)
+        show_error(current_user_set.save_all_parameters_to_device(),
+                   success_message)
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
+
 
 if __name__ == '__main__':
     a = ManageUserSets()

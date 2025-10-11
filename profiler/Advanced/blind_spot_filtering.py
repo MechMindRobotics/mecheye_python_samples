@@ -23,7 +23,7 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
         mutex.release()
 
 
-class ProfileAlignment(object):
+class BlindSpotFilter(object):
     def __init__(self):
         self.profiler = Profiler()
 
@@ -34,7 +34,7 @@ class ProfileAlignment(object):
         show_error(self.user_set.set_int_value(
             CallbackRetrievalTimeout.name, 60000))
 
-        self.callback = CustomAcquisitionCallback(self.data_width).__disown__()
+        self.callback = CustomAcquisitionCallback(self.data_width)
 
         # Register the callback function
         status = self.profiler.register_acquisition_callback(
@@ -86,12 +86,9 @@ class ProfileAlignment(object):
             return -1
 
         self.user_set = self.profiler.current_user_set()
-        # Enable the Z-axis profile alignment function
+        # Enable the blind spot filtering function
         show_error(self.user_set.set_bool_value(
-            EnableZAxisAlignment.name, True))
-        # Enable the X-axis profile alignment function
-        show_error(self.user_set.set_bool_value(
-            EnableXAxisAlignment.name, True))
+            EnableBlindSpotFiltering.name, True))
 
         error, self.data_width = self.user_set.get_int_value(
             DataPointsPerProfile.name)
@@ -102,7 +99,6 @@ class ProfileAlignment(object):
             DataAcquisitionTriggerSource.name)
         show_error(error)
         self.is_software_trigger = data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
-
         # Acquire the profile data using the callback function
         if not self.acquire_profile_data_using_callback():
             return -1
@@ -118,10 +114,10 @@ class ProfileAlignment(object):
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
         return 0
 
 
 if __name__ == '__main__':
-    a = ProfileAlignment()
+    a = BlindSpotFilter()
     a.main()

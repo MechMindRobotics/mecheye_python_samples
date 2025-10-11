@@ -1,3 +1,5 @@
+# With this sample, you can obtain and save the depth map rendered with the jet color scheme.
+
 from mecheye.shared import *
 from mecheye.profiler import *
 from mecheye.profiler_utils import *
@@ -23,7 +25,7 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
         mutex.release()
 
 
-class NoiseRemoval(object):
+class RenderedDepthMap(object):
     def __init__(self):
         self.profiler = Profiler()
 
@@ -34,7 +36,7 @@ class NoiseRemoval(object):
         show_error(self.user_set.set_int_value(
             CallbackRetrievalTimeout.name, 60000))
 
-        self.callback = CustomAcquisitionCallback(self.data_width).__disown__()
+        self.callback = CustomAcquisitionCallback(self.data_width)
 
         # Register the callback function
         status = self.profiler.register_acquisition_callback(
@@ -72,11 +74,35 @@ class NoiseRemoval(object):
         self.profile_batch.append(self.callback.profile_batch)
         return True
 
-    def save_depth_and_intensity(self, depth_file_name, intensity_file_name):
+    def render_depth_data(self, depth):
+        if depth is None or depth.size == 0:
+            return np.array([])
+
+        mask = np.isfinite(depth).astype(np.uint8)
+        min_depth_value, max_depth_value, _, _ = cv2.minMaxLoc(depth, mask)
+
+        if np.isclose(max_depth_value - min_depth_value, 0):
+            depth8U = depth.astype(np.uint8)
+        else:
+            depth8U = cv2.convertScaleAbs(depth, alpha=(255.0 / (min_depth_value - max_depth_value)), beta=(
+                (max_depth_value * 255.0) / (max_depth_value - min_depth_value) + 1))
+
+        if depth8U.size == 0:
+            return np.array([])
+
+        colored_depth = cv2.applyColorMap(depth8U, cv2.COLORMAP_JET)
+        colored_depth[depth8U == 0] = [0, 0, 0]
+
+        return colored_depth
+
+    def save_depth_and_intensity(self, depth_file_name, intensity_file_name, color_depth_file_name):
         cv2.imwrite(depth_file_name,
                     self.profile_batch.get_depth_map().data())
         cv2.imwrite(intensity_file_name,
                     self.profile_batch.get_intensity_image().data())
+        rendered_depth = self.render_depth_data(
+            self.profile_batch.get_depth_map().data())
+        cv2.imwrite(color_depth_file_name, rendered_depth)
 
     def main(self):
         if not find_and_connect(self.profiler):
@@ -86,12 +112,6 @@ class NoiseRemoval(object):
             return -1
 
         self.user_set = self.profiler.current_user_set()
-        # Enable the noise removal function
-        show_error(self.user_set.set_bool_value(EnableNoiseRemoval.name, True))
-        # Set the "NoiseRemovalIntensity" parameter to "Medium"
-        show_error(self.user_set.set_enum_value(
-            NoiseRemovalIntensity.name, NoiseRemovalIntensity.Value_Medium))
-
         error, self.data_width = self.user_set.get_int_value(
             DataPointsPerProfile.name)
         show_error(error)
@@ -101,26 +121,22 @@ class NoiseRemoval(object):
             DataAcquisitionTriggerSource.name)
         show_error(error)
         self.is_software_trigger = data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
-
         # Acquire the profile data using the callback function
         if not self.acquire_profile_data_using_callback():
             return -1
 
-        if self.profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
-            print("Part of the batch's data is lost, the number of valid profiles is:",
-                  self.profile_batch.valid_height())
-
         print("Save the depth map and intensity image")
-        self.save_depth_and_intensity("depth.tiff", "intensity.png")
+        self.save_depth_and_intensity(
+            "depth.tiff", "intensity.png", "renderedDepthMap.tiff")
 
         # # Uncomment the following line to save a virtual device file using the ProfileBatch acquired.
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
         return 0
 
 
 if __name__ == '__main__':
-    a = NoiseRemoval()
+    a = RenderedDepthMap()
     a.main()
