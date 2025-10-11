@@ -23,7 +23,7 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
         mutex.release()
 
 
-class TriggerWithExternalDeviceAndEncoder(object):
+class TriggerWithSoftwareAndEncoder(object):
     def __init__(self):
         self.profiler = Profiler()
 
@@ -111,9 +111,9 @@ class TriggerWithExternalDeviceAndEncoder(object):
         # # Set the "OutlierRemovalIntensity" parameter to "VeryLow"
         # show_error(self.user_set.set_enum_value(OutlierRemovalIntensity.name,OutlierRemovalIntensity.Value_VeryLow))
 
-        # Set the "Data Acquisition Trigger Source" parameter to "External"
+        # Set the "Data Acquisition Trigger Source" parameter to "Software"
         show_error(self.user_set.set_enum_value(
-            DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_External))
+            DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_Software))
 
         # Set the "Line Scan Trigger Source" parameter to "Encoder"
         # Set the (encoder) "Trigger Direction" parameter to "Both"
@@ -227,7 +227,7 @@ class TriggerWithExternalDeviceAndEncoder(object):
         show_error(self.user_set.set_int_value(
             CallbackRetrievalTimeout.name, 60000))
 
-        self.callback = CustomAcquisitionCallback(self.data_width).__disown__()
+        self.callback = CustomAcquisitionCallback(self.data_width)
 
         # Register the callback function
         status = self.profiler.register_acquisition_callback(
@@ -282,13 +282,13 @@ class TriggerWithExternalDeviceAndEncoder(object):
 
         self.profile_batch = ProfileBatch(self.data_width)
 
-        # # Acquire profile data without using callback
-        # if not self.acquire_profile_data():
-        # return -1
-
-        # Acquire the profile data using the callback function
-        if not self.acquire_profile_data_using_callback():
+        # Acquire profile data without using callback
+        if not self.acquire_profile_data():
             return -1
+
+        # # Acquire the profile data using the callback function
+        # if not self.acquire_profile_data_using_callback():
+            # return -1
 
         if self.profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
             print("Part of the batch's data is lost, the number of valid profiles is:",
@@ -296,15 +296,17 @@ class TriggerWithExternalDeviceAndEncoder(object):
 
         print("Save the depth map and intensity image")
         self.save_depth_and_intensity("depth.tiff", "intensity.png")
+        save_point_cloud(profile_batch=self.profile_batch, user_set=self.user_set,
+                         save_ply=True, save_csv=True, is_organized=True)
 
         # # Uncomment the following line to save a virtual device file using the ProfileBatch acquired.
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
         return 0
 
 
 if __name__ == '__main__':
-    a = TriggerWithExternalDeviceAndEncoder()
+    a = TriggerWithSoftwareAndEncoder()
     a.main()

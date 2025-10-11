@@ -23,7 +23,7 @@ class CustomAcquisitionCallback(AcquisitionCallbackBase):
         mutex.release()
 
 
-class TriggerWithSoftwareAndEncoder(object):
+class TriggerWithExternalDeviceAndFixedRate(object):
     def __init__(self):
         self.profiler = Profiler()
 
@@ -65,20 +65,6 @@ class TriggerWithSoftwareAndEncoder(object):
         show_error(self.user_set.set_float_value(
             HdrSecondThreshold.name, second_threshold))
 
-    def set_encoder_trigger(self, trigger_direction: int, trigger_signal_counting_mode: int, trigger_interval: int):
-        # Set the trigger source to Encoder
-        show_error(self.user_set.set_enum_value(
-            LineScanTriggerSource.name, LineScanTriggerSource.Value_Encoder))
-        # Set the encoder trigger direction to {trigger_direction}
-        show_error(self.user_set.set_enum_value(
-            EncoderTriggerDirection.name, trigger_direction))
-        # Set the encoder signal counting mode to be {trigger_signal_counting_mode}
-        show_error(self.user_set.set_enum_value(
-            EncoderTriggerSignalCountingMode.name, trigger_signal_counting_mode))
-        # Set the encoder trigger interval to {trigger_interval}
-        show_error(self.user_set.set_int_value(
-            EncoderTriggerInterval.name, trigger_interval))
-
     def set_parameters(self):
         self.user_set = self.profiler.current_user_set()
 
@@ -111,16 +97,16 @@ class TriggerWithSoftwareAndEncoder(object):
         # # Set the "OutlierRemovalIntensity" parameter to "VeryLow"
         # show_error(self.user_set.set_enum_value(OutlierRemovalIntensity.name,OutlierRemovalIntensity.Value_VeryLow))
 
-        # Set the "Data Acquisition Trigger Source" parameter to "Software"
+        # Set the "Data Acquisition Trigger Source" parameter to "External"
         show_error(self.user_set.set_enum_value(
-            DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_Software))
+            DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_External))
 
-        # Set the "Line Scan Trigger Source" parameter to "Encoder"
-        # Set the (encoder) "Trigger Direction" parameter to "Both"
-        # Set the (encoder) "Trigger Signal Counting Mode" parameter to "1×"
-        # Set the (encoder) "Trigger Interval" parameter to 10
-        self.set_encoder_trigger(EncoderTriggerDirection.Value_Both,
-                                 EncoderTriggerSignalCountingMode.Value_Multiple_1, 10)
+        # Set the "Line Scan Trigger Source" parameter to "Fixed rate"
+        show_error(self.user_set.set_enum_value(
+            LineScanTriggerSource.name, LineScanTriggerSource.Value_FixedRate))
+        # Set the " Software Trigger Rate" to 1000 Hz
+        show_error(self.user_set.set_float_value(
+            SoftwareTriggerRate.name, 1000))
 
         # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
         show_error(self.user_set.set_int_value(ScanLineCount.name, 1600))
@@ -227,7 +213,7 @@ class TriggerWithSoftwareAndEncoder(object):
         show_error(self.user_set.set_int_value(
             CallbackRetrievalTimeout.name, 60000))
 
-        self.callback = CustomAcquisitionCallback(self.data_width).__disown__()
+        self.callback = CustomAcquisitionCallback(self.data_width)
 
         # Register the callback function
         status = self.profiler.register_acquisition_callback(
@@ -282,13 +268,13 @@ class TriggerWithSoftwareAndEncoder(object):
 
         self.profile_batch = ProfileBatch(self.data_width)
 
-        # Acquire profile data without using callback
-        if not self.acquire_profile_data():
-            return -1
+        # # Acquire profile data without using callback
+        # if not self.acquire_profile_data():
+        # return -1
 
-        # # Acquire the profile data using the callback function
-        # if not self.acquire_profile_data_using_callback():
-            # return -1
+        # Acquire the profile data using the callback function
+        if not self.acquire_profile_data_using_callback():
+            return -1
 
         if self.profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
             print("Part of the batch's data is lost, the number of valid profiles is:",
@@ -296,17 +282,15 @@ class TriggerWithSoftwareAndEncoder(object):
 
         print("Save the depth map and intensity image")
         self.save_depth_and_intensity("depth.tiff", "intensity.png")
-        save_point_cloud(profile_batch=self.profile_batch, user_set=self.user_set,
-                         save_ply=True, save_csv=True, is_organized=True)
 
         # # Uncomment the following line to save a virtual device file using the ProfileBatch acquired.
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
         return 0
 
 
 if __name__ == '__main__':
-    a = TriggerWithSoftwareAndEncoder()
+    a = TriggerWithExternalDeviceAndFixedRate()
     a.main()

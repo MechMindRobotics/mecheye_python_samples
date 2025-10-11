@@ -151,7 +151,7 @@ class TransformPointCloud(object):
         # self.profiler.save_virtual_device_file(self.profile_batch, "test.mraw")
 
         self.profiler.disconnect()
-        print("Disconnected form the Mech-Eye Profiler successfully")
+        print("Disconnected from the Mech-Eye Profiler successfully")
         return 0
 
 

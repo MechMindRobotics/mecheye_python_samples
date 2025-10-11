@@ -19,7 +19,6 @@ class CapturePeriodically(object):
 
     def capture_timed_and_periodically(self):
         frame_all_2d_3d = Frame2DAnd3D()
-        show_error(self.camera.capture_2d_and_3d(frame_all_2d_3d))
         start = time.time()
         capture_count = 0
         # Perform image capturing periodically according to the set interval for the set total duration.
@@ -27,7 +26,10 @@ class CapturePeriodically(object):
             before = time.time()
             print("Start capturing.")
 
-            show_error(self.camera.capture_2d_and_3d(frame_all_2d_3d))
+            status = self.camera.capture_2d_and_3d(frame_all_2d_3d)
+            show_error(status)
+            if not status.is_ok():
+                return
             capture_count = capture_count + 1
 
             # Save the obtained data with the set filenames.
@@ -36,7 +38,7 @@ class CapturePeriodically(object):
             cv2.imwrite(color_file, color_map.data())
 
             depth_map = frame_all_2d_3d.frame_3d().get_depth_map()
-            depth_file = "DepthMap_" + str(capture_count) + ".png"
+            depth_file = "DepthMap_" + str(capture_count) + ".tiff"
             cv2.imwrite(depth_file, depth_map.data())
 
             point_cloud_file = "TexturedPointCloud_" + \
