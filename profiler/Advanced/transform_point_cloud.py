@@ -25,6 +25,14 @@ def convert_batch_to_point_cloud_with_transformation(profile_batch: ProfileBatch
     if not error.is_ok():
         show_error(error)
         return
+
+    error, scan_distance = user_set.get_float_value(ScanDistance.name)
+    if not error.is_ok():
+        show_error(error)
+        return
+    print(
+        f"Current Y-axis resolution: {y_resolution} um, scan distance: {scan_distance} um.")
+
     # # Uncomment the following line for custom Y Unit
     # y_resolution = get_trigger_interval_distance()
 
@@ -64,8 +72,11 @@ class TransformPointCloud(object):
         show_error(self.user_set.set_float_value(
             SoftwareTriggerRate.name, 1000))
 
-       # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
+        # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
         show_error(self.user_set.set_int_value(ScanLineCount.name, 1600))
+        # Set the "Travel Speed" parameter to 100 mm/s. This value is used to calculate the
+        # Y-axis resolution and scan distance when line scan is triggered at a fixed rate.
+        show_error(self.user_set.set_float_value(TravelSpeed.name, 100.0))
 
         error, self.data_width = self.user_set.get_int_value(
             DataPointsPerProfile.name)

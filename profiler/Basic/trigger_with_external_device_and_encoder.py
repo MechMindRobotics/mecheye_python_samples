@@ -65,7 +65,7 @@ class TriggerWithExternalDeviceAndEncoder(object):
         show_error(self.user_set.set_float_value(
             HdrSecondThreshold.name, second_threshold))
 
-    def set_encoder_trigger(self, trigger_direction: int, trigger_signal_counting_mode: int, trigger_interval: int):
+    def set_encoder_trigger(self, trigger_direction: int, trigger_signal_counting_mode: int, trigger_interval: int, encoder_resolution: float):
         # Set the trigger source to Encoder
         show_error(self.user_set.set_enum_value(
             LineScanTriggerSource.name, LineScanTriggerSource.Value_Encoder))
@@ -78,6 +78,9 @@ class TriggerWithExternalDeviceAndEncoder(object):
         # Set the encoder trigger interval to {trigger_interval}
         show_error(self.user_set.set_int_value(
             EncoderTriggerInterval.name, trigger_interval))
+        # Set the encoder resolution (unit: μm)
+        show_error(self.user_set.set_float_value(
+            EncoderResolution.name, encoder_resolution))
 
     def set_parameters(self):
         self.user_set = self.profiler.current_user_set()
@@ -119,8 +122,9 @@ class TriggerWithExternalDeviceAndEncoder(object):
         # Set the (encoder) "Trigger Direction" parameter to "Both"
         # Set the (encoder) "Trigger Signal Counting Mode" parameter to "1×"
         # Set the (encoder) "Trigger Interval" parameter to 10
+        # Set the "Encoder Resolution" parameter to 5 μm
         self.set_encoder_trigger(EncoderTriggerDirection.Value_Both,
-                                 EncoderTriggerSignalCountingMode.Value_Multiple_1, 10)
+                                 EncoderTriggerSignalCountingMode.Value_Multiple_1, 10, 5)
 
         # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
         show_error(self.user_set.set_int_value(ScanLineCount.name, 1600))
