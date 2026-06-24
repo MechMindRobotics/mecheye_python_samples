@@ -17,18 +17,18 @@ The samples marked with `(OpenCV)` require [OpenCV](https://pypi.org/project/ope
 
 * **Basic**
   * [trigger_with_software_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Basic/trigger_with_software_and_fixed_rate.py) `(OpenCV)`  
-    Trigger data acquisition with signals input from software, trigger line scans at a fixed rate, and then retrieve and save the acquired data.
+    Trigger data acquisition with the software + fixed rate method, and then retrieve and save the acquired data.
   * [trigger_with_external_device_and_fixed_rate](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Basic/trigger_with_external_device_and_fixed_rate.py) `(OpenCV)`  
-    Trigger data acquisition with signals input from the external device, trigger line scans at a fixed rate, and then retrieve and save the acquired data.
+    Trigger data acquisition with the external + fixed rate method, and then retrieve and save the acquired data.
   * [trigger_with_software_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Basic/trigger_with_software_and_encoder.py) `(OpenCV)`  
-    Trigger data acquisition with signals input from software, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
+    Trigger data acquisition with the software + encoder method, and then retrieve and save the acquired data.
   * [trigger_with_external_device_and_encoder](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Basic/trigger_with_external_device_and_encoder.py) `(OpenCV)`  
-    Trigger data acquisition with signals input from the external device, trigger line scans with signals input from the encoder, and then retrieve and save the acquired data.
+    Trigger data acquisition with the external + encoder method, and then retrieve and save the acquired data.
   * [trigger_non_stop_acquisition](https://github.com/MechMindRobotics/mecheye_csharp_samples/tree/master/profiler/Basic/trigger_non_stop_acquisition.py) `(OpenCV)`  
-    Trigger non-stop acquisition, and then retrieve and save the acquired data.
+    Trigger a continuous scan of the target object, and then retrieve and save the acquired data.
 * **Advanced**
   * [trigger_multiple_profilers_simultaneously](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Advanced/trigger_multiple_profilers_simultaneously.py) `(OpenCV)`  
-    Trigger multiple laser profilers to acquire data asynchronously and retrieve the acquired data.
+    Trigger multiple laser profilers to acquire data asynchronously, and then retrieve and save the acquired data.
   * [blind_spot_filtering](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Advanced/blind_spot_filtering.py) `(OpenCV)`  
     Detect and remove the false data caused by blind spots and obtain the filtered profile data.
   * [noise_removal](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Advanced/noise_removal.py) `(OpenCV)`  
@@ -49,7 +49,7 @@ The samples marked with `(OpenCV)` require [OpenCV](https://pypi.org/project/ope
   * [print_profiler_status](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Util/print_profiler_status.py)  
     Obtain and print the laser profiler's information, such as model, serial number, firmware version, and temperatures.
   * [handle_nan_and_negative_in_depth](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/profiler/Util/handle_nan_and_negative_in_depth.py) `(OpenCV)`  
-    Trigger data acquisition and handle NaN and negative values in depth data.
+    Detect and process NaN and negative values in the depth data, and then generate and save the intensity image and depth map.
 
 ## Run the Samples
 

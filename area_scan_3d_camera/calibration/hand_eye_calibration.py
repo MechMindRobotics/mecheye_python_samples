@@ -120,6 +120,7 @@ class HandEyeCalibrationSample:
         print("T: obtain the 2D image with feature recognition result")
         print("A: enter the current robot pose")
         print("C: calculate extrinsic parameters")
+        print("F: obtain the first corner of current image")
         while True:
             user_input = input()
             if user_input == "P" or user_input == "p":
@@ -130,6 +131,8 @@ class HandEyeCalibrationSample:
                 return "A"
             elif user_input == "C" or user_input == "c":
                 return "C"
+            elif user_input == "F" or user_input == "f":
+                return "F"
             else:
                 print("Unknown command, please enter correct command type")
 
@@ -289,6 +292,13 @@ class HandEyeCalibrationSample:
                     print("The extrinsic parameters are:")
                     print(camera_to_base.to_string())
                     save_extrinsic_parameters(camera_to_base.to_string())
+            elif command == "F":  
+                corner = PointXYZ() 
+                error_status = self.calibration.extract_current_image_first_corner(
+                    self.camera, corner)
+                show_error(error_status)
+                if error_status.is_ok():
+                    print(f"The first corner is: {corner.x:.3f}, {corner.y:.3f}, {corner.z:.3f}")
 
     def main(self):
         if not find_and_connect(self.camera):

@@ -108,8 +108,11 @@ class TriggerWithSoftwareAndFixedRate(object):
         show_error(self.user_set.set_float_value(
             SoftwareTriggerRate.name, 1000))
 
-       # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
+        # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
         show_error(self.user_set.set_int_value(ScanLineCount.name, 1600))
+        # Set the "Travel Speed" parameter to 100 mm/s. This value is used to calculate the
+        # Y-axis resolution and scan distance when line scan is triggered at a fixed rate.
+        show_error(self.user_set.set_float_value(TravelSpeed.name, 100.0))
 
         # Set the "Laser Power" parameter to 100
         show_error(self.user_set.set_int_value(LaserPower.name, 100))
@@ -213,7 +216,7 @@ class TriggerWithSoftwareAndFixedRate(object):
         show_error(self.user_set.set_int_value(
             CallbackRetrievalTimeout.name, 60000))
 
-        self.callback = CustomAcquisitionCallback(self.data_width)
+        self.callback = CustomAcquisitionCallback(self.data_width).__disown__()
 
         # Register the callback function
         status = self.profiler.register_acquisition_callback(

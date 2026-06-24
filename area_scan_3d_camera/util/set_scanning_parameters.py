@@ -21,8 +21,17 @@ class SetScanningParameters(object):
         error, user_set_name = current_user_set.get_name()
         show_error(error)
         print("\ncurrent_user_set: " + user_set_name)
+        error, available_params = current_user_set.get_available_parameter_names()
+        show_error(error)
 
         # Set the exposure times for acquiring depth information.
+        if Scanning3DExposureCount.name in available_params:
+            error = current_user_set.set_int_value(Scanning3DExposureCount.name, 1)
+            show_error(error)
+            error, exposure_count = current_user_set.get_int_value(
+                Scanning3DExposureCount.name)
+            show_error(error)
+            print("\n3D scanning exposure count: {}".format(exposure_count))
         error = current_user_set.set_float_array_value(
             Scanning3DExposureSequence.name, [5])
         # error = current_user_set.set_float_array_value(
@@ -35,6 +44,64 @@ class SetScanningParameters(object):
             len(exposure_sequence)))
         for i in exposure_sequence:
             print("3D scanning exposure time: {}".format(i))
+
+        # Some models provide exposure group parameters. Use "GroupExposureSelector" to select the
+        # target group, and then set the group exposure time, gain, and power level.
+        if (Scanning3DGroupExposureSelector.name in available_params and
+                Scanning3DGroupExposureTime.name in available_params and
+                Scanning3DGroupGain.name in available_params and
+                Scanning3DGroupDlpPowerLevel.name in available_params):
+            error = current_user_set.set_enum_value(
+                Scanning3DGroupExposureSelector.name,
+                Scanning3DGroupExposureSelector.Value_Exposure1)
+            show_error(error)
+            error = current_user_set.set_float_value(
+                Scanning3DGroupExposureTime.name, 10)
+            show_error(error)
+            error = current_user_set.set_float_value(
+                Scanning3DGroupGain.name, 2.0)
+            show_error(error)
+            error = current_user_set.set_int_value(
+                Scanning3DGroupDlpPowerLevel.name, 80)
+            show_error(error)
+
+            error, group_exposure_time = current_user_set.get_float_value(
+                Scanning3DGroupExposureTime.name)
+            show_error(error)
+            error, group_gain = current_user_set.get_float_value(
+                Scanning3DGroupGain.name)
+            show_error(error)
+            error, group_dlp_power_level = current_user_set.get_int_value(
+                Scanning3DGroupDlpPowerLevel.name)
+            show_error(error)
+            print("Group Exposure1: exposure time {}, gain {}, DLP power level {}.".format(
+                group_exposure_time, group_gain, group_dlp_power_level))
+
+            error = current_user_set.set_enum_value(
+                Scanning3DGroupExposureSelector.name,
+                Scanning3DGroupExposureSelector.Value_Exposure2)
+            show_error(error)
+            error = current_user_set.set_float_value(
+                Scanning3DGroupExposureTime.name, 5)
+            show_error(error)
+            error = current_user_set.set_float_value(
+                Scanning3DGroupGain.name, 0.0)
+            show_error(error)
+            error = current_user_set.set_int_value(
+                Scanning3DGroupDlpPowerLevel.name, 60)
+            show_error(error)
+
+            error, group_exposure_time = current_user_set.get_float_value(
+                Scanning3DGroupExposureTime.name)
+            show_error(error)
+            error, group_gain = current_user_set.get_float_value(
+                Scanning3DGroupGain.name)
+            show_error(error)
+            error, group_dlp_power_level = current_user_set.get_int_value(
+                Scanning3DGroupDlpPowerLevel.name)
+            show_error(error)
+            print("Group Exposure2: exposure time {}, gain {}, DLP power level {}.".format(
+                group_exposure_time, group_gain, group_dlp_power_level))
 
         # Set the ROI for the depth map and point cloud, and then obtain the parameter values for checking.
         roi = ROI(0, 0, 500, 500)
@@ -81,7 +148,7 @@ class SetScanningParameters(object):
         # show_error(error)
 
         # The following models also provide a "FlashAcquisitionMode" when using the flash exposure
-        # mode: DEEP, DEEP-GL, LSR S/L/XL, LSR S-GL/L-GL/XL-GL, PRO XS/S/M, PRX XS-GL/S-GL/M-GL, NANO, NANO-GL, NANO ULTRA, NANO ULTRA-GL. Uncomment the following lines to set
+        # mode: DEEP, DEEP-GL, LSR S/L/XL, LSR S-GL/L-GL/XL-GL, PRO XS/S/M, PRO XS-GL/S-GL/M-GL, NANO, NANO-GL, NANO ULTRA, NANO ULTRA-GL. Uncomment the following lines to set
         # the "FlashAcquisitionMode" parameter to "Responsive".
         # flash_acquisition_mode_2d=Scanning2DFlashAcquisitionMode.Value_Responsive
         # error = current_user_set.set_enum_value(
@@ -112,11 +179,38 @@ class SetScanningParameters(object):
         # setting the "Scan2DGain" parameter when the exposure mode is set to fixed exposure, auto
         # exposure, HDR, or flash mode, and the flash acquisition mode is set to
         # responsive.
-        # print("\n2D image gain: ", scan2DGain)value(Scanning2DGain.name,2.0))
-        # show_error(error)et_float_value(Scanning2DGain.name)
+        # error = current_user_set.set_float_value(Scanning2DGain.name, 2.0)
+        # show_error(error)
         # error, scan2DGain = current_user_set.get_float_value(Scanning2DGain.name)
-        # show_error(current_user_set.set_float_value(Scanning2DGain.name,2.6))
+        # show_error(error)
+        # print("\n2D image gain: ", scan2DGain)
 
+
+        # The following parameters are only available on some models. Uncomment to set and read values.
+        # error = current_user_set.set_float_value(
+        #     Scanning2DPatternRoleGain.name, 2.0)
+        # show_error(error)
+        # error, pattern_role_gain = current_user_set.get_float_value(
+        #     Scanning2DPatternRoleGain.name)
+        # show_error(error)
+        # print("\n2D pattern role gain: {}".format(pattern_role_gain))
+        #
+        # error = current_user_set.set_float_value(
+        #     Scanning2DFlashGain.name, 2.0)
+        # show_error(error)
+        # error, flash_gain = current_user_set.get_float_value(
+        #     Scanning2DFlashGain.name)
+        # show_error(error)
+        # print("\n2D flash gain: {}".format(flash_gain))
+        #
+        # error = current_user_set.set_int_value(
+        #     Scanning2DFlashPowerLevel.name, 80)
+        # show_error(error)
+        # error, flash_power_level = current_user_set.get_int_value(
+        #     Scanning2DFlashPowerLevel.name)
+        # show_error(error)
+        # print("\n2D flash power level: {} %".format(flash_power_level))
+        
         error, exposure_mode_2d = current_user_set.get_enum_value_string(
             Scanning2DExposureMode.name)
         show_error(error)

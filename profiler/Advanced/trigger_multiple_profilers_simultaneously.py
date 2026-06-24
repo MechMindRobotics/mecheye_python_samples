@@ -12,57 +12,65 @@ from mecheye.profiler_utils import *
 
 def set_timed_exposure(user_set: UserSet, exposure_time: int):
     # Set the exposure mode to timed
-    show_error(user_set.set_enum_value(
-        ExposureMode.name, ExposureMode.Value_Timed))
+    show_error(user_set.set_enum_value(ExposureMode.name, ExposureMode.Value_Timed))
 
     # Set the exposure time to {exposure_time} μs
-    show_error(user_set.set_int_value(
-        ExposureTime.name, exposure_time))
+    show_error(user_set.set_int_value(ExposureTime.name, exposure_time))
 
 
-def set_hdr_exposure(user_set: UserSet, exposure_time: int, proportion1: float, proportion2: float, first_threshold: float, second_threshold: float):
+def set_hdr_exposure(
+    user_set: UserSet,
+    exposure_time: int,
+    proportion1: float,
+    proportion2: float,
+    first_threshold: float,
+    second_threshold: float,
+):
     # Set the "Exposure Mode" parameter to "HDR"
-    show_error(user_set.set_enum_value(
-        ExposureMode.name, ExposureMode.Value_HDR))
+    show_error(user_set.set_enum_value(ExposureMode.name, ExposureMode.Value_HDR))
 
     # Set the total exposure time to {exposure_time} μs
-    show_error(user_set.set_int_value(
-        ExposureTime.name, exposure_time))
+    show_error(user_set.set_int_value(ExposureTime.name, exposure_time))
 
     # Set the proportion of the first exposure phase to {proportion1}%
-    show_error(user_set.set_float_value(
-        HdrExposureTimeProportion1.name, proportion1))
+    show_error(user_set.set_float_value(HdrExposureTimeProportion1.name, proportion1))
 
     # Set the proportion of the first + second exposure phases to {proportion2}% (that is, the
     # second exposure phase occupies {proportion2 - proportion1}%, and the third exposure phase
     # occupies {100 - proportion2}% of the total exposure time)
-    show_error(user_set.set_float_value(
-        HdrExposureTimeProportion2.name, proportion2))
+    show_error(user_set.set_float_value(HdrExposureTimeProportion2.name, proportion2))
 
     # Set the first threshold to {first_threshold}. This limits the maximum grayscale value to
     # {first_threshold} after the first exposure phase is completed.
-    show_error(user_set.set_float_value(
-        HdrFirstThreshold.name, first_threshold))
+    show_error(user_set.set_float_value(HdrFirstThreshold.name, first_threshold))
 
     # Set the second threshold to {second_threshold}. This limits the maximum grayscale value to
     # {second_threshold} after the second exposure phase is completed.
-    show_error(user_set.set_float_value(
-        HdrSecondThreshold.name, second_threshold))
+    show_error(user_set.set_float_value(HdrSecondThreshold.name, second_threshold))
 
 
-def set_encoder_trigger(user_set: UserSet, trigger_direction: int, trigger_signal_counting_mode: int, trigger_interval: int):
+def set_encoder_trigger(
+    user_set: UserSet,
+    trigger_direction: int,
+    trigger_signal_counting_mode: int,
+    trigger_interval: int,
+):
     # Set the trigger source to Encoder
-    show_error(user_set.set_enum_value(
-        LineScanTriggerSource.name, LineScanTriggerSource.Value_Encoder))
+    show_error(
+        user_set.set_enum_value(
+            LineScanTriggerSource.name, LineScanTriggerSource.Value_Encoder
+        )
+    )
     # Set the encoder trigger direction to {trigger_direction}
-    show_error(user_set.set_enum_value(
-        EncoderTriggerDirection.name, trigger_direction))
+    show_error(user_set.set_enum_value(EncoderTriggerDirection.name, trigger_direction))
     # Set the encoder signal counting mode to be {trigger_signal_counting_mode}
-    show_error(user_set.set_enum_value(
-        EncoderTriggerSignalCountingMode.name, trigger_signal_counting_mode))
+    show_error(
+        user_set.set_enum_value(
+            EncoderTriggerSignalCountingMode.name, trigger_signal_counting_mode
+        )
+    )
     # Set the encoder trigger interval to {trigger_interval}
-    show_error(user_set.set_int_value(
-        EncoderTriggerInterval.name, trigger_interval))
+    show_error(user_set.set_int_value(EncoderTriggerInterval.name, trigger_interval))
 
 
 def set_parameters(profiler: Profiler):
@@ -92,19 +100,25 @@ def set_parameters(profiler: Profiler):
     # set_hdr_exposure(user_set, 100, 40, 80, 10, 60)
 
     # Set the "Data Acquisition Trigger Source" parameter to "Software"
-    show_error(user_set.set_enum_value(
-        DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_Software))
+    show_error(
+        user_set.set_enum_value(
+            DataAcquisitionTriggerSource.name,
+            DataAcquisitionTriggerSource.Value_Software,
+        )
+    )
 
     # # Set the "Data Acquisition Trigger Source" parameter to "External"
     # show_error(user_set.set_enum_value(
     # DataAcquisitionTriggerSource.name, DataAcquisitionTriggerSource.Value_External))
 
     # Set the "Line Scan Trigger Source" parameter to "Fixed rate"
-    show_error(user_set.set_enum_value(
-        LineScanTriggerSource.name, LineScanTriggerSource.Value_FixedRate))
+    show_error(
+        user_set.set_enum_value(
+            LineScanTriggerSource.name, LineScanTriggerSource.Value_FixedRate
+        )
+    )
     # Set the " Software Trigger Rate" to 1000 Hz
-    show_error(user_set.set_float_value(
-        SoftwareTriggerRate.name, 1000))
+    show_error(user_set.set_float_value(SoftwareTriggerRate.name, 1000))
 
     # # Set the "Line Scan Trigger Source" parameter to "Encoder"
     # # Set the (encoder) "Trigger Direction" parameter to "Both"
@@ -115,12 +129,14 @@ def set_parameters(profiler: Profiler):
 
     # Set the "Scan Line Count" parameter (the number of lines to be scanned) to 1600
     show_error(user_set.set_int_value(ScanLineCount.name, 1600))
+    # Set the "Travel Speed" parameter to 100 mm/s. This value is used to calculate the
+    # Y-axis resolution and scan distance when line scan is triggered at a fixed rate.
+    show_error(user_set.set_float_value(TravelSpeed.name, 100.0))
 
     # Set the "Laser Power" parameter to 100
     show_error(user_set.set_int_value(LaserPower.name, 100))
     # Set the "Analog Gain" parameter to "Gain_2"
-    show_error(user_set.set_enum_value(
-        AnalogGain.name, AnalogGain.Value_Gain_2))
+    show_error(user_set.set_enum_value(AnalogGain.name, AnalogGain.Value_Gain_2))
     # Set the "Digital Gain" parameter to 0
     show_error(user_set.set_int_value(DigitalGain.name, 0))
 
@@ -131,8 +147,9 @@ def set_parameters(profiler: Profiler):
     # Set the "Maximum Laser Line Width" parameter to 20
     show_error(user_set.set_int_value(MaxLaserLineWidth.name, 20))
     # Set the "Spot Selection" parameter to "Strongest"
-    show_error(user_set.set_enum_value(
-        SpotSelection.name, SpotSelection.Value_Strongest))
+    show_error(
+        user_set.set_enum_value(SpotSelection.name, SpotSelection.Value_Strongest)
+    )
 
     # This parameter is only effective for firmware 2.2.1 and below. For firmware 2.3.0 and above,
     # adjustment of this parameter does not take effect.
@@ -155,31 +172,43 @@ def set_parameters(profiler: Profiler):
         set to "Median", the "Median Filter Window Size" parameter needs to be set. This parameter
         controls the window size of median filter.
         """
-    show_error(user_set.set_enum_value(
-        Filter.name, Filter.Value_Mean))
+    show_error(user_set.set_enum_value(Filter.name, Filter.Value_Mean))
     # Set the "Mean Filter Window Size" parameter to 2
-    show_error(user_set.set_enum_value(
-        MeanFilterWindowSize.name, MeanFilterWindowSize.Value_WindowSize_2))
+    show_error(
+        user_set.set_enum_value(
+            MeanFilterWindowSize.name, MeanFilterWindowSize.Value_WindowSize_2
+        )
+    )
 
-    error, data_width = user_set.get_int_value(
-        DataPointsPerProfile.name)
+    error, data_width = user_set.get_int_value(DataPointsPerProfile.name)
     show_error(error)
 
-    error, capture_line_count = user_set.get_int_value(
-        ScanLineCount.name)
+    error, capture_line_count = user_set.get_int_value(ScanLineCount.name)
     show_error(error)
 
     error, data_acquisition_trigger_source = user_set.get_enum_value(
-        DataAcquisitionTriggerSource.name)
+        DataAcquisitionTriggerSource.name
+    )
     show_error(error)
-    is_software_trigger = data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
+    is_software_trigger = (
+        data_acquisition_trigger_source == DataAcquisitionTriggerSource.Value_Software
+    )
     return data_width, capture_line_count, is_software_trigger
 
 
-def acquire_profile_data(profiler: Profiler, profile_batch: ProfileBatch, is_software_trigger: bool, capture_line_count: int, data_width: int) -> bool:
+def acquire_profile_data(
+    profiler: Profiler,
+    profile_batch: ProfileBatch,
+    is_software_trigger: bool,
+    capture_line_count: int,
+    data_width: int,
+) -> bool:
     """
     Call start_acquisition() to enter the laser profiler into the acquisition ready status, and
     then call trigger_software() to start the data acquisition (triggered by software).
+
+    For external trigger mode, a retrieval timeout mechanism is used to prevent the sample
+    from getting stuck in an infinite loop when the external trigger signal stops.
     """
     print("Start data acquisition.")
     status = profiler.start_acquisition()
@@ -189,23 +218,52 @@ def acquire_profile_data(profiler: Profiler, profile_batch: ProfileBatch, is_sof
 
     if is_software_trigger:
         status = profiler.trigger_software()
-        if (not status.is_ok()):
+        if not status.is_ok():
             show_error(status)
             return False
 
     profile_batch.clear()
     profile_batch.reserve(capture_line_count)
 
+    # Maximum number of consecutive retrieval timeouts before giving up (external trigger
+    # may stop at any time). Each timeout cycle sleeps 200 ms, so 15 retries ≈ 3 s.
+    MAX_EMPTY_RETRIEVAL_COUNT = 15
+    empty_retrieval_count = 0
+
     while profile_batch.height() < capture_line_count:
         # Retrieve the profile data
         batch = ProfileBatch(data_width)
         status = profiler.retrieve_batch_data(batch)
         if status.is_ok():
-            profile_batch.append(batch)
+            if batch.height() > 0:
+                profile_batch.append(batch)
+                empty_retrieval_count = 0
+            else:
+                empty_retrieval_count += 1
             sleep(0.2)
         else:
-            show_error(status)
-            return False
+            # In external trigger mode, a retrieval timeout is expected when the trigger
+            # signal stops. Only treat timeout as an empty retrieval; report all other
+            # errors (e.g., device disconnect, parameter error) immediately.
+            if (
+                not is_software_trigger
+                and status.error_code == ErrorStatus.MMIND_STATUS_TIMEOUT_ERROR
+            ):
+                empty_retrieval_count += 1
+                sleep(0.2)
+            else:
+                show_error(status)
+                return False
+
+        if (
+            not is_software_trigger
+            and empty_retrieval_count >= MAX_EMPTY_RETRIEVAL_COUNT
+        ):
+            print(
+                "No more data received from the external trigger source. "
+                "Stopping acquisition with the data obtained so far."
+            )
+            break
 
     print("Stop data acquisition.")
     status = profiler.stop_acquisition()
@@ -214,12 +272,12 @@ def acquire_profile_data(profiler: Profiler, profile_batch: ProfileBatch, is_sof
     return status.is_ok()
 
 
-def save_depth_and_intensity(profile_batch: ProfileBatch, depth_file_name: str, intensity_file_name: str):
-    cv2.imwrite(depth_file_name,
-                profile_batch.get_depth_map().data())
+def save_depth_and_intensity(
+    profile_batch: ProfileBatch, depth_file_name: str, intensity_file_name: str
+):
+    cv2.imwrite(depth_file_name, profile_batch.get_depth_map().data())
     print(f"Saved the depth map to {depth_file_name}")
-    cv2.imwrite(intensity_file_name,
-                profile_batch.get_intensity_image().data())
+    cv2.imwrite(intensity_file_name, profile_batch.get_intensity_image().data())
     print(f"Saved the intensity image to {intensity_file_name}")
 
 
@@ -229,22 +287,26 @@ def capture_task(ip_address: str, sensor_sn: str):
         return
 
     # Set the parameters of the profiler and get necessary parameters
-    data_width, capture_line_count, is_software_trigger = set_parameters(
-        profiler)
+    data_width, capture_line_count, is_software_trigger = set_parameters(profiler)
 
     # Create a ProfileBatch object to store the profile data
     profile_batch = ProfileBatch(data_width)
-    if not acquire_profile_data(profiler, profile_batch, is_software_trigger, capture_line_count, data_width):
+    if not acquire_profile_data(
+        profiler, profile_batch, is_software_trigger, capture_line_count, data_width
+    ):
         return
 
     # Check if the batch's data is complete
     if profile_batch.check_flag(ProfileBatch.BatchFlag_Incomplete):
-        print(f"Part of the batch's data of profiler {sensor_sn} is lost, the number of valid profiles is:",
-              profile_batch.valid_height())
+        print(
+            f"Part of the batch's data of profiler {sensor_sn} is lost, the number of valid profiles is:",
+            profile_batch.valid_height(),
+        )
 
     # Save the depth map and intensity image
     save_depth_and_intensity(
-        profile_batch, f"depth_{sensor_sn}.png", f"intensity_{sensor_sn}.png")
+        profile_batch, f"depth_{sensor_sn}.png", f"intensity_{sensor_sn}.png"
+    )
 
     profiler.disconnect()
     print("Disconnected from the Mech-Eye Profiler successfully")
@@ -268,7 +330,9 @@ class TriggerMultipleProfilersSimultaneously(object):
             profiler_info = ProfilerInfo()
             show_error(profiler.get_profiler_info(profiler_info))
             process = multiprocessing.Process(
-                target=capture_task, args=(profiler_info.ip_address, profiler_info.sensor_sn))
+                target=capture_task,
+                args=(profiler_info.ip_address, profiler_info.sensor_sn),
+            )
             processes.append(process)
             process.start()
 
@@ -279,7 +343,7 @@ class TriggerMultipleProfilersSimultaneously(object):
         self.connect_device_and_capture()
 
 
-if __name__ == '__main__':
-    multiprocessing.set_start_method('spawn')
+if __name__ == "__main__":
+    multiprocessing.set_start_method("spawn")
     a = TriggerMultipleProfilersSimultaneously()
     a.main()

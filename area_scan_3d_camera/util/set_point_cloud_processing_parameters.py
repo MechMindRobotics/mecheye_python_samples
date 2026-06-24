@@ -25,6 +25,24 @@ class SetPointCloudProcessingParameters(object):
         error = current_user_set.set_enum_value(PointCloudNoiseRemoval.name,
                                                 PointCloudNoiseRemoval.Value_Normal)
         show_error(error)
+        error = current_user_set.set_enum_value(PointCloudDepthSmooth.name,
+                                                PointCloudDepthSmooth.Value_Normal)
+        show_error(error)
+        error = current_user_set.set_enum_value(PointCloudDepthHoleFilling.name,
+                                                PointCloudDepthHoleFilling.Value_Normal)
+        show_error(error)
+        error = current_user_set.set_enum_value(PointCloudDepthSurfaceNoiseRemoval.name,
+                                                PointCloudDepthSurfaceNoiseRemoval.Value_Normal)
+        show_error(error)
+        error = current_user_set.set_enum_value(PointCloudPhaseClusterOutlierRemoval.name,
+                                                PointCloudPhaseClusterOutlierRemoval.Value_L5)
+        show_error(error)
+        error = current_user_set.set_enum_value(PointCloudSpuriousPhaseRemoval.name,
+                                                PointCloudSpuriousPhaseRemoval.Value_Normal)
+        show_error(error)
+        error = current_user_set.set_enum_value(PointCloudLargeGradNoiseRemoval.name,
+                                                PointCloudLargeGradNoiseRemoval.Value_Normal)
+        show_error(error)
         error = current_user_set.set_enum_value(PointCloudOutlierRemoval.name,
                                                 PointCloudOutlierRemoval.Value_Normal)
         show_error(error)
@@ -38,6 +56,24 @@ class SetPointCloudProcessingParameters(object):
         error, noise_removal = current_user_set.get_enum_value_string(
             PointCloudNoiseRemoval.name)
         show_error(error)
+        error, depth_smooth = current_user_set.get_enum_value_string(
+            PointCloudDepthSmooth.name)
+        show_error(error)
+        error, depth_hole_filling = current_user_set.get_enum_value_string(
+            PointCloudDepthHoleFilling.name)
+        show_error(error)
+        error, depth_surface_noise_removal = current_user_set.get_enum_value_string(
+            PointCloudDepthSurfaceNoiseRemoval.name)
+        show_error(error)
+        error, phase_cluster_outlier_removal = current_user_set.get_enum_value_string(
+            PointCloudPhaseClusterOutlierRemoval.name)
+        show_error(error)
+        error, spurious_phase_removal = current_user_set.get_enum_value_string(
+            PointCloudSpuriousPhaseRemoval.name)
+        show_error(error)
+        error, large_grad_noise_removal = current_user_set.get_enum_value_string(
+            PointCloudLargeGradNoiseRemoval.name)
+        show_error(error)
         error, outlier_removal = current_user_set.get_enum_value_string(
             PointCloudOutlierRemoval.name)
         show_error(error)
@@ -48,6 +84,18 @@ class SetPointCloudProcessingParameters(object):
         print("Point Cloud Surface Smoothing:", surface_smoothing,
               "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
         print("Point Cloud Noise Removal:", noise_removal,
+              "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
+        print("Depth Smooth:", depth_smooth,
+              "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
+        print("Depth Hole Filling:", depth_hole_filling,
+              "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
+        print("Depth Surface Noise Removal:", depth_surface_noise_removal,
+              "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
+        print("Phase Cluster Outlier Removal:", phase_cluster_outlier_removal,
+              "(0: Off, 1: L1, 2: L2, 3: L3, 4: L4, 5: L5, 6: L6, 7: L7, 8: L8, 9: L9, 10: L10)")
+        print("Spurious Phase Removal:", spurious_phase_removal,
+              "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
+        print("Large Gradient Noise Removal:", large_grad_noise_removal,
               "(0: Off, 1: Weak, 2: Normal, 3: Strong)")
         print("Point Cloud Outlier Removal:", outlier_removal,
               "(0: Off, 1: Weak, 2: Normal, 3: Strong)")

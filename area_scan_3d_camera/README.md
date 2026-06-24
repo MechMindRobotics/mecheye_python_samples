@@ -29,7 +29,12 @@ The samples marked with `(OpenCV)` require [OpenCV](https://pypi.org/project/ope
     Set multiple exposure times, and then obtain and save the untextured and textured point clouds.
   * [capture_point_cloud_with_normals](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/basic/capture_point_cloud_with_normals.py)  
     Calculate normals and save the untextured and textured point clouds with normals.
+  * [save_virtual_device](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/basic/save_virtual_device.py)  
+    Save the data acquired by the camera as a virtual device file.
 * **advanced**
+  * [capture_depth_source_2d_image](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/capture_depth_source_2d_image.py) `(OpenCV)`
+    Obtain and save the 2D image from the depth source camera.
+    > Note: This sample is only applicable to camera models that provide the depth-source 2D image, such as Mech-Eye ULTRA M.
   * [convert_depth_map_to_point_cloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/convert_depth_map_to_point_cloud.py)  
     Generate a point cloud from the depth map and save the point cloud.
   * [multiple_cameras_capture_sequentially](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/multiple_cameras_capture_sequentially.py) `(OpenCV)`  
@@ -38,11 +43,13 @@ The samples marked with `(OpenCV)` require [OpenCV](https://pypi.org/project/ope
     Obtain and save 2D images, depth maps, and point clouds simultaneously from multiple cameras.
   * [capture_periodically](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/capture_periodically.py) `(OpenCV)`  
     Obtain and save 2D images, depth maps, and point clouds periodically for the specified duration from a camera.
+  * [warm_up](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/warm_up.py) `(OpenCV)`  
+    Warm up the device.
   * [mapping_2d_image_to_depth_map](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/mapping_2d_image_to_depth_map.py)  
     Generate untextured and textured point clouds from a masked 2D image and a depth map.
   * [render_depth_map](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/render_depth_map.py) `(OpenCV)`  
     Obtain and save the depth map rendered with the jet color scheme.
-  * [transform_point_cloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/Advanced/transform_point_cloud.py)  
+  * [transform_point_cloud](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/transform_point_cloud.py)  
     Obtain and save the point clouds in the custom reference frame.
   * [set_parameters_of_laser_cameras](https://github.com/MechMindRobotics/mecheye_python_samples/tree/master/area_scan_3d_camera/advanced/set_parameters_of_laser_cameras.py)  
     Set the parameters specific to laser cameras.
